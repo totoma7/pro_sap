@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4-2 건설 · 공공 · 제약 · 금융 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>4차시 · 업종별 구매 프로세스 차이</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">4-2</span>
+    <h1>건설 · 공공 · 제약 · 금융</h1>
+    <p class="lead">프로젝트가 사는 건설, 법이 사는 공공, 품질이 사는 제약, 비용통제가 사는 금융 — 구매를 지배하는 축이 각각 다르다.</p>
+  </header>
+
+  <h2>1. 건설/플랜트 — 프로젝트(WBS)가 모든 것의 축</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>구매가 <b>현장(프로젝트) 단위</b>로 발생 — 모든 PR/PO에 <b>WBS(계정지정 P)</b>가 붙는다</li>
+      <li>자재보다 <b>외주 용역(서비스 D)</b> 비중이 압도적 — 하도급 공사가 본체</li>
+      <li>공사는 한 번에 안 끝난다 → <b>기성(공정률) 검수</b>가 매월 반복 — SAP에서는 SES의 반복</li>
+      <li>대금에서 <b>유보금(하자보증)</b>을 떼고 지급 — 지급 조건이 복잡</li>
+    </ul>
+  </div>
+
+  <h3>하도급 기성 흐름 (매월 반복)</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>외주계약 (서비스 PO)</b>
+      <span class="d">총액 계약 + 내역(품셈) 구성. WBS로 프로젝트 원가에 귀속</span>
+    </div>
+    <div class="arrow">↓ 매월</div>
+    <div class="step hl">
+      <span class="n">2</span><b>기성 신청 → 검수 (SES)</b>
+      <span class="d">협력사가 포털에서 공정률·기성금 신청 → 현장 검수·승인 → SAP SES 생성. <b>포털 연계의 중심 구간</b></span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>송장 → 지급 (유보금 공제)</b>
+      <span class="d">기성금 − 유보금 − 선급금 정산 = 지급액. 하도급법 지급기일(60일) 준수 체크</span>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">건설 연계의 본질</span>
+    "물건 발주"가 아니라 <b>기성 신청·검수·정산의 월간 사이클</b>을 포털과 SAP이 함께 돌리는 것. 하도급법(서면 발급·지급 기일)이 시스템 요건으로 직접 들어온다.
+  </div>
+
+  <h2>2. 공공 — 법이 프로세스를 결정한다</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>국가계약법·지방계약법이 입찰 방식(일반경쟁·제한·수의)과 절차를 강제</li>
+      <li>일정 금액 이상은 <b>나라장터(KONEPS) 의무</b> — 자체 포털이 아니라 나라장터가 소싱 프론트</li>
+      <li>적격심사·예정가격·낙찰하한율 등 <b>룰 기반 낙찰</b> — 협상의 여지가 작다</li>
+      <li>감사 대비 <b>이력·증빙 완전성</b>이 최우선 가치</li>
+    </ul>
+  </div>
+  <div class="miniflow">
+    <span class="box">수요기관 (SAP/ERP)<br><span class="chip">구매요청·예산 확보</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">나라장터<br><span class="chip">공고→입찰→낙찰→전자계약</span></span>
+    <span class="ar">→</span>
+    <span class="box">SAP/ERP<br><span class="chip">계약·PO 생성, 검수·지급</span></span>
+  </div>
+  <div class="callout warn">
+    <span class="t">연계 관점</span>
+    공기업 SAP 프로젝트의 단골 인터페이스: <b>나라장터 낙찰·계약 결과 수신 → SAP 계약/PO 자동 생성</b>. 반대로 검수·대금 정보는 e호조(재정시스템)나 dBrain 연계까지 얹히기도 한다.
+  </div>
+
+  <h2>3. 제약/화학 — 품질이 입고를 통제한다</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>모든 원료가 <b>배치(Batch/Lot) 단위</b> — 입고부터 사용까지 이력 추적이 법적 의무(GMP)</li>
+      <li>입고 ≠ 사용 가능: <b>QM 검사 합격 전까지 품질재고(Quality Stock)</b>로 격리</li>
+      <li>공급사 자체가 <b>승인 대상</b> — 승인 공급사(AVL) 외 구매 차단, 정기 감사(Audit)</li>
+      <li>시스템 변경도 <b>밸리데이션(CSV)</b> 대상 — 인터페이스 하나 바꿔도 문서화·검증 필요</li>
+    </ul>
+  </div>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>입고 → 품질재고로 격리</b>
+      <span class="d">배치 번호 부여, COA(시험성적서) 수령 — 포털로 공급사가 COA를 첨부하는 연계가 흔하다</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>QM 검사 → 판정</b>
+      <span class="d">합격 → 가용재고 전환 / 불합격 → 반품·폐기. 판정 결과를 포털로 회신해 공급사 품질 등급에 반영</span>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">제약 연계의 본질</span>
+    속도보다 <b>추적성과 증빙</b>. 배치·COA·공급사 승인 상태가 인터페이스 데이터에 반드시 실려야 하고, 변경 관리가 무겁다는 전제로 일정을 잡아야 한다.
+  </div>
+
+  <h2>4. 금융/서비스 — 100% 간접구매의 세계</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>생산이 없으니 직접구매가 없다 — IT·용역·마케팅·시설 등 <b>전부 간접구매</b></li>
+      <li>재고도 거의 없다 — 구매의 대부분이 <b>서비스 PO + 비용 처리(계정지정)</b></li>
+      <li>핵심 통제는 <b>예산</b> — 품의 시점에 예산 가용액 체크(Commitment), 초과 시 차단</li>
+      <li>카탈로그·Punch-out 구매 비중이 높고, 사용자 경험이 도입 성패를 가른다 (2-1차시)</li>
+      <li>금융권 특수성: 망분리·내부통제 규제로 <b>클라우드 SaaS 도입 제약</b> → 내부 구축형 선호</li>
+    </ul>
+  </div>
+  <div class="miniflow">
+    <span class="box">품의/요청<br><span class="chip">예산 체크</span></span>
+    <span class="ar">→</span>
+    <span class="box">다단계 승인</span>
+    <span class="ar">→</span>
+    <span class="box">서비스 PO</span>
+    <span class="ar">→</span>
+    <span class="box hl">검수(SES) → 비용 확정</span>
+  </div>
+
+  <h2>5. 업종별 차이 총정리</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>업종</th><th>구매를 지배하는 축</th><th>주력 문서/범주</th><th>연계의 중심</th></tr>
+    <tr><td><b>제조</b></td><td>생산계획(MRP)</td><td>SA·외주(L)</td><td>ASN·사급·납품 스케줄</td></tr>
+    <tr><td><b>유통</b></td><td>판매(POS)·시즌</td><td>Article 대량 PO</td><td>EDI 발주·사후 정산</td></tr>
+    <tr><td><b>건설</b></td><td>프로젝트(WBS)</td><td>서비스(D)·SES</td><td>기성 신청·검수·유보금</td></tr>
+    <tr><td><b>공공</b></td><td>법령(국가계약법)</td><td>계약 중심</td><td>나라장터 결과 수신</td></tr>
+    <tr><td><b>제약</b></td><td>품질(GMP)</td><td>배치·QM 입고</td><td>COA·배치 추적</td></tr>
+    <tr><td><b>금융</b></td><td>예산·내부통제</td><td>서비스 PO·계정지정</td><td>카탈로그·승인·예산 체크</td></tr>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">4차시 핵심 한 줄</span>
+    업종이 다르면 "무엇이 구매를 시작시키는가"와 "무엇이 지급을 막을 수 있는가"가 다르다. 이 둘을 찾으면 그 업종의 전자구매 시스템 모양이 보인다.
+  </div>
+
+  <div class="pager">
+    <a href="04-1-mfg-retail.html"><span class="lbl">이전</span><b>← 4-1 제조 · 유통/리테일</b></a>
+    <a class="next" href="../index.html"><span class="lbl">다음</span><b>목차로 (5차시 준비 중) →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 4차시</footer>
+</div>
+</body>
+</html>

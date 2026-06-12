@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4-1 제조 · 유통/리테일 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>4차시 · 업종별 구매 프로세스 차이</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">4-1</span>
+    <h1>제조 · 유통/리테일</h1>
+    <p class="lead">같은 SAP, 같은 P2P인데 왜 업종마다 시스템이 다르게 생겼나 — 직접구매의 양대 산맥부터.</p>
+  </header>
+
+  <h2>1. 제조업 — "MRP가 구매를 시킨다"</h2>
+
+  <h3>구매의 모양</h3>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>구매의 8할이 <b>생산 투입 자재(직접구매)</b> — PR은 사람이 아니라 MRP가 만든다</li>
+      <li>같은 품목 × 같은 업체 × 반복 납품 → 건별 PO보다 <b>납품일정계약(Scheduling Agreement)</b>이 효율적</li>
+      <li><b>외주(L)·사급</b> 비중이 높다 — 협력사에 자재를 주고 가공품을 받는 구조 (1-3차시)</li>
+      <li>입고가 생산 라인과 직결 → <b>납기·ASN(납품통보)</b>이 생명</li>
+    </ul>
+  </div>
+
+  <h3>납품일정계약(SA) — 제조 직접구매의 기본 문서</h3>
+  <div class="miniflow">
+    <span class="box">연간 단가계약<br><span class="chip">가격·조건 확정</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">납품 스케줄 회차 전송<br><span class="chip">"이번 주 월 500개, 수 300개"</span></span>
+    <span class="ar">→</span>
+    <span class="box">입고·정산<br><span class="chip">PO 없이 반복</span></span>
+  </div>
+  <p style="font-size:14px;color:var(--sub);">건별 PO를 없애고 "계약 + 스케줄 회차"로 돌린다. JIT/칸반까지 가면 스케줄이 일/시간 단위로 내려간다.</p>
+
+  <h3>제조 전자구매 연계의 전형</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>소싱은 포털에서</b>
+      <span class="d">신규 부품 개발·연간 단가 입찰 → 낙찰 단가를 SAP Info Record/계약으로 전송 (저빈도·고중요)</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">2</span><b>일상 거래는 협력사 포털·EDI로</b>
+      <span class="d">납품 스케줄 공유 → 공급사 ASN 회신 → 사급재 수불 공유 → 입고/검수 결과 회신 (고빈도·자동화)</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>품질(QM)이 끼어든다</b>
+      <span class="d">입고 → 품질검사 → 합격 시 가용재고 전환. 불합격·반품 프로세스와 공급사 품질 통보 연계 필요</span>
+    </div>
+  </div>
+
+  <div class="callout point">
+    <span class="t">제조 연계의 핵심 키워드</span>
+    SCC(공급망 협업) · ASN(DESADV) · 사급재 수불 · 납품 스케줄 — "쇼핑"이 아니라 <b>공장과 공급사의 데이터 동기화</b>가 본질이다.
+  </div>
+
+  <h2>2. 유통/리테일 — "팔리는 만큼 자동으로 사온다"</h2>
+
+  <h3>구매의 모양</h3>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>사 와서 그대로 파는 <b>상품(Merchandise)</b> 구매 — 생산·BOM이 없다</li>
+      <li>SAP Retail에서는 자재 대신 <b>Article</b>(단품) 마스터 — 색상·사이즈 변형(Variant), 바코드(EAN) 단위 관리</li>
+      <li>조직도 다르다: Plant 대신 <b>Site(점포/물류센터)</b> 개념, 점포 수백~수천 개</li>
+      <li>판매 데이터(POS)가 수요의 출발점 — <b>자동 보충(Replenishment)</b>이 PR/PO를 만든다</li>
+    </ul>
+  </div>
+
+  <h3>자동 보충 흐름</h3>
+  <div class="miniflow">
+    <span class="box">POS 판매 데이터</span>
+    <span class="ar">→</span>
+    <span class="box">재고·판매 예측</span>
+    <span class="ar">→</span>
+    <span class="box hl">보충 발주 자동 생성<br><span class="chip">점포→DC, DC→공급사</span></span>
+    <span class="ar">→</span>
+    <span class="box">입고·진열</span>
+  </div>
+
+  <h3>제조와 결정적으로 다른 포인트</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>관점</th><th>제조</th><th>유통/리테일</th></tr>
+    <tr><td>수요 원천</td><td>생산계획(MRP)</td><td>판매 실적(POS)·시즌 계획</td></tr>
+    <tr><td>품목 규모</td><td>수천~수만 자재</td><td>수십만 Article (변형·바코드 포함)</td></tr>
+    <tr><td>발주 패턴</td><td>스케줄 회차 반복</td><td>대량 시즌 발주 + 일 단위 보충</td></tr>
+    <tr><td>가격의 복잡성</td><td>단가 + 가공비</td><td>매입가 + <b>리베이트·판촉 조건</b> (사후 정산)</td></tr>
+    <tr><td>공급사 연계</td><td>ASN·사급·품질</td><td>EDI 대량 발주·송장, 점포 직배송(DSD)</td></tr>
+    <tr><td>특수 프로세스</td><td>외주(L)·위탁(K)</td><td>반품·마크다운·점포 간 이동(Allocation)</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">유통 연계 설계의 함정 — 사후 정산 조건</span>
+    유통의 매입 단가는 "그때 확정"이 아니다. 분기 매입액 달성 리베이트, 판촉 분담금 등 <b>사후 정산(Subsequent Settlement)</b> 조건이 얹힌다. 포털 계약과 SAP 조건(Condition) 체계의 매핑을 초기에 설계하지 않으면 정산 시즌마다 수작업 지옥이 된다.
+    </div>
+
+  <div class="callout tip">
+    <span class="t">기억할 것</span>
+    제조 연계는 <b>"공장이 멈추지 않게"</b>(납기·ASN·사급), 유통 연계는 <b>"매대가 비지 않게 + 정산이 맞게"</b>(자동 보충·EDI·사후 정산)가 설계의 북극성이다.
+  </div>
+
+  <div class="pager">
+    <a href="03-2-scenarios-punchout.html"><span class="lbl">이전</span><b>← 3-2 연계 시나리오 &amp; Punch-out</b></a>
+    <a class="next" href="04-2-const-public-pharma-fin.html"><span class="lbl">다음</span><b>4-2 건설 · 공공 · 제약 · 금융 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 4차시</footer>
+</div>
+</body>
+</html>
