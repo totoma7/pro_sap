@@ -1,7 +1,0 @@
-{
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"/Users/ecbank/IdeaProjects/sap_proc_edu/.playwright-mcp/index-mobile.jpeg\"}",
-  "error": "File does not exist. Note: your current working directory is /Users/ecbank/IdeaProjects/sap_proc_edu.",
-  "timestamp": "2026-06-12T23:25:03.407Z",
-  "retry_count": 1
-}

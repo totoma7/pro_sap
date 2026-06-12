@@ -1,0 +1,6 @@
+# 도구 내부 상태 파일 (학습 콘텐츠 아님)
+.omc/
+.playwright-mcp/
+docs/.bkit-memory.json
+docs/.pdca-status.json
+.DS_Store
