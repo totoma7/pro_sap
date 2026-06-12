@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2-1 직접구매 vs 간접구매 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>2차시 · 전자구매 시스템의 개념과 유형</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">2-1</span>
+    <h1>직접구매 vs 간접구매</h1>
+    <p class="lead">전자구매 시스템의 아키텍처가 갈라지는 근본 이유. "무엇을 사느냐"가 아니라 "구매가 어떻게 시작되느냐"의 차이다.</p>
+  </header>
+
+  <h2>1. 정의부터</h2>
+  <div class="duo">
+    <div class="col a">
+      <h4>직접구매 (Direct)</h4>
+      <ul>
+        <li><b>생산에 투입되는</b> 원자재·부품·외주가공품</li>
+        <li>수요의 출발점: <b>MRP</b> (생산계획이 자동 계산)</li>
+        <li>자재 마스터·BOM·단가계약이 <b>필수 전제</b></li>
+        <li>반복 발주 — 같은 품목을 같은 업체에서 계속</li>
+        <li>매출원가에 직결 → 단가 1원에 민감</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <h4>간접구매 (Indirect / MRO)</h4>
+      <ul>
+        <li>생산에 직접 안 들어가는 <b>소모품·설비·용역·IT·마케팅</b></li>
+        <li>수요의 출발점: <b>현업 사용자의 요청</b></li>
+        <li>자재코드가 없는 품목이 대부분 (텍스트/카탈로그)</li>
+        <li>비반복·다품종 소액 — 누가 뭘 살지 예측 불가</li>
+        <li>비용 통제(예산·승인)가 핵심 관심사</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. 흐름이 어떻게 다른가</h2>
+
+  <h3>직접구매 — 시스템이 시스템에게 (사람 개입 최소화)</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>생산계획 → MRP 실행</b>
+      <span class="d">완제품 계획을 BOM으로 전개해 "언제 무엇이 몇 개 부족한지" 자동 계산</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>PR 자동 생성 → 공급원 자동 결정</b>
+      <span class="d">소스리스트·단가계약이 있으면 사람 손 없이 PO까지 자동 전환 가능</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">3</span><b>PO 송신 → 공급사 협업</b>
+      <span class="d">주문확인(ORDRSP)·납품통보(ASN)·사급재 수불 — <b>협력사 포털/EDI</b>가 개입하는 구간</span>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">직접구매 전자화의 초점</span>
+    "쇼핑 경험"이 아니라 <b>공급사와의 데이터 협업</b>(SCC: Supply Chain Collaboration)이다. 입찰은 신규 소싱·연간 단가계약 때만 발생한다.
+  </div>
+
+  <h3>간접구매 — 사람이 쇼핑하듯 (사용자 경험이 핵심)</h3>
+  <div class="flow">
+    <div class="step hl">
+      <span class="n">1</span><b>현업 사용자가 요청</b>
+      <span class="d">카탈로그 검색 또는 Punch-out(외부 쇼핑몰 연동)으로 장바구니 구성 — <b>전자구매 포털</b>이 개입하는 구간</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>승인 워크플로우</b>
+      <span class="d">금액·품목·예산에 따른 다단계 승인. 코스트센터/WBS 계정 지정 필수</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>PO 생성 → 납품 → 검수 확인</b>
+      <span class="d">요청자가 직접 "받았다" 확인(Confirmation)하는 경우가 많음. 서비스면 SES 검수</span>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">간접구매 전자화의 초점</span>
+    누구나 교육 없이 쓸 수 있는 <b>쇼핑몰 수준의 UX</b> + 새는 돈을 막는 <b>승인·예산 통제</b>. Ariba Buying, Coupa가 이 영역에서 출발한 제품이다.
+  </div>
+
+  <h2>3. 한눈에 비교</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>구분</th><th>직접구매</th><th>간접구매</th></tr>
+    <tr><td>수요 발생</td><td>MRP 자동</td><td>현업 요청</td></tr>
+    <tr><td>품목</td><td>자재코드 有, 소품종 대량</td><td>코드 無 다수, 다품종 소액</td></tr>
+    <tr><td>공급사 관계</td><td>장기 계약, 소수 핵심 업체</td><td>다수 업체, 스팟 거래 많음</td></tr>
+    <tr><td>주력 Item Category</td><td>표준 · 외주(L) · 위탁(K)</td><td>서비스(D) · 계정지정(K/A/P)</td></tr>
+    <tr><td>핵심 통제</td><td>납기 · 품질 · 단가</td><td>승인 · 예산 · 구매 채널 준수</td></tr>
+    <tr><td>전자화 포인트</td><td>공급사 협업(ASN·사급·EDI)</td><td>카탈로그 · Punch-out · 승인 UX</td></tr>
+    <tr><td>대표 솔루션 영역</td><td>SCC, 협력사 포털, EDI</td><td>Ariba Buying, Coupa, 사내 구매포털</td></tr>
+  </table>
+  </div>
+
+  <h2>4. 그래서 아키텍처가 갈라진다</h2>
+  <div class="duo">
+    <div class="col a">
+      <h4>직접구매 연계 = SAP이 중심</h4>
+      <ul>
+        <li>PR/PO 생성의 주체가 SAP(MRP)</li>
+        <li>포털은 SAP 문서를 공급사에 <b>보여주고 회신받는</b> 창구</li>
+        <li>흐름: SAP → 협력사 포털 → 공급사 → SAP</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <h4>간접구매 연계 = 포털이 중심</h4>
+      <ul>
+        <li>요청·승인·카탈로그가 전부 포털에서 발생</li>
+        <li>SAP은 PO·회계 처리를 받는 <b>백엔드 원장</b></li>
+        <li>흐름: 사용자 → 포털 → SAP → (지급)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">실무에서 가장 흔한 오해</span>
+    "전자구매 시스템 하나로 직접·간접을 다 커버한다"는 계획은 대부분 실패한다. 두 영역은 <b>사용자도, 데이터 전제도, 통제 포인트도 다르기</b> 때문에, 같은 플랫폼을 쓰더라도 프로세스 설계는 분리해야 한다.
+  </div>
+
+  <div class="pager">
+    <a href="01-3-doc-types.html"><span class="lbl">이전</span><b>← 1-3 문서 유형 &amp; 품목 범주</b></a>
+    <a class="next" href="02-2-system-types.html"><span class="lbl">다음</span><b>2-2 전자구매 시스템 유형 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 2차시</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2-2 전자구매 시스템 유형 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>2차시 · 전자구매 시스템의 개념과 유형</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">2-2</span>
+    <h1>전자구매 시스템 유형</h1>
+    <p class="lead">Ariba, 자체 구축 그룹 구매포털, 나라장터, Coupa — 각각 무엇이고, SAP과 어떤 관계로 놓이는가.</p>
+  </header>
+
+  <h2>1. 시스템 지형도</h2>
+  <div class="tree">
+    <div class="node lv0"><b>전자구매 시스템</b><span class="d">공급사와 만나는 프론트 — SAP 원장과 연계되는 시스템들</span></div>
+    <div class="kids">
+      <div class="node"><b>SAP 계열</b><span class="d">Ariba (현 주력) · SRM (레거시, 단종) · S/4HANA 셀프서비스 구매 (경량)</span></div>
+      <div class="node"><b>비SAP 상용</b><span class="d">Coupa · Jaggaer · Zycus 등 — 간접구매·소싱 특화 SaaS</span></div>
+      <div class="node side"><b>자체 구축 (국내 대기업 주류)</b><span class="d">그룹 구매포털 — 입찰·협력사·계약을 자체 개발, SAP을 백엔드로</span></div>
+      <div class="node side"><b>공공 조달</b><span class="d">나라장터(KONEPS) — 조달청 운영, 공공기관 의무 사용</span></div>
+    </div>
+  </div>
+
+  <h2>2. SAP Ariba — 기능 블록으로 이해하기</h2>
+  <p>Ariba는 단일 제품이 아니라 <b>모듈 묶음 + 공급사 네트워크</b>다. 어느 모듈을 쓰느냐에 따라 연계 모양이 완전히 달라진다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>모듈</th><th>역할</th><th>P2P 흐름에서의 위치</th></tr>
+    <tr><td><b>Sourcing</b></td><td>입찰(RFx) · 역경매 · 견적 비교</td><td>소싱 구간 (PO 이전)</td></tr>
+    <tr><td><b>Contracts</b></td><td>계약 작성 · 조항 관리 · 전자서명</td><td>소싱 결과 → SAP 단가계약으로 전송</td></tr>
+    <tr><td><b>SLP</b></td><td>공급업체 등록 · 심사 · 평가 (Supplier Lifecycle)</td><td>마스터 영역 — SAP BP와 동기화</td></tr>
+    <tr><td><b>Buying &amp; Invoicing</b></td><td>카탈로그 구매 · 승인 · 송장 (간접구매 P2P)</td><td>PR~IV 전 구간 (포털 중심형)</td></tr>
+    <tr><td><b>Business Network</b></td><td>공급사가 PO 수신·송장 제출하는 거래 네트워크</td><td>SAP PO ↔ 공급사 문서 교환</td></tr>
+    <tr><td><b>SCC</b></td><td>직접구매 협업 — 예측 공유 · ASN · 사급</td><td>PO 이후 납품 협업 구간</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">연계의 표준 통로 — CIG</span>
+    Ariba와 SAP ERP 사이는 <b>CIG(Cloud Integration Gateway)</b>가 표준 연계 채널이다. 내부적으로는 IDoc/Proxy를 cXML로 변환해 주고받는다. 상세는 3차시에서.
+  </div>
+
+  <h2>3. 자체 구축 그룹 구매포털 — 한국 대기업의 주류</h2>
+  <p>국내 그룹사는 상용 솔루션보다 <b>자체 구축 구매포털</b>이 압도적으로 많다. 이유와 구조를 이해하는 것이 한국 실무의 핵심이다.</p>
+
+  <h3>왜 자체 구축인가</h3>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>규제 반영</b>: 하도급법 서면 발급, 상생결제, 동반성장 평가 등 한국 특화 요건이 많다</li>
+      <li><b>그룹 공통화</b>: 여러 계열사(여러 SAP 법인)를 하나의 포털로 묶는 통합구매</li>
+      <li><b>협력사 관리 관행</b>: 등록 심사, 정기 평가, 제재(거래정지) 등 자체 프로세스가 깊다</li>
+    </ul>
+  </div>
+
+  <h3>전형적인 이중 구조</h3>
+  <div class="flow">
+    <div class="step hl">
+      <b>그룹 구매포털 (프론트)</b>
+      <span class="d">협력사 등록·평가 · 입찰/견적 · 전자계약 · PO 열람/회신 · 세금계산서 접수 — 공급사가 로그인하는 곳</span>
+      <div class="meta"><span class="chip purple">자체 개발 (Java/웹)</span></div>
+    </div>
+    <div class="arrow">↕ 인터페이스 (마스터·PR·PO·입고·송장)</div>
+    <div class="step">
+      <b>SAP ERP (백엔드 원장)</b>
+      <span class="d">PO 확정 · 재고/입고 · 송장검증 · 회계/지급 — 재무제표로 이어지는 기록</span>
+      <div class="meta"><span class="chip blue">계열사별 Company Code</span></div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">이 구조의 고질적 문제</span>
+    포털과 SAP에 <b>같은 정보가 두 번 존재</b>한다(업체·계약·PO 상태). 인터페이스 장애·순서 꼬임이 곧 업무 장애가 되므로, "어느 시스템이 원본인가"와 <b>재처리(reprocessing) 체계</b>가 운영의 생명선이다.
+  </div>
+
+  <h2>4. 나라장터 (KONEPS) — 공공 조달</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>운영 주체</td><td>조달청. 공공기관은 일정 금액 이상 입찰을 나라장터로 진행 (의무)</td></tr>
+    <tr><td>커버 범위</td><td>입찰 공고 → 전자입찰 → 개찰/낙찰 → 전자계약 → 대금청구까지 G2B 전 과정</td></tr>
+    <tr><td>특징</td><td>규정(국가계약법) 기반 — 적격심사·제한경쟁 등 룰이 시스템에 내장</td></tr>
+    <tr><td>SAP 연계 관점</td><td>공기업·공공기관이 SAP 사용 시: 나라장터 낙찰 결과 → SAP PO/계약 생성 인터페이스. 민간 기업에게는 "판매 채널"(역방향)</td></tr>
+  </table>
+  </div>
+
+  <h2>5. 유형별 비교 정리</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>유형</th><th>강점 영역</th><th>SAP과의 관계</th><th>주 채택층</th></tr>
+    <tr><td><b>Ariba</b></td><td>소싱 + 간접 P2P + 공급사 네트워크</td><td>CIG로 표준 연계 (같은 SAP 생태계)</td><td>글로벌 기업, SAP 표준 지향</td></tr>
+    <tr><td><b>Coupa 등 SaaS</b></td><td>간접구매 UX · 지출 분석</td><td>API/파일 기반 연계 (멀티 ERP 지원)</td><td>외국계 · IT기업</td></tr>
+    <tr><td><b>자체 구축 포털</b></td><td>한국 규제 · 그룹 통합 · 협력사 관리</td><td>전용 인터페이스 (IDoc/RFC/API 직접 개발)</td><td>국내 대기업 그룹</td></tr>
+    <tr><td><b>나라장터</b></td><td>공공 입찰 적법성</td><td>낙찰 결과 수신 연계</td><td>공공기관 · 공기업</td></tr>
+  </table>
+  </div>
+
+  <h2>6. 2차시 핵심 요약</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>직접구매</b>는 MRP가 시작점 → 전자화 초점은 공급사 협업(SCC·ASN·사급)</li>
+      <li><b>간접구매</b>는 사람이 시작점 → 전자화 초점은 카탈로그 UX와 승인·예산 통제</li>
+      <li>직접은 <b>SAP 중심</b> 아키텍처, 간접은 <b>포털 중심</b> 아키텍처로 갈라진다</li>
+      <li>Ariba는 모듈 묶음 — 어떤 모듈이냐에 따라 연계 모양이 다르다</li>
+      <li>국내 대기업 주류는 <b>자체 구축 그룹 구매포털 + SAP 백엔드</b>의 이중 구조</li>
+    </ul>
+  </div>
+
+  <div class="pager">
+    <a href="02-1-direct-indirect.html"><span class="lbl">이전</span><b>← 2-1 직접구매 vs 간접구매</b></a>
+    <a class="next" href="../index.html"><span class="lbl">다음</span><b>목차로 (3차시 준비 중) →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 2차시</footer>
+</div>
+</body>
+</html>
