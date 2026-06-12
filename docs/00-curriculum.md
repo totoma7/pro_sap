@@ -36,8 +36,10 @@
 - 하도급법·상생결제 등 규제가 시스템 설계에 미치는 영향
 
 ## 진행 현황
-- [x] 1차시 자료 작성 (`01-sap-mm-core-concepts.md`)
-- [ ] 2차시
-- [ ] 3차시
-- [ ] 4차시
-- [ ] 5차시
+> 학습 자료 본문은 HTML로 작성되어 있다. 루트 `index.html`에서 시작 (웹: https://totoma7.github.io/pro_sap/)
+
+- [x] 1차시 — `lessons/01-1` ~ `01-3` (마크다운 원고: `01-sap-mm-core-concepts.md`)
+- [x] 2차시 — `lessons/02-1`, `02-2`
+- [x] 3차시 — `lessons/03-1`, `03-2`
+- [x] 4차시 — `lessons/04-1`, `04-2`
+- [x] 5차시 — `lessons/05-1` (커리큘럼 완료)

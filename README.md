@@ -16,7 +16,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 2차시 | 전자구매 시스템의 개념과 유형 — 직접/간접구매, Ariba, 그룹 구매포털, 나라장터 | ✅ 완료 |
 | 3차시 | SAP ↔ 전자구매 연계 기술 — IDoc, BAPI, OData, CIG, Punch-out(OCI/cXML) | ✅ 완료 |
 | 4차시 | 업종별 구매 프로세스 차이 — 제조, 유통, 건설, 공공, 제약, 금융 | ✅ 완료 |
-| 5차시 | 한국 실무 특화 — 전자세금계산서, 상생결제, 그룹 구매포털 이중 구조 | 준비 중 |
+| 5차시 | 한국 실무 특화 — 전자세금계산서, 상생결제, 그룹 구매포털 이중 구조 | ✅ 완료 |
 
 ## 구조
 
@@ -33,7 +33,8 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 │   ├── 03-1-integration-tech.html      # 연계 기술 스택 (IDoc·BAPI·OData·미들웨어)
 │   ├── 03-2-scenarios-punchout.html    # 연계 시나리오 & Punch-out
 │   ├── 04-1-mfg-retail.html            # 제조 · 유통/리테일
-│   └── 04-2-const-public-pharma-fin.html # 건설 · 공공 · 제약 · 금융
+│   ├── 04-2-const-public-pharma-fin.html # 건설 · 공공 · 제약 · 금융
+│   └── 05-1-korea-specifics.html       # 한국 실무 특화 (세금계산서·상생결제·이중 원장)
 └── docs/                 # 마크다운 원고 (HTML 페이지의 소스 노트)
 ```
 

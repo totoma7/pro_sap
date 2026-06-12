@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5-1 한국 실무 특화 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>5차시 · 한국 실무 특화 주제</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">5-1</span>
+    <h1>전자세금계산서 · 상생결제 · 그룹 구매포털 운영</h1>
+    <p class="lead">글로벌 SAP 표준에는 없는, 그러나 한국 프로젝트에서는 반드시 만나는 세 가지.</p>
+  </header>
+
+  <h2>1. 전자세금계산서 — 한국형 송장검증의 핵심</h2>
+  <p>한국은 부가세법상 <b>전자세금계산서 발급·국세청 전송이 의무</b>다. 그래서 글로벌 표준의 3-Way Match에 <b>세금계산서 대사가 한 겹 더</b> 얹힌다.</p>
+
+  <div class="miniflow">
+    <span class="box">PO</span><span class="ar">↔</span>
+    <span class="box">GR</span><span class="ar">↔</span>
+    <span class="box">송장</span><span class="ar">↔</span>
+    <span class="box hl">세금계산서<br><span class="chip">국세청 승인분</span></span>
+  </div>
+
+  <h3>흐름과 연계 구조</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>세금계산서 발행</b>
+      <span class="d">공급사가 발행하거나, 한국 대기업 관행으로는 <b>역발행</b> — 구매사가 입고·검수 실적 기준으로 작성해 공급사가 승인. 금액 불일치를 원천 차단</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>국세청 전송 (ASP 연동)</b>
+      <span class="d">전자세금계산서 ASP(빌48 등) 또는 자체 발행 시스템이 국세청에 전송. 승인번호 회신</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">3</span><b>SAP 송장검증(IV)과 대사</b>
+      <span class="d">세금계산서 데이터(승인번호·공급가·세액)를 SAP 송장에 매칭. 불일치 시 지급 보류. 승인번호가 SAP 송장 필드에 저장돼야 부가세 신고가 풀린다</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">4</span><b>부가세 신고</b>
+      <span class="d">매입 세금계산서 합계 ↔ SAP 매입부가세 계정 잔액 대사 → 분기 신고. 차이 나면 결산 지연</span>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">설계 포인트</span>
+    "송장 인터페이스"와 "세금계산서 인터페이스"를 별개로 만들면 둘이 어긋났을 때 지옥이 열린다. <b>세금계산서 승인번호를 키로 송장과 1:1 묶는 설계</b>가 정석이고, 역발행 프로세스면 포털이 그 묶음을 처음부터 보장할 수 있다.
+  </div>
+
+  <h2>2. 지급 단계의 한국 특화 — 상생결제와 하도급 규제</h2>
+
+  <h3>왜 지급이 규제 대상인가</h3>
+  <p>대기업-중소기업 거래에서 어음 결제로 인한 협력사 자금난이 사회 문제였다. 그래서 <b>하도급법은 지급 기일(목적물 수령 후 60일)을 강제</b>하고, 정부는 상생결제 같은 제도를 도입했다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>지급 수단</th><th>구조</th><th>시스템 관점</th></tr>
+    <tr><td><b>현금 (계좌이체)</b></td><td>F110 자동지급의 기본</td><td>표준 — 특이사항 없음</td></tr>
+    <tr><td><b>상생결제</b></td><td>구매사 신용으로 협력사가 조기 현금화. 2차·3차 협력사까지 혜택 연계</td><td>은행 상생결제 시스템과 지급 데이터 연계, 만기·할인 정보 관리</td></tr>
+    <tr><td><b>구매카드</b></td><td>카드사가 선지급, 구매사는 카드 대금 결제</td><td>카드사 연계, 세금계산서 대신 카드매출전표 처리 분기</td></tr>
+    <tr><td><b>외상매출채권담보대출(외담대)</b></td><td>채권을 담보로 협력사가 대출 — 상생결제의 전신</td><td>상환청구권 리스크로 축소 추세</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">연계 관점</span>
+    지급 수단이 다양해질수록 <b>SAP 지급 프로세스(F110)에서 수단별 분기</b>와 <b>은행/카드사 인터페이스</b>가 늘어난다. 동반성장 평가(상생결제 비율)가 경영 지표라서, 포털에서 협력사별 지급 수단·실적 리포팅 요구가 따라온다.
+  </div>
+
+  <h2>3. 그룹 구매포털 이중 원장 — 운영의 기술</h2>
+  <p>2-2차시에서 본 "포털 프론트 + SAP 원장" 구조를 <b>실제로 굴리는</b> 노하우. 구축보다 운영에서 승부가 난다.</p>
+
+  <h3>운영 체크리스트</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>영역</th><th>해야 할 것</th><th>안 하면 생기는 일</th></tr>
+    <tr><td><b>원본 정의</b></td><td>데이터별 Master of Record 문서화 (업체=포털, 자재=SAP, 단가=포털→SAP)</td><td>양쪽 수정 → 영구 불일치</td></tr>
+    <tr><td><b>일일 대사</b></td><td>PO·송장 건수/금액 자동 대사 배치 + 차이 리포트</td><td>장애 유실 건을 월말 결산 때 발견</td></tr>
+    <tr><td><b>오류 큐 관리</b></td><td>IDoc 51·재처리 담당과 SLA 지정 (3차시)</td><td>GR/IR 잔액 누적, 공급사 지급 지연</td></tr>
+    <tr><td><b>상태 회신</b></td><td>입고·검수·지급 상태를 포털로 환류</td><td>공급사 문의 전화가 구매팀 업무 마비</td></tr>
+    <tr><td><b>마감 캘린더</b></td><td>월말 결산 전 인터페이스 컷오프 시점 합의</td><td>결산 중 유입 건으로 재무 숫자 흔들림</td></tr>
+    <tr><td><b>변경 관리</b></td><td>SAP 패치·포털 배포 일정 공유, 연계 회귀 테스트</td><td>한쪽 배포가 다음 날 아침 인터페이스 전면 장애로</td></tr>
+  </table>
+  </div>
+
+  <h2>4. 전체 커리큘럼 — 한 장으로 정리</h2>
+  <div class="flow">
+    <div class="step">
+      <b>1차시 · SAP 구매의 뼈대</b>
+      <span class="d">구매조직은 별도 축 / 마스터가 절반 / P2P 문서 흐름 / 3-Way Match와 GR/IR / Item Category가 프로세스를 가른다</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <b>2차시 · 전자구매의 지형</b>
+      <span class="d">직접(SAP 중심) vs 간접(포털 중심) / Ariba 모듈 / 국내 주류는 자체 구축 그룹 포털 + SAP 이중 구조</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <b>3차시 · 연계의 도구와 조립</b>
+      <span class="d">IDoc(비동기)·BAPI(동기)·OData·CIG / 마스터 동기화 + 트랜잭션 왕복 / Punch-out / 멱등성·재처리·대사</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <b>4차시 · 업종이 모양을 정한다</b>
+      <span class="d">"무엇이 구매를 시작시키고, 무엇이 지급을 막는가" — 제조(MRP/납기), 유통(POS/정산), 건설(WBS/기성), 공공(법/나라장터), 제약(품질/배치), 금융(예산)</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <b>5차시 · 한국이라는 변수</b>
+      <span class="d">세금계산서 대사(4-Way) / 역발행 / 상생결제·하도급 규제 / 이중 원장 운영 체크리스트</span>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">커리큘럼 완주 🎉</span>
+    이제 어떤 업종의 "SAP ↔ 전자구매 연계" 이야기를 들어도 ① 무엇이 원장이고 ② 어떤 인터페이스가 오가며 ③ 어디서 장애가 나는지 그림을 그릴 수 있다. 더 깊이 가려면: 특정 업종 케이스 스터디, Ariba CIG 매핑 실무, IDoc 세그먼트 구조 등으로 확장해 보자.
+  </div>
+
+  <div class="pager">
+    <a href="04-2-const-public-pharma-fin.html"><span class="lbl">이전</span><b>← 4-2 건설 · 공공 · 제약 · 금융</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 5차시 (完)</footer>
+</div>
+</body>
+</html>
