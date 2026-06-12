@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">SAP × e-Procurement 학습</span>
+    <h1>SAP 구매와 전자구매 시스템 연계 학습</h1>
+    <p class="lead">SAP MM 구매의 핵심 구조 → 전자구매 시스템 유형 → 연계 기술 → 업종별 차이 → 한국 실무 특화까지, 도식 중심으로 단계별 학습합니다.</p>
+  </header>
+
+  <div class="callout point">
+    <span class="t">전체 그림 한 줄 요약</span>
+    전자구매 포털은 공급사와 만나는 <b>프론트</b>(입찰·카탈로그·협력사 관리), SAP은 구매의 <b>원장</b>(PO·입고·송장·지급). 대부분의 기업은 이 이중 구조로 운영한다.
+  </div>
+
+  <div class="miniflow">
+    <span class="box hl">전자구매 포털<br><span class="chip">소싱 · 입찰 · 카탈로그</span></span>
+    <span class="ar">⇄ 연계</span>
+    <span class="box hl">SAP (MM/FI)<br><span class="chip">PO · 입고 · 송장 · 지급</span></span>
+    <span class="ar">⇄</span>
+    <span class="box">공급사<br><span class="chip">협력사 포털 · EDI</span></span>
+  </div>
+
+  <h2>1차시 — SAP 구매(MM-PUR) 핵심 개념</h2>
+  <div class="lessons">
+    <a class="lesson" href="lessons/01-1-structure.html">
+      <span class="no">1-1</span>
+      <h3>조직 구조 &amp; 마스터 데이터</h3>
+      <p>Company Code, Plant, 구매조직의 관계와 자재·공급업체·Info Record 등 5대 마스터. 연계 설계의 출발점.</p>
+      <div class="status"><span class="chip green">학습 가능</span></div>
+    </a>
+    <a class="lesson" href="lessons/01-2-p2p-flow.html">
+      <span class="no">1-2</span>
+      <h3>구매 문서 흐름 (P2P)</h3>
+      <p>PR → PO → 입고 → 송장검증 → 지급의 전체 흐름, 3-Way Match와 GR/IR 계정의 의미.</p>
+      <div class="status"><span class="chip green">학습 가능</span></div>
+    </a>
+    <a class="lesson" href="lessons/01-3-doc-types.html">
+      <span class="no">1-3</span>
+      <h3>문서 유형 &amp; 품목 범주</h3>
+      <p>Document Type과 Item Category(외주·위탁·서비스)가 프로세스를 가르는 방식. 업종 차이가 시작되는 지점.</p>
+      <div class="status"><span class="chip green">학습 가능</span></div>
+    </a>
+  </div>
+
+  <h2>2차시 — 전자구매 시스템의 개념과 유형</h2>
+  <div class="lessons">
+    <a class="lesson todo" href="#">
+      <span class="no">2-1</span>
+      <h3>직접구매 vs 간접구매</h3>
+      <p>시스템 아키텍처가 갈라지는 근본 이유.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+    <a class="lesson todo" href="#">
+      <span class="no">2-2</span>
+      <h3>전자구매 시스템 유형</h3>
+      <p>Ariba, 자체 구축 그룹 구매포털, 나라장터(KONEPS), Coupa.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+  </div>
+
+  <h2>3차시 — SAP ↔ 전자구매 연계 기술</h2>
+  <div class="lessons">
+    <a class="lesson todo" href="#">
+      <span class="no">3-1</span>
+      <h3>연계 기술 스택</h3>
+      <p>IDoc, BAPI/RFC, OData, CIG, BTP Integration Suite.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+    <a class="lesson todo" href="#">
+      <span class="no">3-2</span>
+      <h3>연계 시나리오 &amp; Punch-out</h3>
+      <p>OCI/cXML, 마스터 동기화, 시나리오별 데이터 흐름.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+  </div>
+
+  <h2>4차시 — 업종별 구매 프로세스 차이</h2>
+  <div class="lessons">
+    <a class="lesson todo" href="#">
+      <span class="no">4-1</span>
+      <h3>제조 · 유통/리테일</h3>
+      <p>MRP 자동 PR, 외주, JIT vs Article 마스터, 자동 보충.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+    <a class="lesson todo" href="#">
+      <span class="no">4-2</span>
+      <h3>건설 · 공공 · 제약 · 금융</h3>
+      <p>WBS 기반 구매, 나라장터, 배치/QM, 간접구매 중심 구조.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+  </div>
+
+  <h2>5차시 — 한국 실무 특화 주제</h2>
+  <div class="lessons">
+    <a class="lesson todo" href="#">
+      <span class="no">5-1</span>
+      <h3>전자세금계산서 · 상생결제 · 그룹 구매포털</h3>
+      <p>국세청 연동, 하도급 규제, 포털-SAP 이중 원장 운영.</p>
+      <div class="status"><span class="chip">준비 중</span></div>
+    </a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 자료 · 순수 HTML/CSS, 오프라인에서도 열람 가능</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-3 문서 유형 &amp; 품목 범주 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>1차시 · SAP 구매 핵심 개념</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">1-3</span>
+    <h1>문서 유형 &amp; 품목 범주</h1>
+    <p class="lead">같은 "PO"라도 무엇을 어떻게 사느냐에 따라 프로세스가 완전히 달라진다. 업종별 차이가 시작되는 지점.</p>
+  </header>
+
+  <h2>1. 두 가지 분기 장치</h2>
+  <div class="duo">
+    <div class="col a">
+      <h4>Document Type — 문서 단위 분기</h4>
+      <ul>
+        <li>PR/PO 전체의 성격 구분: 표준(NB), 긴급, 수입, 프레임워크(FO) 등</li>
+        <li>번호 대역, 화면 필드, 승인선(Release Strategy)을 가른다</li>
+        <li>조직·통제 관점의 분기</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <h4>Item Category — 품목 단위 분기</h4>
+      <ul>
+        <li>한 PO 안에서도 품목마다 다르게 지정 가능</li>
+        <li>입고·송장·재고 처리 로직 자체가 달라진다</li>
+        <li>프로세스 관점의 분기</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">연계 실무 정석</span>
+    전자구매 포털에서 유입되는 PO에는 <b>전용 Document Type</b>을 부여한다. 추적·권한·번호대역을 분리할 수 있어 운영(장애 조사, 통계)이 압도적으로 편해진다.
+  </div>
+
+  <h2>2. 품목 범주(Item Category) 한눈에</h2>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>코드</th><th>이름</th><th>한 줄 정의</th><th>주 사용 업종</th></tr>
+    <tr><td><span class="chip code">(공란)</span></td><td>표준</td><td>일반 자재 구매. 입고 → 재고</td><td>전 업종</td></tr>
+    <tr><td><span class="chip code">L</span></td><td>외주 (Subcontracting)</td><td>자재를 사급하고 가공품을 받는다</td><td><b>제조</b></td></tr>
+    <tr><td><span class="chip code">K</span></td><td>위탁 (Consignment)</td><td>공급사 소유 재고를 두고, 사용 시점에 매입</td><td>제조 · 유통</td></tr>
+    <tr><td><span class="chip code">D</span></td><td>서비스 (Service)</td><td>용역 구매. SES 검수 후 송장</td><td><b>건설 · 금융 · 서비스</b></td></tr>
+    <tr><td><span class="chip code">U</span></td><td>사내이전 (Stock Transfer)</td><td>법인/플랜트 간 재고 이동</td><td>다거점 기업</td></tr>
+  </table>
+  </div>
+
+  <h2>3. 프로세스가 어떻게 달라지나 — 3가지 비교</h2>
+
+  <h3>표준 구매 — 가장 단순한 기본형</h3>
+  <div class="miniflow">
+    <span class="box">PO</span><span class="ar">→</span>
+    <span class="box">입고 (재고 ＋)</span><span class="ar">→</span>
+    <span class="box">송장검증</span><span class="ar">→</span>
+    <span class="box">지급</span>
+  </div>
+
+  <h3>외주(L) — 제조업의 핵심 프로세스</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>외주 PO 생성</b>
+      <span class="d">완성품(가공품)을 발주하면서, 우리가 제공할 <b>사급 자재(Component)</b> 목록이 BOM에서 따라붙는다</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>사급 자재 출고</b> <span class="chip code">ME2O</span>
+      <span class="d">자재를 외주사에 보낸다. 재고는 여전히 우리 소유 — "공급사 위치 재고(Stock at Vendor)"로 관리</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>가공품 입고</b>
+      <span class="d">완성품 입고와 동시에 사급 자재가 자동 소비(백플러시). 가공비만 매입 대상</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">4</span><b>송장검증 · 지급</b>
+      <span class="d">가공비에 대해서만 3-Way Match. 협력사 포털에서 사급재 수불을 공유하는 연계가 흔하다</span>
+    </div>
+  </div>
+
+  <h3>서비스(D) — 건설·금융의 기본형</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>서비스 PO 생성</b>
+      <span class="d">물건이 아니라 용역 내역(Service Line)으로 구성. 총액만 정하는 한도(Limit) 방식도 가능</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>SES — 서비스 검수표</b> <span class="chip code">ML81N</span>
+      <span class="d">"입고" 대신 수행 내역을 검수·승인. 건설의 <b>기성(공정률) 확정</b>에 해당하는 단계</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>송장검증 · 지급</b>
+      <span class="d">SES 승인 금액 기준으로 대사. 재고가 없으므로 GR/IR 대신 비용 계정으로 직행</span>
+    </div>
+  </div>
+
+  <div class="callout point">
+    <span class="t">업종 차이의 본질</span>
+    제조업 연계는 <b>외주(L)·사급·ASN</b> 중심으로 복잡해지고, 건설·금융 연계는 <b>서비스(D)·SES·기성</b> 중심으로 복잡해진다. 어떤 Item Category가 주력인지가 그 회사 전자구매 시스템의 모양을 결정한다.
+  </div>
+
+  <h2>4. 계정 지정(Account Assignment) — 비용이 어디로 가나</h2>
+  <p>재고로 사지 않는 모든 구매(간접구매)는 "이 비용이 누구 것인가"를 PO에 지정해야 한다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>코드</th><th>대상</th><th>전형적 용도</th></tr>
+    <tr><td><span class="chip code">K</span></td><td>코스트센터</td><td>부서 운영비, 소모품 (간접구매의 대부분)</td></tr>
+    <tr><td><span class="chip code">P</span></td><td>WBS (프로젝트)</td><td>건설·플랜트의 프로젝트 직접비</td></tr>
+    <tr><td><span class="chip code">A</span></td><td>자산</td><td>설비·장비 구매 (CAPEX)</td></tr>
+    <tr><td><span class="chip code">F</span></td><td>오더 (Internal Order)</td><td>캠페인·수리 등 한시적 비용 집계</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">연계 시 주의</span>
+    포털에서 PR/PO를 만들어 보낼 때 <b>계정 지정 정보(코스트센터·WBS)까지 채워서</b> 보내야 한다. 이를 위해 포털이 SAP의 코스트센터·WBS 마스터를 주기적으로 받아가는 인터페이스가 거의 항상 필요하다.
+  </div>
+
+  <h2>5. 1차시 핵심 요약</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>구매조직</b>은 법인 계층과 별도 축 — 그룹 통합구매의 기반</li>
+      <li>마스터 동기화(업체·품목·단가)가 연계 공수의 절반. <b>원본 시스템</b>부터 정의</li>
+      <li>P2P 흐름에서 <b>소싱은 포털, PO 이후는 SAP 원장</b>이 기본 패턴</li>
+      <li><b>3-Way Match</b>가 지급 통제의 핵심, <b>GR/IR 잔액</b>은 인터페이스 건강 지표</li>
+      <li><b>Item Category</b>(외주 L / 서비스 D)가 업종별 시스템 모양을 결정</li>
+    </ul>
+  </div>
+
+  <div class="pager">
+    <a href="01-2-p2p-flow.html"><span class="lbl">이전</span><b>← 1-2 구매 문서 흐름</b></a>
+    <a class="next" href="../index.html"><span class="lbl">다음</span><b>목차로 (2차시 준비 중) →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 1차시</footer>
+</div>
+</body>
+</html>
