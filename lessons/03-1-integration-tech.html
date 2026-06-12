@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-1 연계 기술 스택 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>3차시 · SAP ↔ 전자구매 연계 기술</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">3-1</span>
+    <h1>연계 기술 스택</h1>
+    <p class="lead">IDoc, BAPI/RFC, OData, 미들웨어 — 무엇이 언제 쓰이고, 어떤 기준으로 고르는가.</p>
+  </header>
+
+  <h2>1. 기술 지형 한눈에</h2>
+  <div class="tree">
+    <div class="node lv0"><b>SAP ↔ 외부 연계 기술</b><span class="d">크게 "고전(온프레미스 시대)"과 "현대(클라우드 시대)"로 나뉜다</span></div>
+    <div class="kids">
+      <div class="node"><b>고전 — 지금도 현역</b><span class="d">IDoc/ALE (비동기 문서 교환) · RFC/BAPI (동기 함수 호출) · 파일/EDI</span></div>
+      <div class="node"><b>현대 — S/4·클라우드 표준</b><span class="d">OData API · SOAP/REST · 이벤트(Event Mesh)</span></div>
+      <div class="node side"><b>미들웨어 (중간에서 변환·라우팅)</b><span class="d">SAP PI/PO (레거시) → BTP Integration Suite(CPI) · CIG (Ariba 전용 게이트웨이)</span></div>
+    </div>
+  </div>
+
+  <div class="callout point">
+    <span class="t">현실 감각</span>
+    국내 구매포털 연계의 대부분은 여전히 <b>IDoc + RFC/BAPI 조합</b>이다. S/4 전환·클라우드 도입과 함께 OData/CPI가 늘어나는 추세지만, "고전 기술을 모르면 운영을 못 한다"가 현실이다.
+  </div>
+
+  <h2>2. IDoc — 비동기 문서 교환의 표준</h2>
+  <p>IDoc(Intermediate Document)은 "전자 문서 봉투"다. PO·송장 같은 문서를 정해진 구조에 담아 큐로 주고받는다. <b>비동기</b>이므로 상대 시스템이 죽어 있어도 일단 쌓이고, 나중에 재처리할 수 있다.</p>
+
+  <h3>구조</h3>
+  <div class="miniflow">
+    <span class="box">제어 레코드<br><span class="chip">발신·수신처, 메시지 타입</span></span>
+    <span class="ar">＋</span>
+    <span class="box">데이터 레코드<br><span class="chip">세그먼트 계층 (헤더→품목)</span></span>
+    <span class="ar">＋</span>
+    <span class="box">상태 레코드<br><span class="chip">처리 이력 (성공 53 / 오류 51)</span></span>
+  </div>
+
+  <h3>구매 연계 주요 메시지 타입</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>메시지 타입</th><th>내용</th><th>방향 (SAP 기준)</th></tr>
+    <tr><td><span class="chip code">ORDERS</span></td><td>구매오더(PO) 송신</td><td>SAP → 포털/공급사</td></tr>
+    <tr><td><span class="chip code">ORDCHG</span></td><td>PO 변경 통보</td><td>SAP → 포털/공급사</td></tr>
+    <tr><td><span class="chip code">ORDRSP</span></td><td>주문 확인 (수락/납기 회신)</td><td>공급사 → SAP</td></tr>
+    <tr><td><span class="chip code">DESADV</span></td><td>납품 통보(ASN) → Inbound Delivery 생성</td><td>공급사 → SAP</td></tr>
+    <tr><td><span class="chip code">INVOIC</span></td><td>송장</td><td>공급사 → SAP</td></tr>
+    <tr><td><span class="chip code">MATMAS</span></td><td>자재 마스터 배포</td><td>SAP → 포털</td></tr>
+    <tr><td><span class="chip code">CREMAS</span></td><td>공급업체 마스터 배포 (S/4는 BP 기반)</td><td>양방향</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">운영의 핵심 — 상태 코드와 재처리</span>
+    오류 IDoc(상태 <b>51</b>)은 <span class="chip code">BD87</span>로 재처리한다. "포털에서 보냈는데 SAP에 없어요"의 9할은 오류 IDoc 방치다. <b>오류 IDoc 모니터링·알림 체계</b>가 연계 운영의 생명선.
+  </div>
+
+  <h2>3. RFC / BAPI — 동기 함수 호출</h2>
+  <p>BAPI는 SAP이 공식 보장하는 비즈니스 함수다. 외부에서 RFC 프로토콜로 호출하면 <b>즉시 결과(성공/오류 메시지)</b>를 받는다. "지금 당장 PO 번호가 필요한" 화면 연동에 쓴다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>BAPI</th><th>용도</th></tr>
+    <tr><td><span class="chip code">BAPI_PR_CREATE</span></td><td>구매요청(PR) 생성 — 포털 요청 → SAP PR</td></tr>
+    <tr><td><span class="chip code">BAPI_PO_CREATE1</span></td><td>구매오더(PO) 생성 — 포털 발주 → SAP PO</td></tr>
+    <tr><td><span class="chip code">BAPI_PO_CHANGE</span></td><td>PO 변경</td></tr>
+    <tr><td><span class="chip code">BAPI_GOODSMVT_CREATE</span></td><td>입고/출고 등 자재 이동 생성</td></tr>
+    <tr><td><span class="chip code">BAPI_INCOMINGINVOICE_CREATE</span></td><td>송장 생성 (MIRO에 해당)</td></tr>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">실무 포인트 두 가지</span>
+    ① BAPI는 호출 후 <span class="chip code">BAPI_TRANSACTION_COMMIT</span>을 명시 호출해야 저장된다. ② 표준 BAPI로 부족하면 Z-RFC(커스텀 함수)를 만들어 쓰는데, 국내 구매포털 연계는 Z-RFC 비중이 상당히 높다.
+  </div>
+
+  <h2>4. OData API — S/4 시대의 표준</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>REST 기반 HTTP API. S/4HANA가 표준 제공 — 예: <span class="chip code">API_PURCHASEORDER_PROCESS_SRV</span> (PO CRUD)</li>
+      <li>카탈로그는 <b>api.sap.com</b> (SAP Business Accelerator Hub)에서 검색</li>
+      <li>JSON으로 주고받아 웹 개발자 친화적. 클라우드 SaaS(Coupa 등)와의 연계 기본값</li>
+      <li>인증: Basic/OAuth + 통신 사용자(Communication Arrangement) 설정</li>
+    </ul>
+  </div>
+
+  <h2>5. 미들웨어 — 직접 붙이지 말고 가운데를 두라</h2>
+  <div class="flow">
+    <div class="step">
+      <b>포털 ↔ SAP 직접 연결의 문제</b>
+      <span class="d">포맷 변환·재처리·모니터링 로직이 양쪽 시스템에 흩어짐. 시스템이 늘수록 스파게티</span>
+    </div>
+    <div class="arrow">↓ 그래서</div>
+    <div class="step hl">
+      <b>미들웨어가 가운데서 변환·라우팅·모니터링</b>
+      <span class="d">SAP PI/PO(온프레미스, 단계적 종료) → <b>BTP Integration Suite(CPI)</b>로 세대 교체 중. 국내는 자체 EAI/ESB(예: 그룹 표준 EAI)도 많다</span>
+    </div>
+    <div class="arrow">↓ 특수 케이스</div>
+    <div class="step">
+      <b>CIG (Ariba Cloud Integration Gateway)</b>
+      <span class="d">Ariba 전용 관리형 게이트웨이. SAP의 IDoc/Proxy ↔ Ariba의 cXML을 표준 매핑으로 변환. Ariba 도입 시 사실상 필수</span>
+    </div>
+  </div>
+
+  <h2>6. 무엇을 언제 쓰나 — 선택 기준</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>상황</th><th>적합 기술</th><th>이유</th></tr>
+    <tr><td>대량 문서를 안정적으로 (PO·송장 일배치/준실시간)</td><td>IDoc</td><td>비동기 + 재처리 체계 내장</td></tr>
+    <tr><td>화면에서 즉시 결과 필요 (포털에서 PO 생성 버튼)</td><td>BAPI/RFC, OData</td><td>동기 — 오류를 그 자리에서 사용자에게</td></tr>
+    <tr><td>클라우드 SaaS 연계, 신규 구축</td><td>OData + CPI</td><td>S/4 표준, 방화벽 친화적</td></tr>
+    <tr><td>Ariba 연계</td><td>CIG</td><td>표준 매핑 제공, 직접 개발 최소화</td></tr>
+    <tr><td>공급사 EDI (대기업 ↔ 대기업)</td><td>IDoc + EDI 변환</td><td>업계 표준 전문(EDIFACT 등) 대응</td></tr>
+  </table>
+  </div>
+
+  <div class="pager">
+    <a href="02-2-system-types.html"><span class="lbl">이전</span><b>← 2-2 전자구매 시스템 유형</b></a>
+    <a class="next" href="03-2-scenarios-punchout.html"><span class="lbl">다음</span><b>3-2 연계 시나리오 &amp; Punch-out →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 3차시</footer>
+</div>
+</body>
+</html>
