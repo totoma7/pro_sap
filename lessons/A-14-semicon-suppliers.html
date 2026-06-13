@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 14 반도체 업체별 특징·구매 전략 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 14</span>
+    <h1>반도체 밸류체인 — 업체 유형별 특징과 구매 전략</h1>
+    <p class="lead">반도체 공급사는 종류마다 시장 구조도, 우리의 협상력도 완전히 다르다. 장비사는 슈퍼 을, 범용 소재는 경쟁 시장 — <b>상대가 누구냐에 따라 구매 전략을 바꿔야 한다.</b></p>
+  </header>
+
+  <h2>1. 밸류체인 플레이어 지도</h2>
+  <pre class="mmd mermaid">
+flowchart LR
+  IP["설계 IP · EDA<br/>ARM·Synopsys·Cadence"] --> FL["팹리스<br/>설계 전문<br/>(Qualcomm·NVIDIA)"]
+  FL --> FAB["파운드리 / IDM<br/>전공정 Fab<br/>(TSMC·삼성·Intel)"]
+  FAB --> OS["OSAT<br/>후공정<br/>(ASE·Amkor)"]
+  EQ["장비사<br/>ASML·AMAT·TEL·Lam"] --> FAB
+  MAT["소재사<br/>가스·PR·웨이퍼<br/>(신에쓰·JSR·린데)"] --> FAB
+  classDef hl fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class FAB hl;
+  </pre>
+  <div class="mmd-cap">위는 대표 업체 예시. 우리가 어디에 위치하느냐(팹리스/IDM/파운드리)에 따라 "누구를 사는지"가 달라진다.</div>
+
+  <h2>2. 업체 유형별 특징과 구매 관점</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>유형</th><th>시장 구조</th><th>협상력</th><th>구매 전략</th><th>연결</th></tr>
+    <tr><td><b>장비사</b><br>(노광·식각·증착)</td><td>과점·독점(EUV는 ASML 단독)</td><td>공급사 우위 (슈퍼 을)</td><td>관계·확보 중심, 마일스톤·CSA, 캐파 예약</td><td>심화 5·10</td></tr>
+    <tr><td><b>소재사 — 핵심</b><br>(PR·특수가스·타겟)</td><td>과점(일본·소수 강자)</td><td>공급사 우위</td><td>듀얼소싱 Qual·국산화, VMI·안전재고</td><td>심화 6·11</td></tr>
+    <tr><td><b>소재사 — 범용</b><br>(벌크가스·일반 케미컬)</td><td>경쟁 시장</td><td>구매자 우위</td><td>단가 경쟁·멀티벤더, 인덱스 가격</td><td>R-1</td></tr>
+    <tr><td><b>파운드리</b></td><td>과점(첨단노드 소수)</td><td>호황기 공급사 우위</td><td>캐파 예약·NRE·마스크, 장기 파트너십</td><td>심화 10·12</td></tr>
+    <tr><td><b>IP·EDA</b></td><td>과점(소수 벤더)</td><td>공급사 우위</td><td>라이선스·로열티 협상, 사용범위 관리</td><td>심화 12</td></tr>
+    <tr><td><b>OSAT</b></td><td>경쟁(복수 업체)</td><td>구매자 우위</td><td>외주·수율 정산, 멀티벤더</td><td>심화 7</td></tr>
+    <tr><td><b>MRO·간접</b></td><td>경쟁</td><td>구매자 우위</td><td>카탈로그·자동화, Tail spend 관리</td><td>2-1·R-1</td></tr>
+  </table>
+  </div>
+
+  <h2>3. 구매 포트폴리오 — Kraljic 매트릭스</h2>
+  <p>업체·품목을 <b>지출 영향(세로)</b> × <b>공급 리스크(가로)</b>로 4분면에 놓으면, 어떤 전략을 쓸지 한눈에 보인다.</p>
+  <pre class="mmd mermaid">
+flowchart TB
+  subgraph TOP["지출 영향 높음 ▲"]
+    direction LR
+    LEV["레버리지<br/>리스크↓ · 범용가스·일반케미컬<br/>→ 경쟁입찰·멀티벤더"]
+    STR["전략<br/>리스크↑ · 노광장비·파운드리·핵심소재<br/>→ 파트너십·캐파 예약"]
+  end
+  subgraph BOT["지출 영향 낮음 ▼"]
+    direction LR
+    ROU["일상<br/>리스크↓ · MRO·소모품<br/>→ 카탈로그·자동화"]
+    BOK["병목<br/>리스크↑ · 특수 스페어·단종 임박<br/>→ 안전재고·대체 확보"]
+  end
+  TOP --- BOT
+  classDef s fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class STR s;
+  </pre>
+  <div class="mmd-cap">왼쪽 = 공급 리스크 낮음 · 오른쪽 = 높음. 같은 품목도 사분면 위치에 따라 전략이 달라진다.</div>
+  <div class="tablewrap">
+  <table>
+    <tr><th>사분면</th><th>특징</th><th>반도체 예시</th><th>전략</th></tr>
+    <tr><td><b>전략</b><br>(영향↑·리스크↑)</td><td>고액 + 공급 어려움</td><td>노광장비·파운드리·핵심소재</td><td>장기 파트너십·캐파 예약·공동개발</td></tr>
+    <tr><td><b>레버리지</b><br>(영향↑·리스크↓)</td><td>고액이나 공급 풍부</td><td>범용 가스·일반 케미컬</td><td>경쟁 입찰·멀티벤더로 단가 절감</td></tr>
+    <tr><td><b>병목</b><br>(영향↓·리스크↑)</td><td>소액이나 구하기 어려움</td><td>특수 스페어·단종 임박 부품</td><td>안전재고·대체품 확보·Last-time Buy</td></tr>
+    <tr><td><b>일상</b><br>(영향↓·리스크↓)</td><td>소액·풍부</td><td>MRO·사무 소모품</td><td>카탈로그·자동화·위임</td></tr>
+  </table>
+  </div>
+
+  <h2>4. 슈퍼 을 대응 — 독점·과점 공급사</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>EUV 장비·일부 소재처럼 <b>대체 불가 독점 공급사</b>는 단가 협상력이 거의 없다 — 관계가 곧 공급</li>
+      <li>전략: <b>① 장기 파트너십·캐파 선확보</b>(심화 10) <b>② 공동 개발·로드맵 공유</b>로 우선순위 확보 <b>③ 안전재고·BCP</b>(심화 11)로 리스크 흡수</li>
+      <li>가격은 <b>Should-Cost·TCO</b>(R-1)로 접근 — 단가 후려치기 대신 총비용·수명주기로 협상</li>
+      <li>평가의 목적도 "퇴출"이 아니라 <b>개선 협업</b>(심화 7) — 끊을 수 없으니 함께 좋아져야 한다</li>
+    </ul>
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 14 한 줄</span>
+    반도체 구매의 핵심 통찰: <b>"상대가 누구냐"가 전략을 결정한다.</b> 슈퍼 을(장비·핵심소재·파운드리)에겐 관계·확보, 경쟁 시장(범용 소재·OSAT·MRO)에겐 단가·멀티벤더. Kraljic 4분면에 올려 보면 어떤 카드를 쓸지가 보인다.
+  </div>
+
+  <div class="pager">
+    <a href="A-13-semicon-trade-logistics.html"><span class="lbl">이전</span><b>← 심화 13 수입·물류·관세</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
