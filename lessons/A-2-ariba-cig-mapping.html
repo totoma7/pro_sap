@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 2 Ariba·CIG 매핑 실무 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 2</span>
+    <h1>Ariba · CIG 매핑 실무</h1>
+    <p class="lead">2차시에서 "표준 통로"라고 했던 CIG의 안쪽 — cXML 문서 구조, IDoc과의 매핑, 프로젝트 진행 순서.</p>
+  </header>
+
+  <h2>1. cXML — Ariba 세계의 공용어</h2>
+  <p>Ariba Network를 오가는 모든 문서는 <b>cXML</b>(commerce XML)이다. IDoc이 세그먼트 계층이라면 cXML은 XML 엘리먼트 계층 — 구조 철학은 놀랄 만큼 비슷하다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>cXML 문서</th><th>내용</th><th>IDoc 대응 (3차시)</th></tr>
+    <tr><td><span class="chip code">OrderRequest</span></td><td>PO 송신</td><td>ORDERS</td></tr>
+    <tr><td><span class="chip code">ConfirmationRequest</span></td><td>주문 확인</td><td>ORDRSP</td></tr>
+    <tr><td><span class="chip code">ShipNoticeRequest</span></td><td>납품 통보(ASN)</td><td>DESADV</td></tr>
+    <tr><td><span class="chip code">InvoiceDetailRequest</span></td><td>송장</td><td>INVOIC</td></tr>
+    <tr><td><span class="chip code">PunchOutSetupRequest</span></td><td>Punch-out 세션 시작</td><td>(OCI 로그인 호출)</td></tr>
+  </table>
+  </div>
+
+  <h3>OrderRequest의 뼈대</h3>
+  <div class="tree">
+    <div class="node lv0"><b>cXML 봉투</b><span class="d">From/To/Sender 크리덴셜 — IDoc의 제어 레코드에 해당</span></div>
+    <div class="kids">
+      <div class="node"><b>OrderRequestHeader</b><span class="d">PO 번호·총액·통화·지급조건. IDoc의 E1EDK01+E1EDK14 역할</span></div>
+      <div class="kids">
+        <div class="node"><b>ShipTo / BillTo</b><span class="d">납품처·청구처 — E1EDKA1(파트너)의 역할 구분과 동일한 발상</span></div>
+      </div>
+      <div class="node side"><b>ItemOut (반복)</b><span class="d">품목 — E1EDP01 대응. SupplierPartID(공급사 품번)와 BuyerPartID가 함께 실린다</span></div>
+    </div>
+  </div>
+
+  <h2>2. CIG가 가운데서 하는 일</h2>
+  <div class="miniflow">
+    <span class="box">SAP ERP<br><span class="chip">IDoc / Proxy / OData</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">CIG<br><span class="chip">표준 매핑 + 커스텀 매핑</span></span>
+    <span class="ar">→</span>
+    <span class="box">Ariba Network<br><span class="chip">cXML</span></span>
+    <span class="ar">→</span>
+    <span class="box">공급사</span>
+  </div>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>표준 매핑 제공</b>: ORDERS05 ↔ OrderRequest 같은 흔한 변환은 SAP이 미리 만들어 둠 — 프로젝트는 "차이"만 메운다</li>
+      <li><b>커스텀 매핑</b>: Z-필드, 한국 특화 항목(사업자번호, 세금계산서 정보)은 CIG 매핑 편집기에서 XSLT성 규칙으로 추가</li>
+      <li><b>모니터링</b>: 문서별 전송 상태 추적 화면 제공 — 3-2차시의 "상태 가시성"을 일부 대신해 준다</li>
+    </ul>
+  </div>
+
+  <h2>3. 매핑 정의서에서 실제로 싸우는 지점들</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>이슈</th><th>내용</th><th>해법의 방향</th></tr>
+    <tr><td><b>코드 체계 불일치</b></td><td>SAP 단위(EA/ST) ↔ cXML 표준 단위(UN/PCE), 통화·국가 코드 차이</td><td>변환 테이블을 CIG 한 곳에서 관리 (양쪽 시스템에 흩뿌리지 말 것)</td></tr>
+    <tr><td><b>세금 표현</b></td><td>한국 부가세 10%를 cXML Tax 구조로 — 세금계산서 모델(5차시)과 정합 필요</td><td>세금은 헤더/품목 어느 레벨로 보낼지 초기에 합의</td></tr>
+    <tr><td><b>첨부 파일</b></td><td>도면·시방서를 PO에 첨부</td><td>cXML Attachment(MIME) 지원 범위·용량 제한 확인</td></tr>
+    <tr><td><b>Z-필드</b></td><td>현장코드·프로젝트번호 같은 커스텀 항목</td><td>cXML <span class="chip code">Extrinsic</span> 엘리먼트로 — 남발하면 유지보수 부채</td></tr>
+    <tr><td><b>변경/취소</b></td><td>PO 변경 시 전체 재전송인가 변경분인가</td><td>Ariba는 전체 재전송(orderID + 버전) — SAP ORDCHG 발상과 달라 혼동 주의</td></tr>
+  </table>
+  </div>
+
+  <h2>4. CIG 프로젝트 진행 순서</h2>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>시나리오 선정</b>
+      <span class="d">어떤 문서를 주고받을지 (PO만? 송장까지? SCC까지?) — 범위가 곧 공수</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>표준 매핑 갭 분석</b>
+      <span class="d">표준 매핑 결과물과 우리 데이터를 비교 — 갭 항목만 커스텀 매핑 목록으로</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>SAP 측 설정</b>
+      <span class="d">파트너 프로파일(WE20)·포트, 또는 S/4 Communication Arrangement 구성</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">4</span><b>테스트 — 공급사를 끼워서</b>
+      <span class="d">CIG 테스트 환경 + Ariba 테스트 계정 + <b>파일럿 공급사</b> 실거래 시나리오. 공급사 온보딩이 일정의 복병</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">5</span><b>공급사 단계적 확대 (Wave)</b>
+      <span class="d">거래량 상위 공급사부터 웨이브로 전환 — 전 공급사 일괄 전환은 거의 불가능</span>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">일정의 진실</span>
+    CIG 프로젝트에서 기술 매핑보다 오래 걸리는 것은 <b>공급사 온보딩</b>(계정 생성·교육·테스트 협조)이다. 인터페이스 개발 2개월, 공급사 확산 6개월이 보통의 비율.
+  </div>
+
+  <div class="pager">
+    <a href="A-1-idoc-deep-dive.html"><span class="lbl">이전</span><b>← 심화 1 IDoc 깊이 보기</b></a>
+    <a class="next" href="A-3-case-study.html"><span class="lbl">다음</span><b>심화 3 종합 케이스 스터디 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
