@@ -53,6 +53,11 @@ flowchart TD
   </table>
   </div>
 
+  <div class="callout point">
+    <span class="t">가스 두 갈래 — Bulk Gas vs SG(Specialty Gas)</span>
+    반도체 공정가스는 둘로 나뉜다. <b>벌크가스(Bulk Gas)</b>는 N₂·O₂·Ar·H₂ 등 대량 소비 가스로 <b>배관 직결 + 파이프라인(P) + 유량계 정산</b>. <b>SG(Specialty Gas, 특수가스)</b>는 실란(SiH₄)·포스핀(PH₃)·NF₃·WF₆ 등 증착·식각·도핑에 쓰는 <b>공정용 반응성·도판트 가스</b>로, 실린더/용기 단위 <b>위탁(K)·미니벌크</b>로 공급된다. SG는 <b>초고순도·독성·가연성</b>이라 안전·규제(고압가스·유해물질 MSDS)와 공급 연속성이 구매의 핵심 — 끊기면 해당 공정이 곧바로 정지한다. 그래서 SG는 보통 <b>듀얼소싱 + 높은 안전재고 + 실린더 회수(반납) 관리</b>가 함께 따라온다.
+  </div>
+
   <h3>ERS 구현 — 송장 없는 정산의 실제</h3>
   <pre class="mmd mermaid">
 flowchart LR
