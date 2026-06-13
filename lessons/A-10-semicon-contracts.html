@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 10 반도체 장기계약 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 10</span>
+    <h1>반도체 장기계약 — 공급 물량과 장비 서비스</h1>
+    <p class="lead">리드타임이 길고 캐파가 부족한 반도체에선 <b>건별 발주로는 공급을 확보할 수 없다</b>. 물량은 장기공급계약(LTA)과 생산능력 예약으로, 장비는 유지보수 계약(CSA)으로 — 미리 묶어 둔다.</p>
+  </header>
+
+  <h2>1. 왜 반도체는 "미리 계약"인가</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>핵심 소재·장비 리드타임이 <b>6개월~1년+</b> — 필요할 때 사면 이미 늦다</li>
+      <li>호황기엔 <b>캐파(생산능력) 자체가 부족</b> — 돈이 있어도 못 산다. 물량 확보가 곧 경쟁력</li>
+      <li>독점·과점 공급사 다수 — 단발 협상보다 <b>장기 약정으로 우선순위</b>를 산다</li>
+      <li>장비는 사는 게 끝이 아니라 <b>가동률 유지</b>가 본질 — 유지보수까지 계약으로</li>
+    </ul>
+  </div>
+
+  <h2>2. LTA — 장기공급계약</h2>
+  <p><b>LTA(Long-Term Agreement)</b>는 1~3년 단위로 물량·가격·우선순위를 약정하는 틀이다. SAP에서는 Outline Agreement(계약/SA, R-1)로 구현하고, 그 아래에서 콜오프(Release)로 실발주한다.</p>
+  <pre class="mmd mermaid">
+flowchart TD
+  L["LTA 체결<br/>1~3년 · 물량·가격·우선순위 약정"] --> C["SAP Outline Agreement<br/>계약(Contract) / 납품일정계약(SA)"]
+  C --> R["콜오프 (Release)<br/>계약 한도에서 실발주"]
+  R --> D["납품·정산<br/>계약 단가 자동 적용"]
+  L -. 가격 조정 조항 .-> C
+  classDef hl fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class C hl;
+  </pre>
+  <div class="tablewrap">
+  <table>
+    <tr><th>LTA 핵심 조항</th><th>내용</th><th>왜 중요한가</th></tr>
+    <tr><td><b>물량 약정</b></td><td>기간별 최소·최대 인수 물량(Volume Band)</td><td>공급사는 캐파 확보, 구매사는 공급 보장</td></tr>
+    <tr><td><b>가격 조정</b></td><td>원자재·환율 연동(인덱스), 정기 재협상 주기</td><td>장기 계약의 가격 경직성 완화</td></tr>
+    <tr><td><b>우선 공급</b></td><td>부족 시 우선 배정(Allocation 우선순위)</td><td>호황기 결품 방어 — LTA의 진짜 가치</td></tr>
+    <tr><td><b>Take-or-Pay</b></td><td>약정 물량 미인수 시 위약 — 인수하거나 대가 지불</td><td>공급사 캐파 투자에 대한 보증</td></tr>
+  </table>
+  </div>
+
+  <h2>3. 생산능력 예약(Capacity Reservation)</h2>
+  <p>특히 <b>파운드리(팹리스→위탁생산)</b>에서, 물량보다 <b>"라인 캐파 자체"를 미리 예약</b>한다. 웨이퍼 매수가 아니라 생산 슬롯을 사는 개념이다.</p>
+  <div class="callout point">
+    <span class="t">Take-or-Pay & 선급</span>
+    캐파 예약은 보통 <b>선급금(Prepayment)</b> + <b>Take-or-Pay</b>로 묶인다 — 공급사가 라인·장비에 투자하는 대신, 구매사는 일정 물량을 반드시 인수(또는 미인수 시 지불)하기로 약속한다. 회계상 선급금·계약부채로 잡히고, SAP에서는 선급금 프로세스(F-47, 심화 5의 장비 마일스톤과 같은 발상)와 연결된다.
+  </div>
+  <div class="callout warn">
+    <span class="t">양날의 검</span>
+    캐파 예약은 호황기엔 공급을 보장하지만, <b>수요가 꺾이면 Take-or-Pay가 악성 비용</b>이 된다. 그래서 수급 운영(심화 9)의 수요 전망과 직결 — 얼마를 묶고 얼마를 스팟으로 둘지가 핵심 의사결정이다.
+  </div>
+
+  <h2>4. 장비 유지보수 계약(CSA)</h2>
+  <p>장비는 구매(심화 5)가 끝이 아니다. 가동률을 유지하는 <b>CSA(Comprehensive Service Agreement)</b>가 따라붙는다 — 사실상 장비 수명 내내 이어지는 서비스 계약이다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>CSA 구성</th><th>내용</th><th>SAP 처리</th></tr>
+    <tr><td><b>가동률 보증</b><br>(Uptime SLA)</td><td>예: 가동률 95% 보증, 미달 시 페널티/크레딧</td><td>SLA 실적 모니터링 + 서비스 PO·SES(D)</td></tr>
+    <tr><td><b>스페어 패키지</b></td><td>임계 부품 보장 재고·우선 공급 — 장비사가 책임</td><td>위탁(K) 또는 VMI 연계 (심화 5)</td></tr>
+    <tr><td><b>PM·정기점검</b></td><td>예방정비 일정·인력 — 정기 서비스</td><td>PM 모듈 연계 + 서비스 검수(SES)</td></tr>
+    <tr><td><b>엔지니어 상주</b></td><td>장비사 엔지니어 Fab 상주(FSE)</td><td>인력 서비스 계약 — 한도(FO) 또는 서비스 SA</td></tr>
+  </table>
+  </div>
+  <div class="callout tip">
+    <span class="t">CSA가 서비스 구매인 이유</span>
+    CSA는 물건이 아니라 <b>"가동률"이라는 결과를 사는 서비스 계약</b>이다 — 1-3차시의 서비스(D)·SES, 4-2 건설의 기성과 같은 발상. 검수(SES) 기준이 "일을 했는가"가 아니라 <b>"가동률 SLA를 지켰는가"</b>라는 점이 특징이다.
+  </div>
+
+  <h2>5. 시스템·운영 관점</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>계약 vs 발주 분리</b>: LTA·캐파·CSA는 Outline Agreement로, 실집행은 콜오프/SES로 — 계약 소진율을 항상 모니터링</li>
+      <li><b>Take-or-Pay 추적</b>: 약정 물량 대비 인수 실적을 누적 관리, 미달 리스크 조기 경보 (수급 운영, 심화 9 연계)</li>
+      <li><b>가격 조정 조항 자동화</b>: 인덱스·환율 연동 단가는 Info Record 단가 갱신 배치로 — ERS(심화 5) 정산과 정합 필요</li>
+      <li><b>SLA 모니터링</b>: CSA 가동률·응답시간 실적을 협력사 평가(심화 7)에 연동</li>
+    </ul>
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 10 한 줄</span>
+    반도체 구매의 큰 그림은 <b>"미리 묶고(LTA·캐파·CSA), 그 안에서 끌어쓴다(콜오프·SES)"</b>. 건별 PO는 그 위에 얹히는 표면일 뿐 — 진짜 공급 확보와 가동률은 장기계약에서 결정된다.
+  </div>
+
+  <div class="pager">
+    <a href="A-9-semicon-supply-demand.html"><span class="lbl">이전</span><b>← 심화 9 수급 운영</b></a>
+    <a class="next" href="A-11-semicon-quality-risk.html"><span class="lbl">다음</span><b>심화 11 품질·리스크 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 한국 실무 특화 주제, 심화 과정과 인터랙티브 시뮬레이터까지 도식 중심으로 학습하는 자료입니다.
 순수 HTML/CSS/JS(의존성 제로)로 작성되어 웹/모바일 어디서든 열립니다.
 
-**구성: 본 과정 5차시(11편) + 심화 9편 + 인터랙티브 1편 + 공정 다이어그램 1편 + 레퍼런스 1편 — 총 23개 레슨 완성**
+**구성: 본 과정 5차시(11편) + 심화 11편 + 인터랙티브 1편 + 공정 다이어그램 1편 + 레퍼런스 1편 — 총 25개 레슨 완성**
 
 ## 보는 방법
 
@@ -43,6 +43,8 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 심화 7 | [반도체 외주·매각·ESG·협력사 평가](https://totoma7.github.io/pro_sap/lessons/A-7-semicon-osat-esg.html) | OSAT 외주·수율 정산, 중고 장비·스크랩 매각, RBA·분쟁광물·Scope 3, 협력사 등급 평가·쿼터 연동 |
 | 심화 8 | [AEO — 수출입 안전관리 우수업체](https://totoma7.github.io/pro_sap/lessons/A-8-semicon-aeo-process-map.html) | AEO vs GTS 수출통제, 통관 우대·공급망 보안 의무, 협력사 평가·등록 심사에 AEO 연계 |
 | 심화 9 | [반도체 수급 운영](https://totoma7.github.io/pro_sap/lessons/A-9-semicon-supply-demand.html) | MRP 계획과 실제의 갭 운영 — 수급 밸런싱·커버리지, 부족 시 할당(Allocation), 과잉·단종(EOL) 처분, 수급 대시보드 |
+| 심화 10 | [반도체 장기계약](https://totoma7.github.io/pro_sap/lessons/A-10-semicon-contracts.html) | LTA·생산능력 예약(Capacity Reservation·Take-or-Pay), 장비 유지보수 계약(CSA·가동률 SLA) |
+| 심화 11 | [반도체 품질·신뢰성과 공급 리스크](https://totoma7.github.io/pro_sap/lessons/A-11-semicon-quality-risk.html) | 공급사 인증(Qual), 변경관리(PCN·EOL), 8D·SCAR·PPAP, 공급망 리스크 맵·BCP |
 
 ### 인터랙티브
 
@@ -79,7 +81,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 │   └── gate.js           # 접근 게이트 (ID 확인 → 60일 열람 쿠키)
 ├── lessons/              # 레슨 페이지 21편
 │   ├── 01-* ~ 05-*       # 본 과정 (5차시 11편)
-│   ├── A-1 ~ A-9         # 심화 9편 (A-5~A-9는 반도체 시리즈)
+│   ├── A-1 ~ A-11        # 심화 11편 (A-5~A-11은 반도체 시리즈)
 │   ├── I-1               # 인터랙티브 P2P 시뮬레이터
 │   ├── P-1               # 공정 다이어그램 — 반도체 제조 공정
 │   └── R-1               # 레퍼런스 — 구매 카테고리 용어 사전

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 11 반도체 품질·신뢰성과 공급 리스크 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 11</span>
+    <h1>품질·신뢰성과 공급 리스크 — 끊기지 않고, 불량 없이</h1>
+    <p class="lead">반도체 구매의 두 축은 "<b>잘 만드나</b>(품질·신뢰성)"와 "<b>끊기지 않나</b>(공급 리스크)"다. 둘 다 사고가 나면 라인이 멈추고, 그래서 둘 다 발주보다 앞단에서 관리된다.</p>
+  </header>
+
+  <h2>1. 품질이 구매를 통제한다 — 공급사 인증(Qual)</h2>
+  <p>반도체는 <b>아무 공급사에서나 살 수 없다.</b> 공정·제품별로 검증을 통과한 <b>승인 공급사(AVL)</b>만 거래 가능하며, 신규 진입은 까다로운 인증(Qualification)을 거친다.</p>
+  <pre class="mmd mermaid">
+flowchart TD
+  Q1["① 공급사 후보<br/>기술·재무·ESG 1차 심사"] --> Q2["② 샘플 평가<br/>특성·신뢰성 시험"]
+  Q2 --> Q3["③ 공정 Qual<br/>양산 라인 검증 (수개월)"]
+  Q3 --> Q4["④ AVL 등재<br/>승인 공급사 목록 추가"]
+  Q4 --> Q5["⑤ 양산 거래<br/>정기 재평가·재인증"]
+  classDef hl fill:#b3f0d0,stroke:#16161d,color:#16161d;
+  class Q3 hl;
+  </pre>
+  <div class="callout point">
+    <span class="t">Qual이 멀티벤더의 장벽</span>
+    2nd Source를 들이려면 이 인증을 다시 통과해야 한다(R-1 멀티벤더). 공정 Qual에 <b>수개월~1년</b>이 걸려, "공급사를 늘리고 싶어도 못 늘리는" 상황이 반도체의 구조적 제약이다. 그래서 인증은 구매가 아니라 <b>개발·품질과 함께</b> 미리 진행한다.
+  </div>
+
+  <h2>2. 변경관리 — PCN과 EOL</h2>
+  <p>승인된 공급사라도 <b>마음대로 바꾸면 안 된다.</b> 공정·소재·생산지 변경은 재인증 대상이고, 단종은 라인 정지로 이어진다 — 그래서 <b>통보(Notification)</b> 체계가 핵심이다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>통보 유형</th><th>내용</th><th>구매·시스템 대응</th></tr>
+    <tr><td><b>PCN</b><br>(공정변경통보)</td><td>공급사가 공정·소재·생산지·설비를 바꿀 때 사전 통보</td><td>영향 평가 → 필요 시 재Qual. 무통보 변경은 계약 위반</td></tr>
+    <tr><td><b>EOL / PDN</b><br>(단종·단산 통보)</td><td>부품·소재 생산 종료 예고</td><td>대체품 Qual 착수 + Last-time Buy 물량 산정 (심화 9)</td></tr>
+    <tr><td><b>PCN 리드타임</b></td><td>변경·단종 전 통보 기한(계약상 예: 6개월)</td><td>대응 시간 확보 — 짧으면 라인 리스크</td></tr>
+  </table>
+  </div>
+  <div class="callout warn">
+    <span class="t">무통보 변경 = 라인 사고</span>
+    공급사가 통보 없이 공정을 바꾸면, 스펙은 같아도 미세 특성이 달라져 <b>수율·신뢰성 사고</b>가 난다. 그래서 PCN 의무를 계약·협력사 평가(심화 7)에 강하게 건다 — 반도체 품질관리의 가장 민감한 지점.
+  </div>
+
+  <h2>3. 품질 사고 대응 — 입고검사부터 8D까지</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  R1["입고검사 / 라인 불량 감지"] --> R2["격리·보류<br/>품질재고(Quality Stock)로 차단"]
+  R2 --> R3["공급사 통보<br/>SCAR 발행"]
+  R3 --> R4["8D 분석<br/>근본원인·재발방지"]
+  R4 --> R5["검증·해제<br/>개선 확인 후 거래 재개"]
+  R4 -. 평가 반영 .-> R6["협력사 평가 감점<br/>(심화 7)"]
+  classDef hl fill:#ffe08a,stroke:#16161d,color:#16161d;
+  class R4 hl;
+  </pre>
+  <div class="tablewrap">
+  <table>
+    <tr><th>도구</th><th>뜻</th><th>쓰임</th></tr>
+    <tr><td><b>8D</b></td><td>8 Disciplines — 8단계 문제해결 보고서</td><td>품질 사고 근본원인·재발방지 표준</td></tr>
+    <tr><td><b>SCAR</b></td><td>공급사 시정조치 요구서</td><td>불량 발생 시 공급사에 공식 발행</td></tr>
+    <tr><td><b>PPAP</b></td><td>양산부품 승인 절차</td><td>신규·변경 부품 양산 전 승인</td></tr>
+    <tr><td><b>SPC</b></td><td>통계적 공정관리</td><td>공급사 공정 안정성 모니터링</td></tr>
+  </table>
+  </div>
+
+  <h2>4. 공급망 리스크 — 무엇이 끊는가</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>리스크</th><th>예시</th><th>관리</th></tr>
+    <tr><td><b>단일 공급</b></td><td>독점 소재·장비 1개 공급사</td><td>단일 공급 리스크 맵, 2nd Source Qual 추진(다변화)</td></tr>
+    <tr><td><b>지정학</b></td><td>수출통제·관세·분쟁(미·중·대만)</td><td>생산지 다변화, 재고 버퍼, GTS·AEO(심화 8)</td></tr>
+    <tr><td><b>재해</b></td><td>지진·화재·정전(가스·소재 공장)</td><td>지역 분산, 대체 공급원 사전 확보</td></tr>
+    <tr><td><b>공급사 재무</b></td><td>협력사 부도·인수합병</td><td>재무 건전성 정기 모니터링(평가, 심화 7)</td></tr>
+    <tr><td><b>물류</b></td><td>항만 적체·운임 급등·위험물 규제</td><td>경로·운송수단 다변화(R-1)</td></tr>
+  </table>
+  </div>
+
+  <h2>5. BCP — 끊겼을 때 어떻게 버티나</h2>
+  <pre class="mmd mermaid">
+flowchart LR
+  A["리스크 식별<br/>단일공급·지정학·재해 맵"] --> B["영향 평가<br/>중단 시 라인 정지 일수"]
+  B --> C["대비책<br/>안전재고·2nd source·대체소재"]
+  C --> D["발동·복구<br/>위기 시 우선순위·긴급조달"]
+  D -. 사후 보완 .-> A
+  classDef hl fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class C hl;
+  </pre>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>BCP(사업연속성계획)</b>: 핵심 자재별로 "끊기면 며칠 버티나(재고 커버리지)"와 복구 시나리오를 미리 문서화</li>
+      <li><b>리스크 대시보드</b>: 단일 공급·생산지 집중·커버리지를 한눈에 — 다변화(R-1)·수급 운영(심화 9)과 같은 데이터 기반</li>
+      <li><b>발동 트리거</b>: 재해·Commit 미달 시 BCP 가동 — 긴급 조달 트랙·할당(심화 9) 연동</li>
+      <li><b>마스터 전제</b>: 공급사별 <b>생산지(국가)·대체 소재·리드타임·재무등급</b>이 마스터에 있어야 리스크가 보인다</li>
+    </ul>
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 11 한 줄</span>
+    품질·신뢰성은 "<b>들어오는 것이 제대로인가</b>"(Qual·PCN·8D), 리스크·BCP는 "<b>계속 들어오는가</b>"(단일공급·지정학·재해 대비)를 지킨다. 둘 다 발주 이전·이후의 <b>상시 관리</b>이며, 협력사 평가(심화 7)·다변화(R-1)·수급 운영(심화 9)과 한 몸으로 돈다.
+  </div>
+
+  <div class="pager">
+    <a href="A-10-semicon-contracts.html"><span class="lbl">이전</span><b>← 심화 10 장기계약</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
