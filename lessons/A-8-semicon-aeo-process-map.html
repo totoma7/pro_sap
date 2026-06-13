@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 8 AEO & 반도체 공정 통합 맵 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 8</span>
+    <h1>AEO &amp; 반도체 공정 통합 맵</h1>
+    <p class="lead">수출입 안전관리 우수업체(AEO)를 추가하고, 지금까지 본 반도체 구매 업무들이 <b>Fab 공정 흐름 위에서 어떻게 한 줄로 연결되는지</b> 한 장으로 도식화한다. 반도체 시리즈의 허브.</p>
+  </header>
+
+  <h2>1. AEO — 신뢰받는 무역업체 인증</h2>
+  <p>반도체는 자재·장비·완제품이 끊임없이 국경을 넘는 산업이다. 통관이 막히면 Fab도 막힌다. <b>AEO(Authorized Economic Operator, 수출입 안전관리 우수업체)</b>는 관세 당국이 "이 회사는 믿을 수 있다"고 인증해 통관을 우대하는 제도다.</p>
+
+  <div class="duo">
+    <div class="col a">
+      <h4>AEO가 주는 것 (혜택)</h4>
+      <ul>
+        <li>통관 신속 — 검사 비율 축소, 우선 처리</li>
+        <li>담보 생략·관세 납부 유예</li>
+        <li>상호인정협정(MRA) — 상대국에서도 우대</li>
+        <li>공급망 차질 시 우선 복구 대상</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <h4>AEO가 요구하는 것 (의무)</h4>
+      <ul>
+        <li>법규 준수 — 관세·수출입 위반 이력 관리</li>
+        <li>내부 통제 — 거래·재고·HS코드 정확성</li>
+        <li>공급망 보안 — 물류·시설·인원·정보 보안</li>
+        <li>거래처(협력사)까지 보안 수준 확장</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>AEO vs GTS(수출통제) — 헷갈리지 말 것</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>구분</th><th>GTS 수출통제 (심화 5)</th><th>AEO</th></tr>
+    <tr><td>묻는 질문</td><td>"이걸 <b>수출해도 되나</b>?"</td><td>"우리는 <b>믿을 만한 무역업체인가</b>?"</td></tr>
+    <tr><td>대상</td><td>품목(ECCN)·상대국·거래처</td><td>회사(그리고 공급망 전체)</td></tr>
+    <tr><td>효과</td><td>해당하면 <b>차단</b></td><td>인증받으면 <b>통관 우대</b></td></tr>
+    <tr><td>성격</td><td>거래 단위 컴플라이언스</td><td>회사 단위 자격·신뢰</td></tr>
+  </table>
+  </div>
+  <div class="callout point">
+    <span class="t">둘은 함께 작동한다</span>
+    GTS가 "이 거래가 합법인가"를 거래마다 막아주고, AEO는 "그렇게 통제를 잘하는 회사"라는 자격을 부여해 합법 거래를 빠르게 흘려준다. AEO 인증을 유지하려면 GTS 같은 수출통제 내부 통제가 잘 돌아가야 하므로, <b>둘은 원인-결과 관계</b>다.
+  </div>
+
+  <h3>구매·전자구매 시스템에서의 AEO</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>요구</th><th>시스템 반영</th></tr>
+    <tr><td>HS코드·원산지 정확성</td><td>자재 마스터에 HS코드·원산지 유지, 누락 시 수출입 문서 생성 차단</td></tr>
+    <tr><td>거래처 보안 수준 관리</td><td>협력사 평가(심화 7)에 <b>AEO 등급·공급망 보안 항목 추가</b> — AEO 협력사 우대</td></tr>
+    <tr><td>거래 이력 추적성</td><td>PO–입고–수출입 신고–대금의 완전한 감사 추적(이중 원장 운영, 5차시)</td></tr>
+    <tr><td>물류 보안</td><td>운송사·보세창고 보안 인증 확인 — 협력사 등록 심사 항목</td></tr>
+  </table>
+  </div>
+  <div class="callout tip">
+    <span class="t">공급망 AEO 연쇄</span>
+    내가 AEO를 유지하려면 협력사·물류사도 보안 수준을 맞춰야 한다. 그래서 AEO는 ESG(심화 7)와 똑같이 <b>"고객 요구 → 우리 → 협력사"로 전가되는 공급망 항목</b>이 된다 — 협력사 평가·등록 심사에 녹여 넣는 것이 정석이다.
+  </div>
+
+  <h2>2. 반도체 공정 통합 맵 — 모든 업무가 한 줄로</h2>
+  <p>지금까지 본 업무들(4-3, 심화 5~7)을 따로 보면 흩어져 보인다. 하지만 <b>Fab의 시간 흐름</b>에 얹으면 하나의 사슬이다. 각 단계의 칩(태그)을 누르면 해당 레슨으로 이동한다.</p>
+
+  <div class="procmap">
+
+    <div class="ph plan">
+      <span class="stage">계획 · Plan</span>
+      <h3>① 수요 계획 — 무엇이 얼마나 필요한가</h3>
+      <div class="role">웨이퍼 투입 계획 × 원단위 → 자재 소요 산출. 모든 구매의 출발점.</div>
+      <div class="tasks">
+        <a href="A-6-semicon-mrp.html">반도체 MRP</a>
+        <a href="R-1-category-glossary.html">카테고리 분류</a>
+      </div>
+    </div>
+    <div class="down">↓ 소요 → 소싱</div>
+
+    <div class="ph plan">
+      <span class="stage">계획 · Plan</span>
+      <h3>② 소싱 · 협력사 확보 — 누구에게서 사나</h3>
+      <div class="role">전략 소싱·입찰, 독점 자재는 확보 전쟁. 협력사 등록 시 ESG·AEO·보안 심사.</div>
+      <div class="tasks">
+        <span class="t">소싱/입찰 (2-2)</span>
+        <a href="A-7-semicon-osat-esg.html">협력사 평가·ESG</a>
+        <span class="t">AEO 협력사 심사</span>
+      </div>
+    </div>
+    <div class="down">↓ 발주</div>
+
+    <div class="ph">
+      <span class="stage">구매 · Source-to-Pay</span>
+      <h3>③ 발주 · 입고 · 정산 — 카테고리별로 다른 길</h3>
+      <div class="role">장비는 마일스톤(FAT/SAT), 원부자재는 위탁·VMI·ERS, 스페어는 수리 순환. 각각 다른 SAP 모듈.</div>
+      <div class="tasks">
+        <a href="04-3-semiconductor.html">카테고리 4분면</a>
+        <a href="A-5-semicon-sap-eproc.html">SAP 구현(IM·PS·AA·ERS)</a>
+        <span class="t">3-Way / GR·IV (1-2)</span>
+      </div>
+    </div>
+    <div class="loop">↺ 사용량(MES) → 원단위 보정 → ①번 계획으로 되돌아가는 순환</div>
+    <div class="down">↓ 자재 투입</div>
+
+    <div class="ph make">
+      <span class="stage">제조 · 전공정</span>
+      <h3>④ Fab 전공정 — 웨이퍼 위 수백 공정</h3>
+      <div class="role">노광·식각·증착 반복 적층. 공정 자재(가스·PR·슬러리)가 레이어마다 소비 → 사용량이 곧 매입·정산 근거.</div>
+      <div class="tasks">
+        <span class="t">사용량 정산 ERS (심화 5)</span>
+        <span class="t">VMI 텔레메트리 (심화 5)</span>
+        <span class="t">공정가스 ESG (심화 7)</span>
+      </div>
+    </div>
+    <div class="down">↓ 가공 완료 웨이퍼 (고가 사급재)</div>
+
+    <div class="ph make">
+      <span class="stage">제조 · 후공정</span>
+      <h3>⑤ OSAT 외주 — 패키징 · 테스트</h3>
+      <div class="role">웨이퍼를 외주사에 사급 → 조립·테스트 → 양품 입고. 수율 책임 정산과 WIP 동기화가 핵심.</div>
+      <div class="tasks">
+        <a href="A-7-semicon-osat-esg.html">OSAT 외주(L)·수율 정산</a>
+        <span class="t">사급 수불 (1-3)</span>
+      </div>
+    </div>
+    <div class="down">↓ 완제품 → 고객 출하</div>
+
+    <div class="ph export">
+      <span class="stage">국경 · Trade</span>
+      <h3>⑥ 수출입 · 통관 — 국경을 넘는 순간</h3>
+      <div class="role">자재 수입·완제품 수출이 상시. "수출해도 되나?"(통제)와 "빠르게 통관"(AEO)이 동시에 작동.</div>
+      <div class="tasks">
+        <a href="A-5-semicon-sap-eproc.html">GTS 수출통제</a>
+        <span class="t">AEO 통관 우대</span>
+      </div>
+    </div>
+    <div class="down">↓ 라인 운영 이후 · 상시</div>
+
+    <div class="ph export">
+      <span class="stage">사후 · After</span>
+      <h3>⑦ 매각 · 사후 관리 — 사는 것의 반대</h3>
+      <div class="role">공정 전환으로 유휴화된 장비·스크랩 매각(최고가·수출통제), 협력사 평가·ESG 캠페인은 연중 순환.</div>
+      <div class="tasks">
+        <a href="A-7-semicon-osat-esg.html">매각·ESG·평가</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout warn">
+    <span class="t">맵에서 보이는 두 개의 순환</span>
+    ① <b>계획 순환</b> — ④Fab의 실사용량(MES)이 ①계획의 원단위를 보정한다(심화 6). ② <b>평가 순환</b> — ③구매의 품질·납기 실적이 ②소싱의 협력사 등급·쿼터로 되돌아간다(심화 7). 직선이 아니라 <b>두 개의 피드백 루프가 도는 사슬</b>이다.
+  </div>
+
+  <h2>3. 단계별 "주체 × 데이터" 요약</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>단계</th><th>SAP 모듈</th><th>전자구매 포털/외부</th><th>핵심 데이터</th></tr>
+    <tr><td>① 수요 계획</td><td>PP/MRP</td><td>—</td><td>투입 계획·원단위·PIR</td></tr>
+    <tr><td>② 소싱·협력사</td><td>MM(계약)</td><td>포털: 입찰·등록·평가·ESG·AEO</td><td>단가·협력사 등급·보안 인증</td></tr>
+    <tr><td>③ 발주·입고</td><td>MM·IM·PS·AA·QM·PM</td><td>포털·공급사: PO·ASN·송장</td><td>PO·마일스톤·사용량·ERS</td></tr>
+    <tr><td>④ 전공정</td><td>PP·MM(위탁)</td><td>MES·IoT·VMI</td><td>레이어 사용량·재고 텔레메트리</td></tr>
+    <tr><td>⑤ 후공정 OSAT</td><td>MM(외주 L)</td><td>OSAT 포털/EDI</td><td>WIP·수율·사급 수불</td></tr>
+    <tr><td>⑥ 수출입</td><td>GTS·SD/MM</td><td>관세·물류 시스템</td><td>HS코드·ECCN·원산지·AEO</td></tr>
+    <tr><td>⑦ 매각·사후</td><td>AA·SD</td><td>포털: 매각 입찰·ESG 캠페인</td><td>처분손익·회수율·평가 점수</td></tr>
+  </table>
+  </div>
+
+  <h2>4. 한 줄 결론</h2>
+  <div class="callout point">
+    <span class="t">반도체 구매 = 공정을 따라 흐르는 사슬 + 두 개의 피드백 루프</span>
+    계획(MRP) → 소싱 → 구매 → 전공정 → 후공정(OSAT) → 수출입(GTS·AEO) → 매각의 직선 위에, <b>사용량→계획</b>과 <b>실적→평가</b> 두 순환이 돈다. AEO와 ESG는 이 사슬 전체를 감싸는 <b>공급망 자격 레이어</b>로, 협력사 평가·등록 심사를 통해 사슬 곳곳에 스며든다.
+  </div>
+
+  <div class="pager">
+    <a href="A-7-semicon-osat-esg.html"><span class="lbl">이전</span><b>← 심화 7 외주·매각·ESG·평가</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화 (반도체 시리즈 完)</footer>
+</div>
+</body>
+</html>

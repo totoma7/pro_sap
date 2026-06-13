@@ -280,3 +280,42 @@ details.qa .a { padding: 12px 14px; font-size: 14.5px; color: var(--ink); }
 }
 .sim-dots span.on { background: var(--brand); }
 .sim-dots span.done { background: #9db9ef; }
+
+/* ── 공정 통합 맵 (procmap) ── */
+.procmap { margin: 18px 0; }
+.procmap .ph {
+  background: var(--card); border: 1.5px solid var(--line);
+  border-left: 5px solid var(--brand); border-radius: 12px;
+  padding: 12px 14px; margin: 0;
+}
+.procmap .ph .stage {
+  font-size: 11.5px; font-weight: 800; letter-spacing: .04em;
+  color: var(--brand); text-transform: uppercase;
+}
+.procmap .ph h3 { margin: 3px 0 6px; font-size: 16px; }
+.procmap .ph .role { font-size: 13.5px; color: var(--sub); margin-bottom: 8px; }
+.procmap .ph .tasks { display: flex; flex-wrap: wrap; gap: 6px; }
+.procmap .ph .tasks a, .procmap .ph .tasks span.t {
+  font-size: 12px; font-weight: 700; text-decoration: none;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--brand-soft); color: var(--brand); border: 1px solid #c9d8f7;
+}
+.procmap .ph .tasks a:hover { background: #d6e2fb; }
+.procmap .down { text-align: center; color: var(--brand); font-size: 18px; padding: 4px 0; line-height: 1; }
+
+/* 단계 색상 변주 */
+.procmap .ph.plan   { border-left-color: var(--purple); }
+.procmap .ph.plan .stage { color: var(--purple); }
+.procmap .ph.plan .tasks a, .procmap .ph.plan .tasks span.t { background: var(--purple-soft); color: var(--purple); border-color: #ddc9f7; }
+.procmap .ph.make   { border-left-color: var(--accent); }
+.procmap .ph.make .stage { color: var(--accent); }
+.procmap .ph.make .tasks a, .procmap .ph.make .tasks span.t { background: var(--accent-soft); color: #0b6e4f; border-color: #bfe8d8; }
+.procmap .ph.export { border-left-color: var(--warn); }
+.procmap .ph.export .stage { color: var(--warn); }
+.procmap .ph.export .tasks a, .procmap .ph.export .tasks span.t { background: var(--warn-soft); color: var(--warn); border-color: #f3dfb8; }
+
+/* 사이클(되돌아오는 흐름) 표시 */
+.procmap .loop {
+  text-align: center; font-size: 12.5px; color: var(--sub);
+  border: 1px dashed #c4cce0; border-radius: 10px; padding: 8px; margin: 8px 0;
+}

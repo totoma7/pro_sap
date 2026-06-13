@@ -4,7 +4,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 한국 실무 특화 주제, 심화 과정과 인터랙티브 시뮬레이터까지 도식 중심으로 학습하는 자료입니다.
 순수 HTML/CSS/JS(의존성 제로)로 작성되어 웹/모바일 어디서든 열립니다.
 
-**구성: 본 과정 5차시(11편) + 심화 7편 + 인터랙티브 1편 + 레퍼런스 1편 — 총 20개 레슨 완성**
+**구성: 본 과정 5차시(11편) + 심화 8편 + 인터랙티브 1편 + 레퍼런스 1편 — 총 21개 레슨 완성**
 
 ## 보는 방법
 
@@ -41,6 +41,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 심화 5 | [반도체 특화 SAP·전자구매 구현](https://totoma7.github.io/pro_sap/lessons/A-5-semicon-sap-eproc.html) | 장비 CAPEX(IM·PS·AA·분할 지급), 위탁·파이프라인·ERS, PM 수리 순환, GTS 수출통제, Fab 인터페이스 목록 |
 | 심화 6 | [반도체 MRP](https://totoma7.github.io/pro_sap/lessons/A-6-semicon-mrp.html) | 웨이퍼 투입 계획 × 원단위 예측, MRP 유형 설계(PD/VB/VV/ND), 긴 리드타임 대응, 예측↔확약(Forecast/Commit) 연계 |
 | 심화 7 | [반도체 외주·매각·ESG·협력사 평가](https://totoma7.github.io/pro_sap/lessons/A-7-semicon-osat-esg.html) | OSAT 외주·수율 정산, 중고 장비·스크랩 매각, RBA·분쟁광물·Scope 3, 협력사 등급 평가·쿼터 연동 |
+| 심화 8 | [AEO & 반도체 공정 통합 맵](https://totoma7.github.io/pro_sap/lessons/A-8-semicon-aeo-process-map.html) | AEO(수출입 안전관리 우수업체) vs GTS, 계획→소싱→구매→전/후공정→수출입→매각 7단계 통합 도식 + 두 피드백 루프 |
 
 ### 인터랙티브
 
@@ -69,9 +70,9 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 ├── assets/
 │   ├── style.css         # 공통 스타일 (모바일 퍼스트 반응형, 의존성 없음)
 │   └── gate.js           # 접근 게이트 (ID 확인 → 60일 열람 쿠키)
-├── lessons/              # 레슨 페이지 20편
+├── lessons/              # 레슨 페이지 21편
 │   ├── 01-* ~ 05-*       # 본 과정 (5차시 11편)
-│   ├── A-1 ~ A-7         # 심화 7편
+│   ├── A-1 ~ A-8         # 심화 8편 (A-5~A-8은 반도체 시리즈)
 │   ├── I-1               # 인터랙티브 P2P 시뮬레이터
 │   └── R-1               # 레퍼런스 — 구매 카테고리 용어 사전
 └── docs/                 # 마크다운 원고 (HTML 페이지의 소스 노트)
