@@ -1,8 +1,10 @@
 # pro_sap — SAP × 전자구매(e-Procurement) 학습
 
 SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 방식, 업종별 구매 프로세스 차이,
-한국 실무 특화 주제와 심화 과정까지 도식 중심으로 학습하는 자료입니다.
-순수 HTML/CSS로 작성되어 웹/모바일 어디서든 열립니다. **본 과정 5차시 + 심화 3편 완성.**
+한국 실무 특화 주제, 심화 과정과 인터랙티브 시뮬레이터까지 도식 중심으로 학습하는 자료입니다.
+순수 HTML/CSS/JS(의존성 제로)로 작성되어 웹/모바일 어디서든 열립니다.
+
+**구성: 본 과정 5차시(10편) + 심화 4편 + 인터랙티브 시뮬레이터 1편 — 총 15개 레슨 완성**
 
 ## 보는 방법
 
@@ -12,41 +14,55 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 
 ## 커리큘럼
 
-| 차시 | 주제 | 상태 |
+### 본 과정
+
+| 차시 | 레슨 | 핵심 내용 |
 |---|---|---|
-| 1차시 | SAP 구매(MM-PUR) 핵심 개념 — 조직 구조, 마스터 데이터, P2P 흐름, 문서 유형/품목 범주 | ✅ 완료 |
-| 2차시 | 전자구매 시스템의 개념과 유형 — 직접/간접구매, Ariba, 그룹 구매포털, 나라장터 | ✅ 완료 |
-| 3차시 | SAP ↔ 전자구매 연계 기술 — IDoc, BAPI, OData, CIG, Punch-out(OCI/cXML) | ✅ 완료 |
-| 4차시 | 업종별 구매 프로세스 차이 — 제조, 유통, 건설, 공공, 제약, 금융 | ✅ 완료 |
-| 5차시 | 한국 실무 특화 — 전자세금계산서, 상생결제, 그룹 구매포털 이중 구조 | ✅ 완료 |
-| 심화 1 | IDoc 깊이 보기 — ORDERS05 세그먼트 해부, 상태 코드, 운영 트랜잭션, 장애 분석 | ✅ 완료 |
-| 심화 2 | Ariba·CIG 매핑 실무 — cXML 구조, IDoc 대응, 커스텀 매핑 이슈, 공급사 온보딩 | ✅ 완료 |
-| 심화 3 | 종합 케이스 스터디 — 가상 그룹사(제조·건설·서비스) 구매포털 설계 연습 | ✅ 완료 |
-| 심화 4 | 페이로드로 보는 매핑 — IDoc·cXML 원문 대조, 필드 매핑 표, 실전 Q&A | ✅ 완료 |
-| 인터랙티브 | P2P 시뮬레이터 — 표준/외주/서비스 시나리오 단계별 체험 | ✅ 완료 |
+| 1차시 | [1-1 조직 구조 & 마스터 데이터](https://totoma7.github.io/pro_sap/lessons/01-1-structure.html) | Company Code·Plant·구매조직의 관계, 5대 마스터, 동기화 원본 정의 |
+| | [1-2 구매 문서 흐름 (P2P)](https://totoma7.github.io/pro_sap/lessons/01-2-p2p-flow.html) | PR→PO→GR→IV→지급, 3-Way Match, GR/IR 계정 |
+| | [1-3 문서 유형 & 품목 범주](https://totoma7.github.io/pro_sap/lessons/01-3-doc-types.html) | Document Type, Item Category(외주 L·서비스 D), 계정 지정 |
+| 2차시 | [2-1 직접구매 vs 간접구매](https://totoma7.github.io/pro_sap/lessons/02-1-direct-indirect.html) | 시스템 아키텍처가 갈라지는 근본 이유 |
+| | [2-2 전자구매 시스템 유형](https://totoma7.github.io/pro_sap/lessons/02-2-system-types.html) | Ariba 모듈, 자체 구축 그룹 포털, 나라장터(KONEPS) |
+| 3차시 | [3-1 연계 기술 스택](https://totoma7.github.io/pro_sap/lessons/03-1-integration-tech.html) | IDoc·BAPI/RFC·OData·미들웨어(CPI/CIG), 기술 선택 기준 |
+| | [3-2 연계 시나리오 & Punch-out](https://totoma7.github.io/pro_sap/lessons/03-2-scenarios-punchout.html) | 인터페이스 목록, OCI/cXML, 멱등성·재처리·대사 |
+| 4차시 | [4-1 제조 · 유통/리테일](https://totoma7.github.io/pro_sap/lessons/04-1-mfg-retail.html) | MRP·납품일정계약·ASN vs Article·자동 보충·사후 정산 |
+| | [4-2 건설 · 공공 · 제약 · 금융](https://totoma7.github.io/pro_sap/lessons/04-2-const-public-pharma-fin.html) | WBS·기성·유보금, 나라장터, 배치·QM·COA, 예산 통제 |
+| 5차시 | [5-1 한국 실무 특화](https://totoma7.github.io/pro_sap/lessons/05-1-korea-specifics.html) | 세금계산서 대사(4-Way)·역발행, 상생결제, 이중 원장 운영 |
+
+### 심화 (Deep Dive)
+
+| 편 | 레슨 | 핵심 내용 |
+|---|---|---|
+| 심화 1 | [IDoc 깊이 보기](https://totoma7.github.io/pro_sap/lessons/A-1-idoc-deep-dive.html) | ORDERS05 세그먼트 해부, 상태 코드 생애주기, WE02·BD87·WE19, 장애 분석 실습 |
+| 심화 2 | [Ariba·CIG 매핑 실무](https://totoma7.github.io/pro_sap/lessons/A-2-ariba-cig-mapping.html) | cXML↔IDoc 대응, 커스텀 매핑 이슈 5선, 공급사 온보딩 웨이브 |
+| 심화 3 | [종합 케이스 스터디](https://totoma7.github.io/pro_sap/lessons/A-3-case-study.html) | 가상 그룹사(제조·건설·서비스) 구매포털을 처음부터 설계하는 통합 연습 |
+| 심화 4 | [페이로드로 보는 매핑](https://totoma7.github.io/pro_sap/lessons/A-4-payload-mapping.html) | 같은 PO의 IDoc·cXML 원문 대조, 필드 매핑 표, 현장 실전 Q&A 5선 |
+
+### 인터랙티브
+
+| 레슨 | 핵심 내용 |
+|---|---|
+| [P2P 시뮬레이터](https://totoma7.github.io/pro_sap/lessons/I-1-p2p-simulator.html) | 표준 자재/외주(L)/서비스(D) 시나리오를 단계별 클릭 진행 — 주체·회계 효과·인터페이스 표시 |
+
+## 추천 학습 경로
+
+- **처음 시작**: 1차시 → 2차시 → 3차시 순서대로. 각 차시가 앞 차시 개념을 참조합니다.
+- **업종 관심사부터**: 1차시(필수 기초) → 4차시에서 해당 업종 → 관련 차시로 역추적.
+- **연계 개발자**: 1차시 → 3차시 → 심화 1·2·4 (페이로드와 매핑 중심).
+- **복습/정리**: 5-1 마지막의 "전체 커리큘럼 한 장 정리" → P2P 시뮬레이터로 흐름 체화 → 심화 3 케이스 스터디로 자가 점검.
 
 ## 구조
 
 ```
 .
 ├── index.html            # 메인 목차 (커리큘럼 + 진행 상태)
-├── assets/style.css      # 공통 스타일 (모바일 퍼스트 반응형, 의존성 없음)
-├── lessons/              # 차시별 학습 페이지
-│   ├── 01-1-structure.html       # 조직 구조 & 마스터 데이터
-│   ├── 01-2-p2p-flow.html        # 구매 문서 흐름 (P2P)
-│   ├── 01-3-doc-types.html       # 문서 유형 & 품목 범주
-│   ├── 02-1-direct-indirect.html # 직접구매 vs 간접구매
-│   ├── 02-2-system-types.html    # 전자구매 시스템 유형
-│   ├── 03-1-integration-tech.html      # 연계 기술 스택 (IDoc·BAPI·OData·미들웨어)
-│   ├── 03-2-scenarios-punchout.html    # 연계 시나리오 & Punch-out
-│   ├── 04-1-mfg-retail.html            # 제조 · 유통/리테일
-│   ├── 04-2-const-public-pharma-fin.html # 건설 · 공공 · 제약 · 금융
-│   ├── 05-1-korea-specifics.html       # 한국 실무 특화 (세금계산서·상생결제·이중 원장)
-│   ├── A-1-idoc-deep-dive.html         # [심화] IDoc 세그먼트·상태코드·운영
-│   ├── A-2-ariba-cig-mapping.html      # [심화] Ariba·CIG 매핑 실무
-│   ├── A-3-case-study.html             # [심화] 종합 케이스 스터디
-│   ├── A-4-payload-mapping.html        # [심화] IDoc·cXML 페이로드 매핑 + 실전 Q&A
-│   └── I-1-p2p-simulator.html          # [인터랙티브] P2P 시뮬레이터
+├── assets/
+│   ├── style.css         # 공통 스타일 (모바일 퍼스트 반응형, 의존성 없음)
+│   └── gate.js           # 접근 게이트 (ID 확인 → 60일 열람 쿠키)
+├── lessons/              # 레슨 페이지 15편
+│   ├── 01-* ~ 05-*       # 본 과정 (5차시 10편)
+│   ├── A-1 ~ A-4         # 심화 4편
+│   └── I-1               # 인터랙티브 P2P 시뮬레이터
 └── docs/                 # 마크다운 원고 (HTML 페이지의 소스 노트)
 ```
 
