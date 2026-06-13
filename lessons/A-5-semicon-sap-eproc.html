@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 5 반도체 특화 SAP·전자구매 구현 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 5</span>
+    <h1>반도체 특화 — SAP 구현과 전자구매 연계</h1>
+    <p class="lead">4-3이 "반도체 구매가 어떻게 생겼나"였다면, 여기서는 <b>그걸 SAP의 어떤 모듈·기능으로 구현하고, 어떤 인터페이스를 깔아야 하는지</b>까지 내려간다.</p>
+  </header>
+
+  <h2>1. 장비 CAPEX — IM·PS·AA가 함께 움직인다</h2>
+  <p>장비 한 대의 구매는 MM 혼자 처리하지 못한다. 투자관리(IM) → 프로젝트(PS) → 구매(MM) → 자산회계(AA)가 릴레이로 이어진다.</p>
+
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>투자 예산 — IM (Investment Management)</b>
+      <span class="d">연간 투자 프로그램에서 라인 증설 예산 배정. 이 예산이 없으면 다음 단계 자체가 안 열린다</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>투자 프로젝트 — PS (WBS)</b>
+      <span class="d">"P3 라인 노광기 도입" WBS 생성. 장비 PO·설치 공사·부대 비용이 전부 이 WBS로 귀속 — 건설(4-2)과 같은 구조</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">3</span><b>장비 PO — 계정지정 A 또는 P + 지급 계획</b>
+      <span class="d">PO에 <b>Invoicing Plan(분할 지급 계획)</b>을 걸어 계약금·선적·SAT·잔금 회차를 정의. 계약금은 <b>선급금(Down Payment)</b> 프로세스 — 지급 요청(F-47) → 지급(F110) → 송장 시 정산</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">4</span><b>건설중자산(AuC) → 자산화 — AA</b>
+      <span class="d">설치·검수 기간의 비용은 AuC(건설중자산)에 쌓이고, SAT 통과 시점에 본 자산으로 전환·감가상각 시작. "언제 자산화하느냐"가 세무 이슈</span>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">전자구매 연계 포인트</span>
+    장비사 포털 연계의 키는 <b>마일스톤 이벤트가 SAP 지급 회차를 풀어주는 것</b>. FAT/SAT 리포트 승인 → 포털 이벤트 → SAP Invoicing Plan 해당 회차 지급 차단 해제. 이 자동화가 없으면 재무팀이 메일로 검수 여부를 물어보는 수작업이 영원히 남는다.
+  </div>
+
+  <h2>2. 원부자재 — 위탁(K)·파이프라인·ERS 삼총사</h2>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>공급 형태</th><th>SAP 구현</th><th>정산 방식</th></tr>
+    <tr><td>케미컬·포토레지스트 (용기 단위)</td><td><b>위탁(K)</b> — 공급사 소유 재고를 Fab에 보관</td><td>사용(출고) 시점 매입 → 월 정산(MRKO)</td></tr>
+    <tr><td>벌크가스·초순수 (배관 직결)</td><td><b>파이프라인(P)</b> — 재고 관리 없이 사용량만</td><td>유량계 사용량 → 월 정산</td></tr>
+    <tr><td>웨이퍼 (로트 단위)</td><td>표준 PO + <b>배치 관리</b> + QM 인증서(COA)</td><td>3-Way Match 또는 ERS</td></tr>
+  </table>
+  </div>
+
+  <h3>ERS 구현 — 송장 없는 정산의 실제</h3>
+  <div class="miniflow">
+    <span class="box">입고/사용 실적<br><span class="chip">GR · 위탁 출고 · 유량계</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">ERS 배치 실행<br><span class="chip code">MRRL</span></span>
+    <span class="ar">→</span>
+    <span class="box">송장 자동 생성<br><span class="chip">Info Record 단가 적용</span></span>
+    <span class="ar">→</span>
+    <span class="box">세금계산서 역발행<br><span class="chip">5차시 연결</span></span>
+  </div>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>전제 조건: 공급사 마스터에 ERS 플래그 + <b>유효한 Info Record 단가</b> — 단가 누락이 ERS 최대 장애 원인</li>
+      <li>공급사 합의 필수: "귀사는 송장을 보내지 않는다"를 계약에 명시 (이중 송장 방지)</li>
+      <li>정산 결과를 포털로 회신 → 공급사가 명세 확인 → 이의 신청 프로세스까지가 한 세트</li>
+    </ul>
+  </div>
+
+  <h3>VMI 연계 아키텍처</h3>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>재고 텔레메트리 → 공급사</b>
+      <span class="d">탱크 레벨 센서·창고 재고를 주기 전송(시간 단위). 공급사가 min/max 기준으로 보충 판단</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>공급사 보충 통보 → SAP</b>
+      <span class="d">보충 계획(수량·도착 예정)을 ASN처럼 수신 → 입고 예정 생성. PO는 프레임워크 계약 참조로 자동</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>입고 확인 → 위탁 재고 증가</b>
+      <span class="d">우리 자산이 아니므로 회계 효과 없음 — 사용 시점에 비로소 매입(2번 표)</span>
+    </div>
+  </div>
+
+  <h2>3. 스페어파츠 — PM과 MM의 협업, 수리 순환</h2>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>장비 고장 → PM 정비 오더</b>
+      <span class="d">설비관리(PM) 모듈에서 정비 오더 생성. 필요 부품을 예약 — 재고 없으면 <b>PR 자동 생성</b>(MRP가 아니라 정비 오더가 트리거)</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">2</span><b>고장 부품 탈거 → 수리 외주 PO</b>
+      <span class="d">시리얼 번호로 개체 추적. 외주(L)와 같은 발상 — 부품을 보내고(사급) 수리된 부품을 받는다. 수리비만 매입</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>수리품 재입고 — 리퍼 재고</b>
+      <span class="d">신품과 구분되는 평가 유형(Valuation Type)으로 입고 — 신품/리퍼 원가를 분리 관리</span>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">전자구매 연계 포인트</span>
+    수리 포털에는 <b>시리얼 번호 단위의 수리 이력</b>(견적 → 승인 → 수리 → 시험성적)이 쌓여야 한다. "이 펌프 3번째 수리인데 신품보다 비싸졌다" 같은 수리 vs 교체 판단이 데이터로 가능해진다.
+  </div>
+
+  <h2>4. 수출통제 — SAP GTS가 발주를 막는 구조</h2>
+  <div class="miniflow">
+    <span class="box">PO/판매 문서 생성</span>
+    <span class="ar">→</span>
+    <span class="box hl">GTS 체크<br><span class="chip">ECCN · 제재 리스트 · 라이선스</span></span>
+    <span class="ar">→</span>
+    <span class="box">통과: 진행<br>차단: Block + 통제 부서 워크플로우</span>
+  </div>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>자재 마스터에 <b>통제 분류(ECCN)</b>를 유지 — 분류 누락이 가장 흔한 컴플라이언스 구멍</li>
+      <li>거래 상대 <b>제재 리스트 스크리닝</b>(SPL): 협력사 등록 시점(포털)과 거래 시점(SAP) 이중 체크</li>
+      <li>중고 장비 매각·이설(해외 Fab 이동)도 통제 대상 — 구매만이 아니라 자산 이동 프로세스에도 GTS가 걸린다</li>
+    </ul>
+  </div>
+
+  <h2>5. 반도체 Fab의 인터페이스 목록 — 일반 제조와의 차이</h2>
+  <p>3-2차시의 표준 목록(마스터+트랜잭션) <b>위에</b> 반도체 특화분이 얹힌다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>인터페이스</th><th>방향</th><th>내용</th><th>기술 힌트</th></tr>
+    <tr><td>마일스톤 상태</td><td>장비 포털 → SAP</td><td>FAT/SAT 승인 → Invoicing Plan 회차 해제</td><td>이벤트 API + 문서 첨부</td></tr>
+    <tr><td>재고 텔레메트리</td><td>SAP/IoT → 공급사</td><td>탱크 레벨·위탁 재고 수준 (시간 단위)</td><td>센서 → IoT 플랫폼 → API</td></tr>
+    <tr><td>VMI 보충 통보</td><td>공급사 → SAP</td><td>보충 수량·도착 예정 → 입고 예정</td><td>DESADV 또는 API</td></tr>
+    <tr><td>사용량 정산</td><td>MES/유량계 → SAP</td><td>월 사용량 집계 → ERS 정산 근거</td><td>MES 연계 — 검침 확정 절차 필요</td></tr>
+    <tr><td>정산 명세 회신</td><td>SAP → 포털</td><td>ERS 결과 명세 → 공급사 확인·이의</td><td>월 배치 + 이의 워크플로우</td></tr>
+    <tr><td>수리 이력</td><td>포털 ↔ SAP</td><td>시리얼 단위 견적·수리·시험성적</td><td>시리얼 키 필수</td></tr>
+    <tr><td>제재 스크리닝</td><td>포털 → GTS</td><td>협력사 등록 시 SPL 체크</td><td>등록 승인 전 동기 호출</td></tr>
+  </table>
+  </div>
+
+  <h2>6. 운영 체크리스트 — 반도체판</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>항목</th><th>왜 반도체에서 특히 중요한가</th></tr>
+    <tr><td><b>ERS 단가 유효성 모니터링</b></td><td>Info Record 단가 만료 = 정산 전체 중단. 만료 30일 전 알림 배치</td></tr>
+    <tr><td><b>검침(사용량) 확정 절차</b></td><td>유량계 보정·결측 보간 규칙을 공급사와 합의 — 분쟁의 단골</td></tr>
+    <tr><td><b>긴급 구매 트랙 별도화</b></td><td>라인 정지 시 평시 승인 절차로는 못 버틴다. 사후 결재 + 전용 문서유형으로 통계 분리</td></tr>
+    <tr><td><b>ECCN 분류 현행화</b></td><td>규제 목록 개정 시 자재 마스터 일괄 재분류 — 연 단위 정비 일정 필요</td></tr>
+    <tr><td><b>위탁 재고 실사</b></td><td>공급사 소유지만 우리 Fab 안 — 실사 책임·차이 정산 룰을 계약에 명시</td></tr>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">심화 5의 핵심 한 줄</span>
+    반도체 구매 시스템은 MM 하나가 아니라 <b>IM·PS·AA(장비) + MM·QM(자재) + PM(스페어) + GTS(규제)의 합주</b>다. 전자구매 연계도 "PO 주고받기"가 아니라 <b>마일스톤·텔레메트리·사용량·시리얼</b> 같은 비정형 데이터의 왕복이 본체가 된다.
+  </div>
+
+  <div class="pager">
+    <a href="A-4-payload-mapping.html"><span class="lbl">이전</span><b>← 심화 4 페이로드 매핑</b></a>
+    <a class="next" href="I-1-p2p-simulator.html"><span class="lbl">다음</span><b>인터랙티브 P2P 시뮬레이터 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
