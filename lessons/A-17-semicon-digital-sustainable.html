@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 17 구매 디지털 전환·지속가능 조달 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 17</span>
+    <h1>구매 디지털 전환과 지속가능 조달</h1>
+    <p class="lead">데이터·AI로 구매를 자동화·예측하는 흐름과, 탄소·재생에너지를 조달의 의사결정 기준으로 끌어들이는 흐름 — 반도체 구매의 두 가지 미래 축.</p>
+  </header>
+
+  <h2>1. 구매 디지털 전환 — 어디까지 왔나</h2>
+  <pre class="mmd mermaid">
+flowchart LR
+  L1["1단계 · 전자화<br/>PR·PO·승인 디지털화"] --> L2["2단계 · 통합·가시성<br/>Spend Cube·대시보드"]
+  L2 --> L3["3단계 · 분석·예측<br/>수요예측·리스크 조기경보"]
+  L3 --> L4["4단계 · 자동화·AI<br/>소싱·계약·이상탐지 자동"]
+  classDef hl fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class L3 hl;
+  </pre>
+  <div class="mmd-cap">대부분의 조직은 1~2단계. 반도체처럼 데이터가 많은 환경이 3~4단계(예측·AI)의 효과가 크다.</div>
+
+  <h2>2. 데이터·분석 — AI의 연료</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>활용</th><th>내용</th><th>반도체에서</th></tr>
+    <tr><td><b>수요 예측</b></td><td>과거 소비·투입계획으로 자재 소요 예측</td><td>원단위×투입계획 보정(심화 6), 예측 정확도↑</td></tr>
+    <tr><td><b>Spend 분석</b></td><td>지출 자동 분류·이상 탐지</td><td>Tail spend·Maverick 자동 발굴 (R-1)</td></tr>
+    <tr><td><b>리스크 조기경보</b></td><td>공급사 재무·뉴스·지정학 신호 모니터링</td><td>단일공급·지정학 알림 (심화 11)</td></tr>
+    <tr><td><b>가격 예측</b></td><td>원자재·시장 인덱스로 단가 전망</td><td>사이클 대응·협상 타이밍 (심화 16)</td></tr>
+  </table>
+  </div>
+
+  <h2>3. AI·자동화 — 사람이 판단할 것만 남긴다</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>소싱 자동화</b>: 표준 품목 RFx·견적 비교 자동, 사람은 전략 품목에 집중</li>
+      <li><b>계약·문서</b>: 계약 조항 추출·검토 보조(생성형 AI), 만료·갱신 알림</li>
+      <li><b>이상 탐지</b>: 중복 발주·단가 오류·송장 불일치 자동 탐지 (3-2 멱등성·대사 연계)</li>
+      <li><b>대화형 도우미</b>: "이 자재 재고·입고예정·대체 공급사" 질의응답</li>
+      <li>원칙: AI는 <b>판단을 돕는 도구</b> — 슈퍼 을 협상·전략 결정은 사람이 (심화 14)</li>
+    </ul>
+  </div>
+
+  <h2>4. 지속가능 조달 — 탄소·에너지가 조달 기준이 된다</h2>
+  <p>심화 7의 ESG가 "공급사가 책임 있게 하나"의 평가였다면, 여기서는 <b>탄소·에너지를 실제 조달 의사결정에 넣는</b> 실행이다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>축</th><th>내용</th><th>조달 반영</th></tr>
+    <tr><td><b>RE100·재생에너지</b></td><td>제조에 재생에너지 100% 사용 목표 — 고객사 연쇄 요구</td><td>재생에너지 조달(PPA·REC), 공급사 RE100 요구</td></tr>
+    <tr><td><b>탄소발자국(PCF)</b></td><td>제품·소재 단위 탄소배출 산정</td><td>소싱 평가에 탄소 항목 — 저탄소 소재 우대</td></tr>
+    <tr><td><b>공정가스 감축</b></td><td>GWP 높은 F-gas 저감·대체 (심화 7)</td><td>대체 가스 소싱·배출 보고</td></tr>
+    <tr><td><b>순환·재사용</b></td><td>스크랩 회수·정련(귀금속), 부품 리퍼</td><td>매각·회수 물류(심화 7), 리퍼 재고(심화 5)</td></tr>
+  </table>
+  </div>
+  <div class="callout point">
+    <span class="t">PPA·REC</span>
+    <b>PPA</b>(재생에너지 전력구매계약)·<b>REC</b>(재생에너지 인증서)는 Fab의 막대한 전력을 재생에너지로 조달하는 수단 — 에너지가 반도체 원가·탄소의 큰 덩어리라, 이제 <b>전력 자체가 전략 구매 품목</b>이 된다.
+  </div>
+
+  <h2>5. 둘은 만난다 — 데이터가 지속가능을 측정한다</h2>
+  <div class="callout tip">
+    <span class="t">디지털 × 지속가능</span>
+    탄소·에너지를 조달 기준으로 쓰려면 <b>측정·추적이 가능해야</b> 한다 — 공급사 배출 데이터 수집·검증, 제품 탄소발자국 집계는 결국 디지털 전환(데이터·분석)의 과제다. 두 축은 따로가 아니라, <b>데이터가 지속가능 의사결정을 떠받치는</b> 한 흐름이다.
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 17 한 줄</span>
+    구매의 미래는 "<b>데이터로 예측·자동화</b>(디지털)"하고 "<b>탄소·에너지를 사는 기준에 넣는</b>(지속가능)" 방향이다. 둘 다 깨끗한 데이터(분류·Spend·배출)가 전제이며, 반도체처럼 규모·복잡도가 큰 환경일수록 효과가 크다.
+  </div>
+
+  <div class="pager">
+    <a href="A-16-semicon-kpi-cycle.html"><span class="lbl">이전</span><b>← 심화 16 성과관리·사이클</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>

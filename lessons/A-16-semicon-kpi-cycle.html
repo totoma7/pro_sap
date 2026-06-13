@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 16 구매 성과관리·경기 사이클 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 16</span>
+    <h1>구매 성과관리와 경기 사이클 대응</h1>
+    <p class="lead">"얼마나 잘 샀나"를 어떻게 <b>측정</b>하고(KPI·절감액·Spend), 반도체 특유의 <b>호황·불황 사이클</b>에 구매가 어떻게 대응하는가.</p>
+  </header>
+
+  <h2>1. 구매 성과 KPI — 무엇을 보나</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>영역</th><th>대표 KPI</th><th>의미</th></tr>
+    <tr><td><b>비용</b></td><td>절감액(Savings)·PPV·단가 추이</td><td>"싸게 샀나" — 구매의 전통적 성과</td></tr>
+    <tr><td><b>공급</b></td><td>납기 준수율·결품 건수·커버리지</td><td>"끊기지 않게 샀나" (수급, 심화 9)</td></tr>
+    <tr><td><b>품질</b></td><td>입고 불량률·SCAR 건수</td><td>"제대로 샀나" (심화 11)</td></tr>
+    <tr><td><b>프로세스</b></td><td>PR→PO 리드타임·전자화율·채널 준수율</td><td>"효율적으로 샀나" (Maverick 방지, R-1)</td></tr>
+    <tr><td><b>리스크·지속</b></td><td>듀얼소싱 비율·국산화율·ESG 점수</td><td>"안전하게·책임 있게 샀나" (심화 7·11)</td></tr>
+  </table>
+  </div>
+
+  <h2>2. 절감액(Savings) — 종류와 검증</h2>
+  <p>"얼마 아꼈다"는 말은 정의에 따라 다르다. 검증되지 않은 절감액은 숫자 놀음이 되므로 <b>유형 정의 + 재무 검증</b>이 핵심이다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>유형</th><th>정의</th><th>예시</th></tr>
+    <tr><td><b>Cost Reduction</b><br>(실절감)</td><td>전년 대비 단가 인하 — 실제 지출 감소</td><td>단가 1,000→950원</td></tr>
+    <tr><td><b>Cost Avoidance</b><br>(절감 회피)</td><td>인상 요구를 막거나 줄임 — 안 오른 만큼</td><td>인상 요구 +10% → +3%로 협상</td></tr>
+    <tr><td><b>Hard Savings</b></td><td>재무제표에 잡히는 실절감</td><td>예산·원가에 반영</td></tr>
+    <tr><td><b>Soft Savings</b></td><td>회피·생산성 등 간접 효과</td><td>재무 반영 약함 — 별도 추적</td></tr>
+  </table>
+  </div>
+  <div class="callout warn">
+    <span class="t">검증 없는 절감액의 함정</span>
+    구매가 "10% 절감"이라 보고해도 재무가 인정 안 하면 의미가 없다. <b>기준가(Baseline) 정의 + 재무 공동 검증 + Avoidance 별도 표기</b>가 신뢰의 조건. SAP의 PPV(R-1)·계약 단가 이력이 검증 데이터의 근거가 된다.
+  </div>
+
+  <h2>3. Spend 분석 — 지출 가시성</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>전사 지출을 <b>카테고리·공급사·부서·법인</b>으로 분해 — "어디에 얼마를 쓰는가"</li>
+      <li>전제: <b>분류 체계(자재그룹·UNSPSC)</b>가 깨끗해야 분석이 가능 (R-1) — 쓰레기 분류 = 쓰레기 분석</li>
+      <li>활용: Tail spend·Maverick 발굴, 카테고리 전략 수립, 공급사 집중도 파악</li>
+      <li>시스템: SAP 구매 데이터 + 포털 + 카드 지출을 통합한 Spend Cube</li>
+    </ul>
+  </div>
+
+  <h2>4. 반도체 경기 사이클 — 구매의 두 얼굴</h2>
+  <pre class="mmd mermaid">
+flowchart LR
+  UP["호황 (Up)<br/>수요 폭증·캐파 부족"] --> PEAK["피크<br/>가격·납기 최악"]
+  PEAK --> DOWN["불황 (Down)<br/>수요 급감·재고 과잉"]
+  DOWN --> TROUGH["저점<br/>가동률·가격 하락"]
+  TROUGH --> UP
+  classDef up fill:#ffe08a,stroke:#16161d,color:#16161d;
+  classDef dn fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class UP,PEAK up;
+  class DOWN,TROUGH dn;
+  </pre>
+  <div class="duo">
+    <div class="col a">
+      <h4>호황기 구매 — "확보가 전부"</h4>
+      <ul>
+        <li>캐파 예약·선구매(심화 10)로 물량 선점</li>
+        <li>LTA·Take-or-Pay로 우선순위 확보</li>
+        <li>가격보다 <b>납기·확보</b>가 우선 — 할당(심화 9) 전쟁</li>
+        <li>리스크: 고점 매수·과잉 약정</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <h4>불황기 구매 — "조정이 전부"</h4>
+      <ul>
+        <li>발주 축소·취소, 재고 소진(심화 9)</li>
+        <li>Take-or-Pay 약정 부담 관리</li>
+        <li>단가 재협상·인덱스 하락 반영</li>
+        <li>리스크: 과도한 축소 후 회복기 결품</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">사이클을 가로지르는 원칙</span>
+    호황기 약정이 불황기 부담이 되고, 불황기 과축소가 회복기 결품이 된다. 그래서 구매는 사이클 <b>전 구간을 내다본 균형</b>을 잡아야 한다 — 전량 약정도, 전량 스팟도 답이 아니다. <b>약정:스팟 비율</b>과 <b>안전재고 수준</b>을 사이클 국면에 따라 조절하는 것이 핵심.
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 16 한 줄</span>
+    성과관리는 "<b>잘 샀는지를 검증된 숫자로</b>"(KPI·Savings·Spend), 사이클 대응은 "<b>국면에 따라 확보와 조정을 오가는</b>" 균형이다. 둘 다 데이터(PPV·Spend·수급)가 받쳐야 작동한다.
+  </div>
+
+  <div class="pager">
+    <a href="A-15-semicon-supplier-profiles.html"><span class="lbl">이전</span><b>← 심화 15 공급사 프로파일</b></a>
+    <a class="next" href="A-17-semicon-digital-sustainable.html"><span class="lbl">다음</span><b>심화 17 디지털·지속가능 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 한국 실무 특화 주제, 심화 과정과 인터랙티브 시뮬레이터까지 도식 중심으로 학습하는 자료입니다.
 순수 HTML/CSS/JS(의존성 제로)로 작성되어 웹/모바일 어디서든 열립니다.
 
-**구성: 본 과정 5차시(11편) + 심화 15편 + 인터랙티브 1편 + 공정 다이어그램 1편 + 레퍼런스 1편 — 총 29개 레슨 완성**
+**구성: 본 과정 5차시(11편) + 심화 17편 + 인터랙티브 1편 + 공정 다이어그램 1편 + 레퍼런스 1편 — 총 31개 레슨 완성**
 
 ## 보는 방법
 
@@ -49,6 +49,8 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 심화 13 | [수입·물류·관세](https://totoma7.github.io/pro_sap/lessons/A-13-semicon-trade-logistics.html) | 수입 통관 흐름, HS코드·FTA 원산지·관세 환급, 위험물 물류, 보세·FTZ |
 | 심화 14 | [업체 유형별 특징·구매 전략](https://totoma7.github.io/pro_sap/lessons/A-14-semicon-suppliers.html) | 밸류체인 플레이어 지도, 유형별 협상력, Kraljic 4분면 포트폴리오, 슈퍼 을 대응 |
 | 심화 15 | [주요 공급사 프로파일](https://totoma7.github.io/pro_sap/lessons/A-15-semicon-supplier-profiles.html) | 대표 업체별(ASML·AMAT·KLA·신에쓰·TSMC·ARM·ASE) 공정·소재 점유와 거래 핵심, 장비 5대·소재 일본 집중 |
+| 심화 16 | [구매 성과관리·경기 사이클](https://totoma7.github.io/pro_sap/lessons/A-16-semicon-kpi-cycle.html) | 구매 KPI, 절감액(Savings) 종류·검증, Spend 분석, 호황·불황 사이클 대응 |
+| 심화 17 | [디지털 전환·지속가능 조달](https://totoma7.github.io/pro_sap/lessons/A-17-semicon-digital-sustainable.html) | 구매 디지털 4단계, AI·자동화, RE100·PPA·탄소발자국 지속가능 조달 |
 
 ### 인터랙티브
 
@@ -85,7 +87,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 │   └── gate.js           # 접근 게이트 (ID 확인 → 60일 열람 쿠키)
 ├── lessons/              # 레슨 페이지 21편
 │   ├── 01-* ~ 05-*       # 본 과정 (5차시 11편)
-│   ├── A-1 ~ A-15        # 심화 15편 (A-5~A-15는 반도체 시리즈)
+│   ├── A-1 ~ A-17        # 심화 17편 (A-5~A-17은 반도체 시리즈)
 │   ├── I-1               # 인터랙티브 P2P 시뮬레이터
 │   ├── P-1               # 공정 다이어그램 — 반도체 제조 공정
 │   └── R-1               # 레퍼런스 — 구매 카테고리 용어 사전
