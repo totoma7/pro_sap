@@ -34,7 +34,7 @@
   <header class="hero">
     <span class="kicker">공정 다이어그램</span>
     <h1>반도체 제조 공정 — 다이어그램으로 보기</h1>
-    <p class="lead">구매가 아니라 <b>제조 공정 그 자체</b>를 단계별로 그린다. 각 공정에서 어떤 자재(초록)와 장비(주황)가 소비되는지를 함께 표시해, 앞에서 본 구매·MRP 업무가 왜 그렇게 생겼는지 뿌리를 보여준다.</p>
+    <p class="lead"><b>제조 공정 그 자체</b>를 단계별로 그리고(각 공정의 소비 자재·장비 포함), 마지막에 <b>공정과 구매 업무를 한 프로세스로 묶은 맵</b>까지 — 공정이 왜 그런 구매를 만드는지 뿌리부터 흐름까지 보여준다.</p>
   </header>
 
   <div class="legend">
@@ -246,7 +246,36 @@ flowchart TD
   </table>
   </div>
 
-  <h2>5. 정리 — 공정이 구매를 만든다</h2>
+  <h2>5. 공정 × 업무 프로세스 맵 (Mermaid)</h2>
+  <p>공정을 시간축으로 펼치고, 각 단계에서 <b>어떤 구매 업무가 일어나는지</b>를 한 프로세스로 묶었다. 직선이 아니라 <b>두 개의 피드백 루프</b>(점선)가 돈다는 점이 핵심이다.</p>
+  <pre class="mmd mermaid">
+flowchart TB
+  A["① 수요 계획<br/>MRP · 투입계획 × 원단위"] --> B["② 소싱 · 협력사<br/>입찰 · ESG · AEO 심사"]
+  B --> C["③ 발주 · 입고 · 정산<br/>장비 마일스톤 · VMI · ERS"]
+  C --> D["④ 전공정 Fab<br/>레이어 반복 · 자재 사용량 소비"]
+  D --> E["⑤ 후공정 OSAT<br/>외주(L) · 수율 정산"]
+  E --> F["⑥ 수출입 · 통관<br/>GTS 통제 · AEO 우대"]
+  F --> G["⑦ 매각 · 사후<br/>장비·스크랩 매각 · 평가 · ESG"]
+  D -. "사용량(MES) → 원단위 보정" .-> A
+  C -. "품질·납기 실적 → 등급·쿼터" .-> B
+
+  classDef plan fill:#f1eafd,stroke:#7c3aed,color:#7c3aed;
+  classDef buy fill:#e8eefc,stroke:#2b5fd9,color:#1f2433;
+  classDef make fill:#e3f6ef,stroke:#0ea371,color:#0b6e4f;
+  classDef ex fill:#fdf3e3,stroke:#b45309,color:#b45309;
+  class A,B plan;
+  class C buy;
+  class D,E make;
+  class F,G ex;
+  </pre>
+  <div class="mmd-cap">보라 = 계획·소싱 · 파랑 = 구매 · 초록 = 제조(전/후공정) · 주황 = 무역·사후. 점선 두 개가 피드백 루프다.</div>
+
+  <div class="callout warn">
+    <span class="t">맵이 말하는 두 개의 순환</span>
+    ① <b>계획 순환</b> — ④Fab의 실사용량(MES)이 ①계획의 원단위를 보정한다(<a href="A-6-semicon-mrp.html">심화 6</a>). ② <b>평가 순환</b> — ③구매의 품질·납기 실적이 ②소싱의 협력사 등급·쿼터로 되돌아간다(<a href="A-7-semicon-osat-esg.html">심화 7</a>). 각 단계의 상세는 <a href="04-3-semiconductor.html">4-3</a>·<a href="A-5-semicon-sap-eproc.html">심화 5</a>~<a href="A-8-semicon-aeo-process-map.html">8</a>에서 다룬다.
+  </div>
+
+  <h2>6. 정리 — 공정이 구매를 만든다</h2>
   <div class="callout tip">
     <span class="t">이 페이지의 쓸모</span>
     "왜 반도체는 위탁·VMI·ERS를 쓰지?" → <b>전공정의 반복 적층</b> 때문에 자재가 연속·대량 소비되니까. "왜 후공정은 외주(L)지?" → <b>조립 공정</b>이라 OSAT 분업이 효율적이니까. "왜 MRP가 BOM이 아니지?" → <b>레이어 반복</b>이라 투입×원단위로 계산하니까. 공정을 알면 구매 설계가 설명된다.

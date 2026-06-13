@@ -53,7 +53,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 
 | 레슨 | 핵심 내용 |
 |---|---|
-| [반도체 제조 공정 다이어그램](https://totoma7.github.io/pro_sap/lessons/P-1-semicon-process.html) | 전공정(산화→포토 사이클 반복→EDS)·후공정(다이싱→본딩→몰딩→테스트) 단계별 도식, 공정별 소비 자재·장비를 구매 카테고리와 매핑 |
+| [반도체 제조 공정 다이어그램](https://totoma7.github.io/pro_sap/lessons/P-1-semicon-process.html) | Mermaid 공정 흐름도(전공정 포토 사이클·후공정), 공정별 소비 자재·장비 매핑, 공정×구매 업무 프로세스 맵(두 피드백 루프) |
 
 ### 레퍼런스
 
