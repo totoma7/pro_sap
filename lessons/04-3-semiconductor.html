@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4-3 반도체 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>4차시 · 업종별 구매 프로세스 차이</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">4-3</span>
+    <h1>반도체 — Fab이 멈추면 모든 것이 멈춘다</h1>
+    <p class="lead">같은 "제조"인데 일반 제조(4-1)와 완전히 다르다. 24시간 멈추지 않는 Fab의 가동률이 구매의 모든 우선순위를 지배한다.</p>
+  </header>
+
+  <h2>1. 왜 반도체 구매는 다른가</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>Fab은 <b>24/7 연속 가동</b> — 라인 중단 비용이 시간당 수억 원. "싸게"보다 <b>"끊기지 않게"</b>가 최우선</li>
+      <li>일반 제조의 BOM 부품 구매와 달리, 구매 대상이 <b>장비·원부자재·스페어파츠·시설</b>로 성격이 극단적으로 갈린다</li>
+      <li>핵심 장비·소재는 <b>공급사가 슈퍼 을</b>(노광 장비, 특수 포토레지스트 등 독점 공급) — 입찰이 아니라 확보 전쟁</li>
+      <li><b>전략물자 수출입 규제</b>(EAR 등)가 구매·물류 프로세스에 직접 들어온다</li>
+    </ul>
+  </div>
+
+  <h2>2. 구매 카테고리 4분면 — 각각 다른 프로세스</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>카테고리</th><th>예시</th><th>SAP 처리</th><th>특징</th></tr>
+    <tr><td><b>① 장비 (CAPEX)</b></td><td>노광·식각·증착 장비</td><td>자산(A) 계정지정 PO + 마일스톤 지급</td><td>대당 수십억~수천억, 리드타임 1년+</td></tr>
+    <tr><td><b>② 원부자재</b></td><td>웨이퍼, 포토레지스트, 특수가스, 케미컬</td><td>위탁(K)/VMI, 벌크 사용량 정산</td><td>품질 민감(배치·로트), 끊기면 라인 정지</td></tr>
+    <tr><td><b>③ 스페어파츠/소모품</b></td><td>장비 부품, 석영 파츠, 펌프</td><td>표준 PO + 수리 외주(Subcon Repair)</td><td>수만 SKU, 가용성이 생명, 수리·리퍼 순환</td></tr>
+    <tr><td><b>④ 시설/인프라</b></td><td>클린룸, 배관, 전력</td><td>WBS(P) 서비스 PO + SES</td><td>사실상 건설 프로세스(4-2와 동일)</td></tr>
+  </table>
+  </div>
+  <div class="callout point">
+    <span class="t">읽는 법</span>
+    한 회사 안에 <b>제조(4-1) + 건설(4-2) + 간접구매(2-1)가 모두 들어 있는</b> 셈이다. 그래서 반도체 구매 시스템은 카테고리별로 사실상 별도 프로세스를 운영한다.
+  </div>
+
+  <h2>3. 장비 구매 — 마일스톤의 세계</h2>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>장비 PO (자산 A)</b>
+      <span class="d">사양 협의 수개월 후 발주. 계약과 동시에 지급 일정이 마일스톤으로 쪼개진다</span>
+      <div class="meta"><span class="chip">계약금 20%</span></div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">2</span><b>FAT — 출하 전 검수</b>
+      <span class="d">장비사 공장에서 성능 시험(Factory Acceptance Test) 통과 후 선적</span>
+      <div class="meta"><span class="chip">선적 시 50%</span></div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>입고 · 설치 · SAT</b>
+      <span class="d">Fab 반입 → 설치 → 현장 성능 검수(Site Acceptance Test). SAT 통과가 "진짜 검수"</span>
+      <div class="meta"><span class="chip">SAT 후 25%</span></div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">4</span><b>자산화 · 보증 잔금</b>
+      <span class="d">자산 전기(감가상각 시작), 보증기간 종료 후 잔금. 분할 지급이 회계·세무와 얽힌다</span>
+      <div class="meta"><span class="chip">보증 후 5%</span></div>
+    </div>
+  </div>
+  <div class="callout warn">
+    <span class="t">연계 관점</span>
+    장비사 포털 연계의 핵심은 PO가 아니라 <b>마일스톤 진행 상태와 문서</b>(FAT/SAT 리포트, 선적 서류)다. SAP에서는 지급 조건(Payment Plan)을 마일스톤별로 분리하고, 검수 이벤트가 지급을 풀어주는 구조로 설계한다.
+  </div>
+
+  <h2>4. 원부자재 — VMI와 사용량 정산</h2>
+  <p>특수가스·케미컬은 "발주 → 입고"가 아니라 <b>공급사가 재고를 책임지는</b> 모델이 표준이다.</p>
+  <div class="flow">
+    <div class="step hl">
+      <b>VMI (Vendor Managed Inventory)</b>
+      <span class="d">공급사가 Fab 내/인근 탱크·저장소 재고를 직접 모니터링하고 보충. 우리 시스템은 재고 수준 데이터를 공급사와 <b>실시간 공유</b></span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <b>사용 시점 매입 — 위탁(K) 또는 배관 직결</b>
+      <span class="d">벌크가스는 배관으로 직접 공급 — 유량계 <b>사용량 데이터가 곧 매입 수량</b>. 월 단위 사용량 집계 → 자동 정산(ERS: 송장 없이 입고 기준 자동 송장)</span>
+    </div>
+  </div>
+  <div class="callout tip">
+    <span class="t">ERS (Evaluated Receipt Settlement)</span>
+    공급사가 송장을 보내지 않고, <b>구매사가 입고/사용 실적으로 송장을 자동 생성</b>하는 방식. 5차시의 역발행 세금계산서와 철학이 같다 — "검증할 필요 없는 데이터로 처음부터 만든다." VMI·사용량 정산과 묶이면 송장 분쟁이 구조적으로 사라진다.
+  </div>
+
+  <h2>5. 스페어파츠 — 가용성과 수리 순환</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>다운타임 방지가 목적</b> — 재고 최적화보다 임계 부품(Critical Spare)의 가용성이 우선</li>
+      <li><b>수리 순환(Repair Loop)</b>: 고장 부품 탈거 → 수리 외주 PO → 수리품 재입고 — 신품 구매와 다른 문서 흐름</li>
+      <li>장비사 순정 vs 서드파티 파츠 — 품질·보증 정책이 소싱을 제약</li>
+      <li>긴급 구매(AOG성 주문) 절차: 승인 단축 + 항공 운송 — 평시 프로세스와 별도 트랙</li>
+    </ul>
+  </div>
+
+  <h2>6. 규제·보안 — 반도체만의 추가 레이어</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>레이어</th><th>내용</th><th>시스템 반영</th></tr>
+    <tr><td><b>전략물자 수출입</b></td><td>장비·SW가 수출통제 대상(EAR 등). 도입·이전·재판매에 허가 필요</td><td>PO에 통제 분류(ECCN) 관리, 허가 없으면 발주·이동 차단</td></tr>
+    <tr><td><b>기술 보안</b></td><td>공정 정보가 핵심 기밀 — 협력사 NDA·보안 등급</td><td>포털 협력사 등급별 정보 접근 통제, 도면 워터마크</td></tr>
+    <tr><td><b>공급망 리스크</b></td><td>독점 공급·지정학 리스크</td><td>듀얼소싱 현황·재고 커버리지 대시보드, 소재 국산화 트래킹</td></tr>
+  </table>
+  </div>
+
+  <h2>7. 총정리 — 반도체를 한 줄로</h2>
+  <div class="callout point">
+    <span class="t">4차시의 공식에 대입하면</span>
+    "무엇이 구매를 시작시키는가" — <b>Fab 가동 계획과 장비 투자 로드맵</b>. "무엇이 지급을 막을 수 있는가" — <b>SAT(장비 검수)와 사용량 검증</b>. 그리고 다른 업종에 없는 제3의 축: <b>수출 규제가 발주 자체를 막을 수 있다.</b>
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>관점</th><th>일반 제조 (4-1)</th><th>반도체</th></tr>
+    <tr><td>최우선 가치</td><td>납기·단가</td><td>가동률 (다운타임 방지)</td></tr>
+    <tr><td>주력 구매</td><td>BOM 부품 (SA 반복 납품)</td><td>장비 CAPEX + 원부자재 VMI + 스페어</td></tr>
+    <tr><td>검수</td><td>입고 GR + QM</td><td>FAT/SAT 마일스톤, 사용량 검증</td></tr>
+    <tr><td>정산</td><td>3-Way Match</td><td>ERS(자동 송장)·마일스톤 분할 지급 비중 높음</td></tr>
+    <tr><td>공급사 관계</td><td>다수 협력사 경쟁</td><td>독점 공급사 다수 — 확보·협업 중심</td></tr>
+    <tr><td>추가 레이어</td><td>—</td><td>수출 규제(ECCN)·기술 보안</td></tr>
+  </table>
+  </div>
+
+  <div class="pager">
+    <a href="04-2-const-public-pharma-fin.html"><span class="lbl">이전</span><b>← 4-2 건설 · 공공 · 제약 · 금융</b></a>
+    <a class="next" href="05-1-korea-specifics.html"><span class="lbl">다음</span><b>5-1 한국 실무 특화 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 4차시</footer>
+</div>
+</body>
+</html>

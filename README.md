@@ -4,7 +4,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 한국 실무 특화 주제, 심화 과정과 인터랙티브 시뮬레이터까지 도식 중심으로 학습하는 자료입니다.
 순수 HTML/CSS/JS(의존성 제로)로 작성되어 웹/모바일 어디서든 열립니다.
 
-**구성: 본 과정 5차시(10편) + 심화 4편 + 인터랙티브 시뮬레이터 1편 — 총 15개 레슨 완성**
+**구성: 본 과정 5차시(11편) + 심화 4편 + 인터랙티브 시뮬레이터 1편 — 총 16개 레슨 완성**
 
 ## 보는 방법
 
@@ -27,6 +27,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | | [3-2 연계 시나리오 & Punch-out](https://totoma7.github.io/pro_sap/lessons/03-2-scenarios-punchout.html) | 인터페이스 목록, OCI/cXML, 멱등성·재처리·대사 |
 | 4차시 | [4-1 제조 · 유통/리테일](https://totoma7.github.io/pro_sap/lessons/04-1-mfg-retail.html) | MRP·납품일정계약·ASN vs Article·자동 보충·사후 정산 |
 | | [4-2 건설 · 공공 · 제약 · 금융](https://totoma7.github.io/pro_sap/lessons/04-2-const-public-pharma-fin.html) | WBS·기성·유보금, 나라장터, 배치·QM·COA, 예산 통제 |
+| | [4-3 반도체](https://totoma7.github.io/pro_sap/lessons/04-3-semiconductor.html) | 장비 CAPEX 마일스톤(FAT/SAT), 원부자재 VMI·ERS 정산, 스페어 수리 순환, 수출 규제 |
 | 5차시 | [5-1 한국 실무 특화](https://totoma7.github.io/pro_sap/lessons/05-1-korea-specifics.html) | 세금계산서 대사(4-Way)·역발행, 상생결제, 이중 원장 운영 |
 
 ### 심화 (Deep Dive)
@@ -59,8 +60,8 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 ├── assets/
 │   ├── style.css         # 공통 스타일 (모바일 퍼스트 반응형, 의존성 없음)
 │   └── gate.js           # 접근 게이트 (ID 확인 → 60일 열람 쿠키)
-├── lessons/              # 레슨 페이지 15편
-│   ├── 01-* ~ 05-*       # 본 과정 (5차시 10편)
+├── lessons/              # 레슨 페이지 16편
+│   ├── 01-* ~ 05-*       # 본 과정 (5차시 11편)
 │   ├── A-1 ~ A-4         # 심화 4편
 │   └── I-1               # 인터랙티브 P2P 시뮬레이터
 └── docs/                 # 마크다운 원고 (HTML 페이지의 소스 노트)
