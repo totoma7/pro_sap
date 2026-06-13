@@ -41,7 +41,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 심화 5 | [반도체 특화 SAP·전자구매 구현](https://totoma7.github.io/pro_sap/lessons/A-5-semicon-sap-eproc.html) | 장비 CAPEX(IM·PS·AA·분할 지급), 위탁·파이프라인·ERS, PM 수리 순환, GTS 수출통제, Fab 인터페이스 목록 |
 | 심화 6 | [반도체 MRP](https://totoma7.github.io/pro_sap/lessons/A-6-semicon-mrp.html) | 웨이퍼 투입 계획 × 원단위 예측, MRP 유형 설계(PD/VB/VV/ND), 긴 리드타임 대응, 예측↔확약(Forecast/Commit) 연계 |
 | 심화 7 | [반도체 외주·매각·ESG·협력사 평가](https://totoma7.github.io/pro_sap/lessons/A-7-semicon-osat-esg.html) | OSAT 외주·수율 정산, 중고 장비·스크랩 매각, RBA·분쟁광물·Scope 3, 협력사 등급 평가·쿼터 연동 |
-| 심화 8 | [AEO & 반도체 공정 통합 맵](https://totoma7.github.io/pro_sap/lessons/A-8-semicon-aeo-process-map.html) | AEO(수출입 안전관리 우수업체) vs GTS, 계획→소싱→구매→전/후공정→수출입→매각 7단계 통합 도식 + 두 피드백 루프 |
+| 심화 8 | [AEO — 수출입 안전관리 우수업체](https://totoma7.github.io/pro_sap/lessons/A-8-semicon-aeo-process-map.html) | AEO vs GTS 수출통제, 통관 우대·공급망 보안 의무, 협력사 평가·등록 심사에 AEO 연계 |
 
 ### 인터랙티브
 

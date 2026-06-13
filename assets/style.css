@@ -364,3 +364,15 @@ details.qa .a { padding: 12px 14px; font-size: 14.5px; color: var(--ink); }
 .legend .sw { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
 .legend .sw.mat { background: var(--accent-soft); border: 1px solid #bfe8d8; }
 .legend .sw.eq { background: var(--warn-soft); border: 1px solid #f3dfb8; }
+
+/* ── Mermaid 다이어그램 컨테이너 ── */
+.mmd {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 10px; margin: 14px 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  text-align: center;
+}
+.mmd svg { max-width: 100%; height: auto; }
+.mmd:not(.done) { /* 렌더 전 코드 텍스트 숨김 깜빡임 방지 */
+  color: transparent; min-height: 60px;
+}
+.mmd-cap { font-size: 12.5px; color: var(--sub); text-align: center; margin: -6px 0 14px; }

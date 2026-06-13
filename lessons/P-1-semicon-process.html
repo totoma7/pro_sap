@@ -6,6 +6,21 @@
 <title>공정 반도체 제조 공정 다이어그램 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true, securityLevel: 'loose', theme: 'base',
+    flowchart: { htmlLabels: true, curve: 'basis' },
+    themeVariables: {
+      primaryColor: '#e8eefc', primaryBorderColor: '#2b5fd9', primaryTextColor: '#1f2433',
+      lineColor: '#5b6377', fontSize: '13px', fontFamily: 'inherit'
+    }
+  });
+  // 렌더 완료 후 컨테이너 표시
+  window.addEventListener('load', function () {
+    document.querySelectorAll('.mmd').forEach(function (el) { el.classList.add('done'); });
+  });
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -27,16 +42,33 @@
     <span><span class="sw eq"></span> 사용 장비 (CAPEX)</span>
   </div>
 
-  <h2>1. 큰 그림 — 모래에서 칩까지</h2>
-  <div class="miniflow">
-    <span class="box">웨이퍼 제조<br><span class="chip">잉곳→슬라이싱</span></span>
-    <span class="ar">→</span>
-    <span class="box hl">전공정 (Fab)<br><span class="chip">회로 형성 · 반복 적층</span></span>
-    <span class="ar">→</span>
-    <span class="box hl">후공정 (OSAT)<br><span class="chip">절단·조립·테스트</span></span>
-    <span class="ar">→</span>
-    <span class="box">완제품 칩</span>
-  </div>
+  <h2>1. 전체 공정 흐름 (Mermaid 다이어그램)</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  W["웨이퍼 제조<br/>잉곳 → 슬라이싱"] --> OX["① 산화"]
+  OX --> PH
+  subgraph CYC["↻ 포토 사이클 · 레이어마다 반복 (수십~100회+)"]
+    direction TB
+    PH["② 포토 / 노광"] --> ET["③ 식각"] --> DE["④ 증착"] --> IM["⑤ 이온주입"] --> CMP["⑥ CMP"] --> CL["⑦ 세정 · 계측"]
+  end
+  CL -. 다음 레이어 .-> PH
+  CL --> EDS["⑧ EDS 웨이퍼 테스트"]
+  EDS --> BG
+  subgraph BE["후공정 · OSAT (조립의 세계)"]
+    direction TB
+    BG["⑨ 백그라인딩"] --> DI["⑩ 다이싱"] --> BO["⑪ 다이/와이어 본딩"] --> MO["⑫ 몰딩"] --> FT["⑬ 패키지 테스트 · 마킹"]
+  end
+  FT --> CHIP["완제품 칩"]
+
+  classDef fe fill:#e3f6ef,stroke:#0ea371,color:#0b6e4f;
+  classDef be fill:#fdf3e3,stroke:#b45309,color:#b45309;
+  classDef ep fill:#e8eefc,stroke:#2b5fd9,color:#1f2433;
+  class OX,PH,ET,DE,IM,CMP,CL,EDS fe;
+  class BG,DI,BO,MO,FT be;
+  class W,CHIP ep;
+  </pre>
+  <div class="mmd-cap">초록 = 전공정(Fab) · 주황 = 후공정(OSAT). 전공정의 ②~⑦은 칩 한 층을 만드는 한 사이클로, 레이어 수만큼 반복된다.</div>
+
   <div class="callout point">
     <span class="t">두 개의 세계</span>
     <b>전공정</b>은 웨이퍼 한 장 위에 수백 개 칩을 동시에 만드는 "화학·물리의 세계"(반복 적층), <b>후공정</b>은 그 웨이퍼를 잘라 하나씩 포장하는 "조립의 세계"다. 구매 관점에서 전공정은 케미컬·가스 소비, 후공정은 OSAT 외주(심화 7)로 갈린다.
@@ -221,12 +253,12 @@
   </div>
   <div class="callout point">
     <span class="t">다음으로</span>
-    이 공정 위에 구매·계획·외주·수출입·매각 업무가 어떻게 한 줄로 연결되는지는 <a href="A-8-semicon-aeo-process-map.html">심화 8 통합 맵</a>에서 확인하라. 이 페이지가 "제조 공정"이라면, 심화 8은 "그 위를 흐르는 구매 업무"다.
+    이 공정 각 단계의 자재·장비가 어떤 SAP 모듈·조달 방식으로 구매되는지는 위 매핑표와 반도체 심화편(<a href="A-5-semicon-sap-eproc.html">심화 5</a>·<a href="A-6-semicon-mrp.html">6</a>·<a href="A-7-semicon-osat-esg.html">7</a>)에서, 수출입·통관(AEO) 관점은 <a href="A-8-semicon-aeo-process-map.html">심화 8</a>에서 다룬다.
   </div>
 
   <div class="pager">
     <a href="../index.html"><span class="lbl">목차</span><b>← 전체 커리큘럼</b></a>
-    <a class="next" href="A-8-semicon-aeo-process-map.html"><span class="lbl">함께 보기</span><b>심화 8 공정 통합 맵 →</b></a>
+    <a class="next" href="A-8-semicon-aeo-process-map.html"><span class="lbl">함께 보기</span><b>심화 8 AEO →</b></a>
   </div>
 
   <footer>SAP × e-Procurement 학습 · 공정 다이어그램</footer>
