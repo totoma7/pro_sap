@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공정 반도체 제조 공정 다이어그램 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>공정 · Process</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">공정 다이어그램</span>
+    <h1>반도체 제조 공정 — 다이어그램으로 보기</h1>
+    <p class="lead">구매가 아니라 <b>제조 공정 그 자체</b>를 단계별로 그린다. 각 공정에서 어떤 자재(초록)와 장비(주황)가 소비되는지를 함께 표시해, 앞에서 본 구매·MRP 업무가 왜 그렇게 생겼는지 뿌리를 보여준다.</p>
+  </header>
+
+  <div class="legend">
+    <span><span class="sw mat"></span> 소비 자재 (구매 대상 — 원부자재)</span>
+    <span><span class="sw eq"></span> 사용 장비 (CAPEX)</span>
+  </div>
+
+  <h2>1. 큰 그림 — 모래에서 칩까지</h2>
+  <div class="miniflow">
+    <span class="box">웨이퍼 제조<br><span class="chip">잉곳→슬라이싱</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">전공정 (Fab)<br><span class="chip">회로 형성 · 반복 적층</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">후공정 (OSAT)<br><span class="chip">절단·조립·테스트</span></span>
+    <span class="ar">→</span>
+    <span class="box">완제품 칩</span>
+  </div>
+  <div class="callout point">
+    <span class="t">두 개의 세계</span>
+    <b>전공정</b>은 웨이퍼 한 장 위에 수백 개 칩을 동시에 만드는 "화학·물리의 세계"(반복 적층), <b>후공정</b>은 그 웨이퍼를 잘라 하나씩 포장하는 "조립의 세계"다. 구매 관점에서 전공정은 케미컬·가스 소비, 후공정은 OSAT 외주(심화 7)로 갈린다.
+  </div>
+
+  <h2>2. 전공정 (Front-End) — 회로를 새긴다</h2>
+  <p>웨이퍼 위에 트랜지스터와 배선을 만드는 단계. 핵심은 아래 <b>포토 사이클이 레이어 수만큼(수십~100회+) 반복</b>된다는 것이다.</p>
+
+  <div class="procstep">
+    <span class="num">1</span>
+    <div class="body">
+      <b>웨이퍼 준비 · 산화</b> <span class="en">Oxidation</span>
+      <span class="d">실리콘 웨이퍼 표면에 절연 산화막(SiO₂)을 성장시킨다. 모든 공정의 출발 기판.</span>
+      <div class="mat">
+        <span class="m">웨이퍼</span><span class="m">고순도 산소·수소</span><span class="e">산화로(Furnace)</span>
+      </div>
+    </div>
+  </div>
+  <div class="procd">↓</div>
+
+  <div class="cycwrap">
+    <span class="cyctag">↻ 포토 사이클 — 레이어마다 반복</span>
+
+    <div class="procstep cyc">
+      <span class="num">2</span>
+      <div class="body">
+        <b>포토 (노광)</b> <span class="en">Photolithography</span>
+        <span class="d">감광액(PR)을 바르고, 마스크 회로 패턴을 빛으로 전사한 뒤 현상. 가장 비싸고 정밀한 단계.</span>
+        <div class="mat">
+          <span class="m">포토레지스트(PR)</span><span class="m">현상액·신너</span><span class="e">노광기(Scanner·EUV/DUV)</span><span class="e">트랙</span>
+        </div>
+      </div>
+    </div>
+    <div class="procd">↓</div>
+
+    <div class="procstep cyc">
+      <span class="num">3</span>
+      <div class="body">
+        <b>식각</b> <span class="en">Etch</span>
+        <span class="d">PR로 덮이지 않은 부분을 깎아내 패턴을 실제 막에 새긴다. 건식(플라즈마)·습식.</span>
+        <div class="mat">
+          <span class="m">식각 가스(불소·염소계)</span><span class="m">식각액</span><span class="e">식각 장비(Etcher)</span>
+        </div>
+      </div>
+    </div>
+    <div class="procd">↓</div>
+
+    <div class="procstep cyc">
+      <span class="num">4</span>
+      <div class="body">
+        <b>증착</b> <span class="en">Deposition (CVD/PVD)</span>
+        <span class="d">절연막·금속막 등 새로운 박막을 입힌다. 다음 레이어의 재료층.</span>
+        <div class="mat">
+          <span class="m">전구체 가스·소스</span><span class="m">스퍼터링 타겟(금속)</span><span class="e">CVD/PVD 장비</span>
+        </div>
+      </div>
+    </div>
+    <div class="procd">↓</div>
+
+    <div class="procstep cyc">
+      <span class="num">5</span>
+      <div class="body">
+        <b>이온주입</b> <span class="en">Ion Implantation</span>
+        <span class="d">불순물(도펀트)을 주입해 반도체 전기 특성을 부여한다.</span>
+        <div class="mat">
+          <span class="m">도펀트 가스(붕소·인 등)</span><span class="e">이온주입기(Implanter)</span>
+        </div>
+      </div>
+    </div>
+    <div class="procd">↓</div>
+
+    <div class="procstep cyc">
+      <span class="num">6</span>
+      <div class="body">
+        <b>평탄화 (CMP)</b> <span class="en">Chemical Mechanical Polishing</span>
+        <span class="d">쌓인 막 표면을 갈아 평평하게. 다음 레이어를 정확히 올리기 위한 필수 단계.</span>
+        <div class="mat">
+          <span class="m">슬러리(연마제)</span><span class="m">CMP 패드</span><span class="e">CMP 장비</span>
+        </div>
+      </div>
+    </div>
+    <div class="procd">↓</div>
+
+    <div class="procstep cyc">
+      <span class="num">7</span>
+      <div class="body">
+        <b>세정 · 계측</b> <span class="en">Clean &amp; Metrology</span>
+        <span class="d">파티클 제거 세정 후, 패턴이 제대로 됐는지 측정·검사. 통과하면 다음 레이어로.</span>
+        <div class="mat">
+          <span class="m">초순수(UPW)</span><span class="m">세정 케미컬</span><span class="e">계측·검사 장비</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cycnote">↑ 2~7번이 한 레이어. 칩 구조 완성까지 수십~100회+ 반복 ⟳</div>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">여기가 MRP의 출발점 (심화 6 연결)</span>
+    자재 소비가 "칩당"이 아니라 <b>"투입 웨이퍼 × 레이어 수"</b>에 비례하는 이유가 이 반복 구조다. 레이어가 늘어나는 신공정은 PR·가스·슬러리 원단위가 계단식으로 증가 → 그래서 반도체 MRP는 BOM이 아니라 <b>투입 계획 × 원단위 예측</b>으로 돈다.
+  </div>
+
+  <div class="procd">↓ 모든 레이어 완성</div>
+  <div class="procstep">
+    <span class="num">8</span>
+    <div class="body">
+      <b>EDS / 웨이퍼 테스트</b> <span class="en">Electrical Die Sorting</span>
+      <span class="d">웨이퍼 상태에서 칩 하나하나 전기 검사 → 양품/불량 선별(수율 확정). 여기까지가 전공정.</span>
+      <div class="mat">
+        <span class="m">프로브 카드(소모)</span><span class="e">테스터·프로버</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. 후공정 (Back-End / OSAT) — 잘라서 포장한다</h2>
+  <p>완성된 웨이퍼를 칩으로 분리하고 외부와 연결·보호하는 단계. 상당 부분이 <b>OSAT 외주</b>(심화 7)로 진행된다.</p>
+
+  <div class="procstep">
+    <span class="num">9</span>
+    <div class="body">
+      <b>백그라인딩</b> <span class="en">Back Grinding</span>
+      <span class="d">웨이퍼 뒷면을 갈아 얇게 만든다(적층·방열용).</span>
+      <div class="mat"><span class="m">백그라인딩 테이프</span><span class="e">그라인더</span></div>
+    </div>
+  </div>
+  <div class="procd">↓</div>
+  <div class="procstep">
+    <span class="num">10</span>
+    <div class="body">
+      <b>다이싱 (절단)</b> <span class="en">Dicing</span>
+      <span class="d">웨이퍼를 개별 칩(다이)으로 자른다.</span>
+      <div class="mat"><span class="m">다이싱 블레이드·테이프</span><span class="e">다이싱 소(Saw)</span></div>
+    </div>
+  </div>
+  <div class="procd">↓</div>
+  <div class="procstep">
+    <span class="num">11</span>
+    <div class="body">
+      <b>다이 본딩 · 와이어 본딩</b> <span class="en">Die / Wire Bonding</span>
+      <span class="d">칩을 기판(리드프레임·서브스트레이트)에 붙이고, 금/구리선으로 전기 연결.</span>
+      <div class="mat"><span class="m">리드프레임·서브스트레이트</span><span class="m">본딩 와이어(금·구리)</span><span class="e">본더</span></div>
+    </div>
+  </div>
+  <div class="procd">↓</div>
+  <div class="procstep">
+    <span class="num">12</span>
+    <div class="body">
+      <b>몰딩 (패키징)</b> <span class="en">Molding</span>
+      <span class="d">에폭시 수지로 칩을 감싸 외부 충격·습기로부터 보호.</span>
+      <div class="mat"><span class="m">EMC(에폭시 몰딩 컴파운드)</span><span class="e">몰딩 장비</span></div>
+    </div>
+  </div>
+  <div class="procd">↓</div>
+  <div class="procstep">
+    <span class="num">13</span>
+    <div class="body">
+      <b>패키지 테스트 · 마킹</b> <span class="en">Final Test &amp; Marking</span>
+      <span class="d">완성 패키지를 최종 전기·신뢰성 검사하고 제품 정보를 새긴다 → 출하.</span>
+      <div class="mat"><span class="m">테스트 소켓(소모)</span><span class="e">테스트 핸들러</span></div>
+    </div>
+  </div>
+
+  <h2>4. 공정 ↔ 구매 카테고리 매핑</h2>
+  <p>공정 다이어그램을 구매의 눈으로 다시 보면, 각 자재·장비가 앞에서 배운 카테고리·프로세스로 정확히 떨어진다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>공정에서 본 것</th><th>구매 카테고리 (4-3)</th><th>조달·정산 방식</th><th>관련 레슨</th></tr>
+    <tr><td>노광기·식각기·CMP 등 장비</td><td>장비 (CAPEX)</td><td>마일스톤(FAT/SAT) 분할 지급</td><td>심화 5</td></tr>
+    <tr><td>PR·식각가스·슬러리·전구체</td><td>공정 원부자재</td><td>위탁(K)·파이프라인·VMI·ERS</td><td>심화 5·6</td></tr>
+    <tr><td>초순수·세정 케미컬</td><td>공정 원부자재(벌크)</td><td>배관 직결, 사용량 정산</td><td>심화 5</td></tr>
+    <tr><td>스퍼터링 타겟(귀금속)</td><td>원부자재 + 스크랩 회수</td><td>구매 + 잔재 매각(정련)</td><td>심화 7</td></tr>
+    <tr><td>프로브 카드·테스트 소켓</td><td>소모성 스페어</td><td>재주문점, 수리 순환</td><td>심화 5</td></tr>
+    <tr><td>리드프레임·EMC·본딩 와이어</td><td>후공정 부자재</td><td>OSAT 사급 또는 턴키</td><td>심화 7</td></tr>
+    <tr><td>다이싱~테스트 (후공정 전체)</td><td>외주 가공(L)</td><td>OSAT 외주·수율 정산</td><td>심화 7</td></tr>
+  </table>
+  </div>
+
+  <h2>5. 정리 — 공정이 구매를 만든다</h2>
+  <div class="callout tip">
+    <span class="t">이 페이지의 쓸모</span>
+    "왜 반도체는 위탁·VMI·ERS를 쓰지?" → <b>전공정의 반복 적층</b> 때문에 자재가 연속·대량 소비되니까. "왜 후공정은 외주(L)지?" → <b>조립 공정</b>이라 OSAT 분업이 효율적이니까. "왜 MRP가 BOM이 아니지?" → <b>레이어 반복</b>이라 투입×원단위로 계산하니까. 공정을 알면 구매 설계가 설명된다.
+  </div>
+  <div class="callout point">
+    <span class="t">다음으로</span>
+    이 공정 위에 구매·계획·외주·수출입·매각 업무가 어떻게 한 줄로 연결되는지는 <a href="A-8-semicon-aeo-process-map.html">심화 8 통합 맵</a>에서 확인하라. 이 페이지가 "제조 공정"이라면, 심화 8은 "그 위를 흐르는 구매 업무"다.
+  </div>
+
+  <div class="pager">
+    <a href="../index.html"><span class="lbl">목차</span><b>← 전체 커리큘럼</b></a>
+    <a class="next" href="A-8-semicon-aeo-process-map.html"><span class="lbl">함께 보기</span><b>심화 8 공정 통합 맵 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 공정 다이어그램</footer>
+</div>
+</body>
+</html>
