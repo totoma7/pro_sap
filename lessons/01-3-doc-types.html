@@ -6,6 +6,7 @@
 <title>1-3 문서 유형 &amp; 품목 범주 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -63,53 +64,25 @@
   <h2>3. 프로세스가 어떻게 달라지나 — 3가지 비교</h2>
 
   <h3>표준 구매 — 가장 단순한 기본형</h3>
-  <div class="miniflow">
-    <span class="box">PO</span><span class="ar">→</span>
-    <span class="box">입고 (재고 ＋)</span><span class="ar">→</span>
-    <span class="box">송장검증</span><span class="ar">→</span>
-    <span class="box">지급</span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  PO["PO"] --> GR["입고 (재고 ＋)"] --> IV["송장검증"] --> PAY["지급"]
+  </pre>
 
   <h3>외주(L) — 제조업의 핵심 프로세스</h3>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>외주 PO 생성</b>
-      <span class="d">완성품(가공품)을 발주하면서, 우리가 제공할 <b>사급 자재(Component)</b> 목록이 BOM에서 따라붙는다</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>사급 자재 출고</b> <span class="chip code">ME2O</span>
-      <span class="d">자재를 외주사에 보낸다. 재고는 여전히 우리 소유 — "공급사 위치 재고(Stock at Vendor)"로 관리</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>가공품 입고</b>
-      <span class="d">완성품 입고와 동시에 사급 자재가 자동 소비(백플러시). 가공비만 매입 대상</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>송장검증 · 지급</b>
-      <span class="d">가공비에 대해서만 3-Way Match. 협력사 포털에서 사급재 수불을 공유하는 연계가 흔하다</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  L1["① 외주 PO 생성<br/>사급 자재(Component)가 BOM에서 따라붙음"] --> L2["② 사급 자재 출고 (ME2O)<br/>재고는 우리 소유 · Stock at Vendor"]
+  L2 --> L3["③ 가공품 입고<br/>사급재 자동 소비(백플러시) · 가공비만 매입"]
+  L3 --> L4["④ 송장검증 · 지급<br/>가공비에 대해서만 3-Way Match"]
+  </pre>
 
   <h3>서비스(D) — 건설·금융의 기본형</h3>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>서비스 PO 생성</b>
-      <span class="d">물건이 아니라 용역 내역(Service Line)으로 구성. 총액만 정하는 한도(Limit) 방식도 가능</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>SES — 서비스 검수표</b> <span class="chip code">ML81N</span>
-      <span class="d">"입고" 대신 수행 내역을 검수·승인. 건설의 <b>기성(공정률) 확정</b>에 해당하는 단계</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>송장검증 · 지급</b>
-      <span class="d">SES 승인 금액 기준으로 대사. 재고가 없으므로 GR/IR 대신 비용 계정으로 직행</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  D1["① 서비스 PO 생성<br/>용역 내역(Service Line) · 한도(Limit) 방식"] --> D2["② SES · 서비스 검수표 (ML81N)<br/>수행 내역 검수 · 기성(공정률) 확정"]
+  D2 --> D3["③ 송장검증 · 지급<br/>SES 승인 금액 기준 · 비용 계정 직행"]
+  </pre>
 
   <div class="callout point">
     <span class="t">업종 차이의 본질</span>
@@ -146,7 +119,7 @@
 
   <div class="pager">
     <a href="01-2-p2p-flow.html"><span class="lbl">이전</span><b>← 1-2 구매 문서 흐름</b></a>
-    <a class="next" href="../index.html"><span class="lbl">다음</span><b>목차로 (2차시 준비 중) →</b></a>
+    <a class="next" href="02-1-direct-indirect.html"><span class="lbl">다음</span><b>2-1 직접구매 vs 간접구매 →</b></a>
   </div>
 
   <footer>SAP × e-Procurement 학습 · 1차시</footer>

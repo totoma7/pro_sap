@@ -6,6 +6,7 @@
 <title>심화 6 반도체 MRP | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -64,32 +65,17 @@
   </div>
 
   <h2>4. 계획 → 발주까지의 흐름</h2>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>웨이퍼 투입 계획 확정</b>
-      <span class="d">생산기획이 라인·월별 투입량 확정 — 모든 자재 계획의 뿌리</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">2</span><b>원단위 전개 → 계획 소요(PIR) 생성</b>
-      <span class="d">투입 계획 × 레이어당 원단위(MES/공정 데이터 기준) = 자재별 월 소요량 → SAP에 계획 독립 소요로 입력</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>MRP 실행 → PR/SA 회차 생성</b>
-      <span class="d">안전재고·리드타임 반영해 부족분 산출. 소스리스트·쿼터(듀얼소싱 비율) 따라 공급원 자동 결정 → 납품일정계약(SA) 회차 또는 PR</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>공급사 협업 — 예측 공유와 확약</b>
-      <span class="d">3~12개월 예측(Forecast)을 공급사에 공유 → 공급사가 공급 가능량 회신(Commit) — SCC의 핵심 시나리오</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">5</span><b>실소비 반영 → 원단위 보정</b>
-      <span class="d">MES 실사용량을 백플러시/정산으로 SAP에 반영 → 원단위 차이 분석 → 다음 달 예측 정확도 개선 (사이클)</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  S1["① 웨이퍼 투입 계획 확정<br/>라인·월별 투입량 = 모든 계획의 뿌리"]
+  S2["② 원단위 전개 → 계획 소요 PIR<br/>투입 × 레이어당 원단위 = 월 소요량"]
+  S3["③ MRP 실행 → PR/SA 회차<br/>안전재고·리드타임·쿼터 반영"]
+  S4["④ 공급사 협업<br/>예측 Forecast 공유 → 확약 Commit"]
+  S5["⑤ 실소비 반영 → 원단위 보정<br/>MES 백플러시 → 차이 분석 → 예측 개선"]
+  S1 --> S2 --> S3 --> S4 --> S5
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class S2 hl;
+  </pre>
 
   <h2>5. 긴 리드타임과의 싸움</h2>
   <p>핵심 공정 자재·부품은 리드타임이 <b>6개월~1년</b>이다. "부족하면 발주"가 통하지 않는 세계의 대응책:</p>

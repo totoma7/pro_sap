@@ -6,6 +6,7 @@
 <title>4-3 반도체 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -48,31 +49,12 @@
   </div>
 
   <h2>3. 장비 구매 — 마일스톤의 세계</h2>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>장비 PO (자산 A)</b>
-      <span class="d">사양 협의 수개월 후 발주. 계약과 동시에 지급 일정이 마일스톤으로 쪼개진다</span>
-      <div class="meta"><span class="chip">계약금 20%</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>FAT — 출하 전 검수</b>
-      <span class="d">장비사 공장에서 성능 시험(Factory Acceptance Test) 통과 후 선적</span>
-      <div class="meta"><span class="chip">선적 시 50%</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>입고 · 설치 · SAT</b>
-      <span class="d">Fab 반입 → 설치 → 현장 성능 검수(Site Acceptance Test). SAT 통과가 "진짜 검수"</span>
-      <div class="meta"><span class="chip">SAT 후 25%</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>자산화 · 보증 잔금</b>
-      <span class="d">자산 전기(감가상각 시작), 보증기간 종료 후 잔금. 분할 지급이 회계·세무와 얽힌다</span>
-      <div class="meta"><span class="chip">보증 후 5%</span></div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  M1["① 장비 PO (자산 A)<br/>마일스톤 지급 분할 · 계약금 20%"] -->|"발주"| M2["② FAT — 출하 전 검수<br/>장비사 공장 성능시험 · 선적 시 50%"]
+  M2 -->|"선적"| M3["③ 입고·설치·SAT<br/>현장 성능 검수 · SAT 후 25%"]
+  M3 --> M4["④ 자산화·보증 잔금<br/>감가상각 시작 · 보증 후 5%"]
+  </pre>
   <div class="callout warn">
     <span class="t">연계 관점</span>
     장비사 포털 연계의 핵심은 PO가 아니라 <b>마일스톤 진행 상태와 문서</b>(FAT/SAT 리포트, 선적 서류)다. SAP에서는 지급 조건(Payment Plan)을 마일스톤별로 분리하고, 검수 이벤트가 지급을 풀어주는 구조로 설계한다.
@@ -80,17 +62,11 @@
 
   <h2>4. 원부자재 — VMI와 사용량 정산</h2>
   <p>특수가스·케미컬은 "발주 → 입고"가 아니라 <b>공급사가 재고를 책임지는</b> 모델이 표준이다.</p>
-  <div class="flow">
-    <div class="step hl">
-      <b>VMI (Vendor Managed Inventory)</b>
-      <span class="d">공급사가 Fab 내/인근 탱크·저장소 재고를 직접 모니터링하고 보충. 우리 시스템은 재고 수준 데이터를 공급사와 <b>실시간 공유</b></span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <b>사용 시점 매입 — 위탁(K) 또는 배관 직결</b>
-      <span class="d">벌크가스는 배관으로 직접 공급 — 유량계 <b>사용량 데이터가 곧 매입 수량</b>. 월 단위 사용량 집계 → 자동 정산(ERS: 송장 없이 입고 기준 자동 송장)</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  V1["VMI (Vendor Managed Inventory)<br/>공급사가 재고 모니터링·보충 · 수준 실시간 공유"] --> V2["사용 시점 매입 — 위탁(K)/배관 직결<br/>유량계 사용량 = 매입 수량 · 월집계 → ERS 자동정산"]
+  style V1 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
   <div class="callout tip">
     <span class="t">ERS (Evaluated Receipt Settlement)</span>
     공급사가 송장을 보내지 않고, <b>구매사가 입고/사용 실적으로 송장을 자동 생성</b>하는 방식. 5차시의 역발행 세금계산서와 철학이 같다 — "검증할 필요 없는 데이터로 처음부터 만든다." VMI·사용량 정산과 묶이면 송장 분쟁이 구조적으로 사라진다.

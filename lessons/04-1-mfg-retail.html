@@ -6,6 +6,7 @@
 <title>4-1 제조 · 유통/리테일 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -35,32 +36,25 @@
   </div>
 
   <h3>납품일정계약(SA) — 제조 직접구매의 기본 문서</h3>
-  <div class="miniflow">
-    <span class="box">연간 단가계약<br><span class="chip">가격·조건 확정</span></span>
-    <span class="ar">→</span>
-    <span class="box hl">납품 스케줄 회차 전송<br><span class="chip">"이번 주 월 500개, 수 300개"</span></span>
-    <span class="ar">→</span>
-    <span class="box">입고·정산<br><span class="chip">PO 없이 반복</span></span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  SA1["연간 단가계약<br/>가격·조건 확정"]
+  SA2["납품 스케줄 회차 전송<br/>월 500개, 수 300개"]
+  SA3["입고·정산<br/>PO 없이 반복"]
+  SA1 --> SA2 --> SA3
+  style SA2 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
   <p style="font-size:14px;color:var(--sub);">건별 PO를 없애고 "계약 + 스케줄 회차"로 돌린다. JIT/칸반까지 가면 스케줄이 일/시간 단위로 내려간다.</p>
 
   <h3>제조 전자구매 연계의 전형</h3>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>소싱은 포털에서</b>
-      <span class="d">신규 부품 개발·연간 단가 입찰 → 낙찰 단가를 SAP Info Record/계약으로 전송 (저빈도·고중요)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">2</span><b>일상 거래는 협력사 포털·EDI로</b>
-      <span class="d">납품 스케줄 공유 → 공급사 ASN 회신 → 사급재 수불 공유 → 입고/검수 결과 회신 (고빈도·자동화)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>품질(QM)이 끼어든다</b>
-      <span class="d">입고 → 품질검사 → 합격 시 가용재고 전환. 불합격·반품 프로세스와 공급사 품질 통보 연계 필요</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  M1["① 소싱은 포털에서<br/>연간 단가 입찰 → SAP Info Record/계약 (저빈도·고중요)"]
+  M2["② 일상 거래는 협력사 포털·EDI로<br/>스케줄 공유 → ASN → 사급재 수불 → 입고 회신 (고빈도)"]
+  M3["③ 품질(QM)이 끼어든다<br/>입고 → 품질검사 → 합격 시 가용재고 전환 · 반품/품질통보"]
+  M1 --> M2 --> M3
+  style M2 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <div class="callout point">
     <span class="t">제조 연계의 핵심 키워드</span>
@@ -80,15 +74,15 @@
   </div>
 
   <h3>자동 보충 흐름</h3>
-  <div class="miniflow">
-    <span class="box">POS 판매 데이터</span>
-    <span class="ar">→</span>
-    <span class="box">재고·판매 예측</span>
-    <span class="ar">→</span>
-    <span class="box hl">보충 발주 자동 생성<br><span class="chip">점포→DC, DC→공급사</span></span>
-    <span class="ar">→</span>
-    <span class="box">입고·진열</span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  R1["POS 판매 데이터"]
+  R2["재고·판매 예측"]
+  R3["보충 발주 자동 생성<br/>점포→DC, DC→공급사"]
+  R4["입고·진열"]
+  R1 --> R2 --> R3 --> R4
+  style R3 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <h3>제조와 결정적으로 다른 포인트</h3>
   <div class="tablewrap">

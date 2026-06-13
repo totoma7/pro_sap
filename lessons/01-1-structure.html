@@ -6,6 +6,7 @@
 <title>1-1 조직 구조 &amp; 마스터 데이터 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -25,22 +26,17 @@
   <h2>1. 조직 구조 (Enterprise Structure)</h2>
   <p>SAP에서 구매가 일어나는 "장소"의 계층 구조다. 재무(법인), 물류(공장), 구매(구매조직)의 세 축이 서로 할당 관계로 엮인다.</p>
 
-  <div class="tree">
-    <div class="node lv0"><b>Client (전사)</b><span class="d">하나의 SAP 시스템 전체. 그룹 전체를 담는 최상위 단위</span></div>
-    <div class="kids">
-      <div class="node"><b>Company Code (회사 코드)</b><span class="d">법인 단위 — 재무제표가 나오는 단위. 송장·지급의 주체</span></div>
-      <div class="kids">
-        <div class="node"><b>Plant (플랜트)</b><span class="d">공장/사업장 — 재고가 잡히고 MRP가 돌아가는 단위. 입고의 주체</span></div>
-        <div class="kids">
-          <div class="node"><b>Storage Location (저장 위치)</b><span class="d">플랜트 내 창고/구역 단위</span></div>
-        </div>
-      </div>
-      <div class="node side"><b>Purchasing Organization (구매 조직)</b><span class="d">구매 계약·단가의 법적 주체. Company Code 또는 Plant에 할당</span></div>
-      <div class="kids">
-        <div class="node side"><b>Purchasing Group (구매 그룹)</b><span class="d">실제 구매 담당자/팀. 문서의 담당자 필드</span></div>
-      </div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  CL["Client · 전사<br/>SAP 시스템 전체"] --> CC["Company Code · 법인<br/>재무제표 · 송장/지급 주체"]
+  CC --> PL["Plant · 공장<br/>재고 · MRP · 입고 주체"]
+  PL --> SL["Storage Location<br/>창고/구역"]
+  CC --> PO["Purchasing Org · 구매조직<br/>계약/단가의 법적 주체"]
+  PO --> PG["Purchasing Group · 구매그룹<br/>실제 구매 담당자/팀"]
+  style PO fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  style PG fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  </pre>
+  <div class="mmd-cap">구매조직(보라색)은 법인 계층과 별도 축 — 그룹 통합구매가 가능한 이유</div>
 
   <div class="callout point">
     <span class="t">왜 구매조직만 점선(별도 축)인가?</span>
@@ -55,13 +51,12 @@
   <h2>2. 마스터 데이터 5대장</h2>
   <p>거래(문서)가 흐르기 전에 먼저 존재해야 하는 기준 정보. 연계 프로젝트 공수의 절반은 마스터 동기화에 들어간다.</p>
 
-  <div class="miniflow">
-    <span class="box">자재 마스터</span>
-    <span class="ar">×</span>
-    <span class="box">공급업체 (BP)</span>
-    <span class="ar">=</span>
-    <span class="box hl">Info Record<br><span class="chip">이 업체에서 이 자재를 얼마에</span></span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  M["자재 마스터"] --> IR["Info Record<br/>이 업체에서 이 자재를 얼마에"]
+  V["공급업체 · BP"] --> IR
+  style IR fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  </pre>
 
   <div class="tablewrap">
   <table>
@@ -95,22 +90,11 @@
   </div>
 
   <h2>3. 마스터 동기화의 기본 방향</h2>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>협력사 등록</b> <span class="chip blue">포털 → SAP</span>
-      <span class="d">공급사가 포털에 가입·심사 통과 → SAP에 Business Partner 생성 (인터페이스 또는 수동 승인 후 생성)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>품목/카탈로그</b> <span class="chip green">SAP → 포털</span>
-      <span class="d">SAP 자재 마스터를 포털 카탈로그의 기준으로 배포. 비코드 품목은 포털에서만 관리하고 텍스트로 PO 생성</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>단가/계약</b> <span class="chip blue">포털 → SAP</span>
-      <span class="d">입찰·협상 결과(낙찰 단가)를 Info Record / 계약으로 전송. 이후 SAP PO가 이 단가를 자동 참조</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  S1["① 협력사 등록<br/>포털 → SAP (BP 생성)"] --> S2["② 품목/카탈로그<br/>SAP → 포털 배포"]
+  S2 --> S3["③ 단가/계약<br/>포털 → SAP (Info Record/계약)"]
+  </pre>
 
   <div class="callout tip">
     <span class="t">기억할 것</span>

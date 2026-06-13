@@ -6,6 +6,7 @@
 <title>심화 7 반도체 외주·매각·ESG·협력사 평가 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -25,22 +26,15 @@
   <h2>1. 외주구매 — 반도체의 외주는 OSAT다</h2>
   <p>1-3차시의 외주(L)가 반도체에서는 <b>후공정 외주(OSAT: 패키징·테스트 전문업체)</b>로 나타난다. 전공정(Fab)은 내재화하고, 후공정은 외주화하는 것이 업계의 기본 분업이다.</p>
 
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>가공 완료 웨이퍼 사급</b>
-      <span class="d">Fab에서 나온 웨이퍼(다이)를 OSAT에 보낸다. <b>사급재가 초고가</b>라는 점이 일반 제조 외주와 결정적으로 다르다 — 웨이퍼 한 장이 수백~수천만 원</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">2</span><b>패키징 · 테스트 수행 (OSAT)</b>
-      <span class="d">조립(어셈블리) → 테스트 → 양품 선별. WIP(공정 중 재고)와 수율 데이터를 우리가 실시간으로 봐야 한다</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>양품 입고 + 수율 정산</b>
-      <span class="d">투입 다이 대비 양품 산출을 대조 — <b>수율 손실의 책임(공정 불량 vs 원판 불량)을 가르는 정산 룰</b>이 계약의 핵심. 가공비만 매입(외주 L 원칙)</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  O1["① 가공 완료 웨이퍼 사급<br/>Fab→OSAT, 사급재가 초고가(웨이퍼당 수백~수천만 원)"]
+  O2["② 패키징 · 테스트 — OSAT<br/>조립→테스트→양품 선별, WIP·수율 실시간 가시성"]
+  O3["③ 양품 입고 + 수율 정산<br/>투입 다이 대비 양품 대조, 책임 정산 룰, 가공비만 매입"]
+  O1 --> O2 --> O3
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class O2 hl;
+  </pre>
 
   <div class="tablewrap">
   <table>
@@ -68,27 +62,16 @@
   </table>
   </div>
 
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>유휴 판정 → 내부 전용 검토</b>
-      <span class="d">타 Fab·계열사에서 쓸 수 있으면 이설이 우선 (장비 이설도 수출통제 검토 대상 — 심화 5)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">2</span><b>매각 입찰 — 최고가 경쟁</b>
-      <span class="d">포털 매각 모듈에서 복수 매입처 견적 → 최고가 낙찰. <b>매입처도 제재 스크리닝 대상</b>(장비가 어디로 가는가)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>기술 보호 조치 → 반출</b>
-      <span class="d">장비 내 레시피·로그 데이터 와이프, 개조 이력 문서화. ECCN 해당 장비는 수출 허가 후 반출</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>대금 수령 · 회계 처리</b>
-      <span class="d">자산은 처분손익(AA), 스크랩은 잡수익/SD 판매 — 세금계산서는 이번엔 우리가 발행하는 쪽</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  D1["① 유휴 판정 → 내부 전용 검토<br/>타 Fab·계열사 이설 우선(이설도 수출통제 대상)"]
+  D2["② 매각 입찰 — 최고가 경쟁<br/>복수 매입처 견적→최고가 낙찰, 매입처도 제재 스크리닝"]
+  D3["③ 기술 보호 조치 → 반출<br/>레시피·로그 와이프, ECCN 장비는 수출 허가 후"]
+  D4["④ 대금 수령 · 회계 처리<br/>자산 처분손익 AA, 스크랩 잡수익/SD, 세금계산서 발행 측"]
+  D1 --> D2 --> D3 --> D4
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class D2 hl;
+  </pre>
 
   <div class="callout warn">
     <span class="t">반도체 매각의 특수성</span>
@@ -130,15 +113,18 @@
   </div>
 
   <h3>평가 → 활용의 순환</h3>
-  <div class="miniflow">
-    <span class="box">실적 자동 집계<br><span class="chip">SAP: 품질·납기</span></span>
-    <span class="ar">＋</span>
-    <span class="box">정성·ESG 평가<br><span class="chip">포털: 설문·실사</span></span>
-    <span class="ar">→</span>
-    <span class="box hl">등급 산정<br><span class="chip">S / A / B / C</span></span>
-    <span class="ar">→</span>
-    <span class="box">물량·자격 반영<br><span class="chip">쿼터·입찰 자격·거래 정지</span></span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  P1["실적 자동 집계<br/>SAP: 품질·납기"]
+  P2["정성·ESG 평가<br/>포털: 설문·실사"]
+  P3["등급 산정<br/>S / A / B / C"]
+  P4["물량·자격 반영<br/>쿼터·입찰 자격·거래 정지"]
+  P1 --> P3
+  P2 --> P3
+  P3 --> P4
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class P3 hl;
+  </pre>
 
   <div class="card">
     <ul style="margin:0;padding-left:18px;">

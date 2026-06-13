@@ -6,6 +6,7 @@
 <title>5-1 한국 실무 특화 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -25,35 +26,22 @@
   <h2>1. 전자세금계산서 — 한국형 송장검증의 핵심</h2>
   <p>한국은 부가세법상 <b>전자세금계산서 발급·국세청 전송이 의무</b>다. 그래서 글로벌 표준의 3-Way Match에 <b>세금계산서 대사가 한 겹 더</b> 얹힌다.</p>
 
-  <div class="miniflow">
-    <span class="box">PO</span><span class="ar">↔</span>
-    <span class="box">GR</span><span class="ar">↔</span>
-    <span class="box">송장</span><span class="ar">↔</span>
-    <span class="box hl">세금계산서<br><span class="chip">국세청 승인분</span></span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  W1["PO"] <--> W2["GR"]
+  W2 <--> W3["송장"]
+  W3 <--> W4["세금계산서<br/>국세청 승인분"]
+  style W4 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <h3>흐름과 연계 구조</h3>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>세금계산서 발행</b>
-      <span class="d">공급사가 발행하거나, 한국 대기업 관행으로는 <b>역발행</b> — 구매사가 입고·검수 실적 기준으로 작성해 공급사가 승인. 금액 불일치를 원천 차단</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>국세청 전송 (ASP 연동)</b>
-      <span class="d">전자세금계산서 ASP(빌48 등) 또는 자체 발행 시스템이 국세청에 전송. 승인번호 회신</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">3</span><b>SAP 송장검증(IV)과 대사</b>
-      <span class="d">세금계산서 데이터(승인번호·공급가·세액)를 SAP 송장에 매칭. 불일치 시 지급 보류. 승인번호가 SAP 송장 필드에 저장돼야 부가세 신고가 풀린다</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>부가세 신고</b>
-      <span class="d">매입 세금계산서 합계 ↔ SAP 매입부가세 계정 잔액 대사 → 분기 신고. 차이 나면 결산 지연</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  T1["① 세금계산서 발행<br/>공급사 발행 또는 역발행(구매사 작성→승인)"] --> T2["② 국세청 전송 (ASP 연동)<br/>전자세금계산서 ASP → 승인번호 회신"]
+  T2 --> T3["③ SAP 송장검증(IV) 대사<br/>승인번호·공급가·세액 매칭 · 불일치 시 보류"]
+  T3 --> T4["④ 부가세 신고<br/>매입 합계 ↔ SAP 매입부가세 계정 대사 → 분기"]
+  style T3 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <div class="callout warn">
     <span class="t">설계 포인트</span>
@@ -97,32 +85,14 @@
   </div>
 
   <h2>4. 전체 커리큘럼 — 한 장으로 정리</h2>
-  <div class="flow">
-    <div class="step">
-      <b>1차시 · SAP 구매의 뼈대</b>
-      <span class="d">구매조직은 별도 축 / 마스터가 절반 / P2P 문서 흐름 / 3-Way Match와 GR/IR / Item Category가 프로세스를 가른다</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <b>2차시 · 전자구매의 지형</b>
-      <span class="d">직접(SAP 중심) vs 간접(포털 중심) / Ariba 모듈 / 국내 주류는 자체 구축 그룹 포털 + SAP 이중 구조</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <b>3차시 · 연계의 도구와 조립</b>
-      <span class="d">IDoc(비동기)·BAPI(동기)·OData·CIG / 마스터 동기화 + 트랜잭션 왕복 / Punch-out / 멱등성·재처리·대사</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <b>4차시 · 업종이 모양을 정한다</b>
-      <span class="d">"무엇이 구매를 시작시키고, 무엇이 지급을 막는가" — 제조(MRP/납기), 유통(POS/정산), 건설(WBS/기성), 공공(법/나라장터), 제약(품질/배치), 금융(예산)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <b>5차시 · 한국이라는 변수</b>
-      <span class="d">세금계산서 대사(4-Way) / 역발행 / 상생결제·하도급 규제 / 이중 원장 운영 체크리스트</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  L1["1차시 · SAP 구매의 뼈대<br/>구매조직·마스터·P2P·3-Way Match·Item Category"] --> L2["2차시 · 전자구매의 지형<br/>직접 vs 간접 · Ariba · 그룹포털+SAP 이중구조"]
+  L2 --> L3["3차시 · 연계의 도구와 조립<br/>IDoc·BAPI·OData·CIG · 동기화·왕복·멱등성"]
+  L3 --> L4["4차시 · 업종이 모양을 정한다<br/>구매 시작·지급 차단의 축 (제조~금융)"]
+  L4 --> L5["5차시 · 한국이라는 변수<br/>세금계산서 4-Way·역발행·상생결제·이중원장"]
+  style L5 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <div class="callout tip">
     <span class="t">커리큘럼 완주 🎉</span>

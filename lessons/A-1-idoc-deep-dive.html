@@ -6,6 +6,7 @@
 <title>심화 1 IDoc 깊이 보기 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -26,22 +27,19 @@
   <p>메시지 타입(ORDERS)은 "용도"고, <b>Basic Type(ORDERS05)</b>은 "구조 버전"이다. 숫자가 클수록 신버전이며 세그먼트가 추가된다. 연계 정의서에는 항상 둘을 함께 쓴다: <code>ORDERS / ORDERS05</code>.</p>
 
   <h2>2. ORDERS05 세그먼트 해부 — PO 한 건이 이렇게 생겼다</h2>
-  <div class="tree">
-    <div class="node lv0"><b>EDI_DC40 (제어 레코드)</b><span class="d">발신 파트너·수신 파트너·메시지 타입·Basic Type — "겉봉투"</span></div>
-    <div class="kids">
-      <div class="node"><b>E1EDK01 — 문서 헤더</b><span class="d">통화, 환율, PO 번호(BELNR). 문서당 1개</span></div>
-      <div class="node"><b>E1EDKA1 — 파트너 (반복)</b><span class="d">PARVW 구분: AG=발주처, LF=공급사, WE=납품처. 같은 세그먼트가 역할만 바꿔 반복된다</span></div>
-      <div class="node"><b>E1EDK02 — 참조 번호</b><span class="d">QUALF 구분: 001=PO번호, 011=견적번호 등 — 퀄리파이어 패턴</span></div>
-      <div class="node"><b>E1EDK14 — 조직 정보</b><span class="d">구매조직·구매그룹·문서유형(1-1, 1-3차시의 그 값들이 여기 실린다)</span></div>
-      <div class="node side"><b>E1EDP01 — 품목 (반복)</b><span class="d">수량·단위·플랜트. 품목 수만큼 반복 — 하위에 자식 세그먼트를 거느린다</span></div>
-      <div class="kids">
-        <div class="node"><b>E1EDP20 — 납품 일정</b><span class="d">납기일·분할 납품 회차 (제조 SA 연계의 핵심)</span></div>
-        <div class="node"><b>E1EDP19 — 품목 식별</b><span class="d">QUALF 001=우리 자재코드, 002=공급사 품번 — 양쪽 코드가 함께 실린다</span></div>
-        <div class="node"><b>E1EDP05 — 가격 조건</b><span class="d">단가·할인·부대비 (Condition 단위)</span></div>
-      </div>
-      <div class="node"><b>E1EDS01 — 합계</b><span class="d">총액 검증용</span></div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  DC["EDI_DC40 (제어 레코드)<br/>발신·수신 파트너·메시지·Basic Type"] --> K01["E1EDK01 — 문서 헤더<br/>통화·환율·PO 번호(BELNR)"]
+  DC --> KA1["E1EDKA1 — 파트너 (반복)<br/>PARVW: AG·LF·WE"]
+  DC --> K02["E1EDK02 — 참조 번호<br/>QUALF: 001 PO·011 견적"]
+  DC --> K14["E1EDK14 — 조직 정보<br/>구매조직·구매그룹·문서유형"]
+  DC --> P01["E1EDP01 — 품목 (반복)<br/>수량·단위·플랜트"]
+  DC --> S01["E1EDS01 — 합계<br/>총액 검증용"]
+  P01 --> P20["E1EDP20 — 납품 일정<br/>납기일·분할 회차"]
+  P01 --> P19["E1EDP19 — 품목 식별<br/>QUALF 001 자재·002 공급사 품번"]
+  P01 --> P05["E1EDP05 — 가격 조건<br/>단가·할인·부대비"]
+  style P01 fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  </pre>
 
   <div class="callout point">
     <span class="t">읽는 요령 — 퀄리파이어 패턴</span>
@@ -49,17 +47,19 @@
   </div>
 
   <h2>3. 상태 코드의 생애주기</h2>
-  <div class="flow">
-    <div class="step">
-      <b>Outbound (SAP → 외부)</b>
-      <span class="d"><span class="chip code">01</span> 생성 → <span class="chip code">30</span> 송신 준비 → <span class="chip code">03</span> 포트로 전달됨 → (수신측 ACK 쓰면) <span class="chip code">12</span> 전달 확인 / <span class="chip code">11</span> 오류</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <b>Inbound (외부 → SAP)</b>
-      <span class="d"><span class="chip code">50</span> 수신 → <span class="chip code">64</span> 처리 대기 → <span class="chip code">53</span> 전기 성공 / <span class="chip code">51</span> <b>전기 오류</b> ← 운영자가 매일 보는 숫자</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  OB["Outbound (SAP → 외부)"] --> O01["01 생성"]
+  O01 --> O30["30 송신 준비"]
+  O30 --> O03["03 포트로 전달됨"]
+  O03 -->|"ACK"| O12["12 전달 확인"]
+  O03 -->|"실패"| O11["11 오류"]
+  IB["Inbound (외부 → SAP)"] --> I50["50 수신"]
+  I50 --> I64["64 처리 대기"]
+  I64 --> I53["53 전기 성공"]
+  I64 --> I51["51 전기 오류<br/>운영자가 매일 보는 숫자"]
+  style IB fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <div class="callout warn">
     <span class="t">함정 — 상태 03은 "성공"이 아니다</span>
@@ -80,27 +80,12 @@
   </div>
 
   <h2>5. 실습 시나리오 — 머릿속으로 한 번 돌려보기</h2>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>상황</b>
-      <span class="d">포털에서 "어제 PO 3건이 안 들어왔다"는 문의. SAP은 ORDERS05 아웃바운드로 PO를 보낸다</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>WE02로 조회</b>
-      <span class="d">어제 날짜 + ORDERS 필터. 3건 발견 — 상태 03. "SAP은 정상 송신" 확인</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>미들웨어 추적</b>
-      <span class="d">CPI/EAI 모니터에서 해당 건 조회 → 포털 API 타임아웃으로 실패 확인. 미들웨어 재전송</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>재발 방지</b>
-      <span class="d">미들웨어 재시도 정책 + 일일 건수 대사 리포트에 "03인데 포털 미수신" 항목 추가</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  SC1["① 상황<br/>포털 PO 3건 미수신 문의 · SAP은 ORDERS05 송신"] --> SC2["② WE02로 조회<br/>어제+ORDERS 필터 · 3건 상태 03 · SAP 정상 송신"]
+  SC2 --> SC3["③ 미들웨어 추적<br/>CPI/EAI 조회 → 포털 API 타임아웃 · 재전송"]
+  SC3 --> SC4["④ 재발 방지<br/>재시도 정책 + 03인데 포털 미수신 대사 항목 추가"]
+  </pre>
 
   <div class="callout tip">
     <span class="t">핵심</span>

@@ -6,6 +6,7 @@
 <title>1-2 구매 문서 흐름 (P2P) | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -24,42 +25,17 @@
 
   <h2>1. 전체 흐름 한눈에</h2>
 
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>PR — 구매요청</b> <span class="chip code">ME51N</span>
-      <span class="d">수요 발생. ① 사람이 직접 생성(간접구매) ② MRP가 자동 생성(직접구매) ③ 전자구매 포털에서 인터페이스로 유입</span>
-      <div class="meta"><span class="chip">사내 문서 (법적 효력 없음)</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">2</span><b>Sourcing — 공급원 결정</b> <span class="chip code">ME41 / 포털</span>
-      <span class="d">누구에게 살지 결정. 입찰(RFQ)·견적비교·역경매·단가계약 참조·소스리스트 자동 결정</span>
-      <div class="meta"><span class="chip blue">전자구매 시스템이 가장 깊게 개입하는 구간</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">3</span><b>PO — 구매오더</b> <span class="chip code">ME21N</span>
-      <span class="d">공급사에 대한 법적 구매 확약. 외부 연계의 중심 문서 — 포털→SAP 생성 또는 SAP→공급사 송신(IDoc ORDERS)</span>
-      <div class="meta"><span class="chip blue">연계 핵심 문서</span><span class="chip">승인(Release Strategy) 적용</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>GR — 입고</b> <span class="chip code">MIGO</span>
-      <span class="d">물건 도착·검수. 재고 증가(차변) + GR/IR 중간계정(대변) 기표. 품질검사(QM) 대상이면 검사 후 재고 전환</span>
-      <div class="meta"><span class="chip green">회계 전표 자동 생성</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">5</span><b>IV — 송장검증</b> <span class="chip code">MIRO</span>
-      <span class="d">공급사 청구와 PO·입고를 대조(3-Way Match). 한국은 전자세금계산서 대사가 추가됨</span>
-      <div class="meta"><span class="chip green">채무(AP) 확정</span></div>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">6</span><b>지급 — Payment</b> <span class="chip code">F110</span>
-      <span class="d">FI 영역. 지급조건에 따라 자동지급. 한국은 상생결제·구매카드 등 지급수단 분기</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  PR["① PR · 구매요청 (ME51N)<br/>수요 발생 · 사내 문서"] --> SRC["② Sourcing · 공급원 결정 (ME41/포털)<br/>입찰 · 견적 · 단가계약 참조"]
+  SRC --> PO["③ PO · 구매오더 (ME21N)<br/>법적 구매 확약 · 연계 핵심"]
+  PO --> GR["④ GR · 입고 (MIGO)<br/>재고＋ / GR/IR＋ 기표"]
+  GR --> IV["⑤ IV · 송장검증 (MIRO)<br/>3-Way Match · 채무(AP) 확정"]
+  IV --> PAY["⑥ 지급 · Payment (F110)<br/>FI · 자동지급"]
+  style SRC fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  style PO fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  </pre>
+  <div class="mmd-cap">②③ 단계(파란색)가 전자구매 시스템이 가장 깊게 개입하는 구간</div>
 
   <div class="callout point">
     <span class="t">역할 분담의 전형</span>
@@ -69,13 +45,13 @@
   <h2>2. 3-Way Match — 송장검증의 원리</h2>
   <p>돈을 내보내기 전에 세 문서가 서로 맞는지 확인하는 통제 장치다. 어긋나면 송장이 <b>지급 보류(Block)</b>된다.</p>
 
-  <div class="match">
-    <div class="doc"><b>PO</b><span class="d">주문 수량·단가<br>"이만큼 사기로 했다"</span></div>
-    <div class="doc"><b>GR</b><span class="d">입고 수량<br>"이만큼 받았다"</span></div>
-    <div class="doc"><b>송장</b><span class="d">청구 수량·금액<br>"이만큼 달라고 한다"</span></div>
-    <div class="link">↘ &nbsp; ↓ &nbsp; ↙</div>
-    <div class="hub">3자 대사 일치 → 지급 승인 / 불일치 → 차단(Block) 후 사유 해소</div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  PO["PO<br/>주문 수량·단가<br/>이만큼 사기로 했다"] --> HUB["3자 대사<br/>일치 → 지급 승인<br/>불일치 → 차단(Block)"]
+  GR["GR<br/>입고 수량<br/>이만큼 받았다"] --> HUB
+  INV["송장<br/>청구 수량·금액<br/>이만큼 달라고 한다"] --> HUB
+  style HUB fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  </pre>
 
   <div class="tablewrap">
   <table>
@@ -89,22 +65,11 @@
   <h2>3. GR/IR 계정 — 입고와 송장의 시차를 받아주는 곳</h2>
   <p>입고 시점과 송장 시점이 다르기 때문에 둘 사이를 <b>GR/IR Clearing(가수금 성격의 중간 계정)</b>으로 연결한다.</p>
 
-  <div class="flow">
-    <div class="step">
-      <b>입고(GR) 시점</b>
-      <span class="d">재고 자산 <b>＋</b> (차변) / GR/IR <b>＋</b> (대변) — "받긴 받았는데 아직 청구는 안 됨"</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <b>송장(IV) 시점</b>
-      <span class="d">GR/IR <b>－</b> (차변, 상계) / 외상매입금(AP) <b>＋</b> (대변) — "청구가 와서 채무로 확정"</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <b>정상 상태</b>
-      <span class="d">GR/IR 잔액 = 0. 입고와 송장이 모두 처리되면 중간 계정은 사라진다</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  G1["입고(GR) 시점<br/>재고＋(차변) / GR/IR＋(대변)<br/>받았지만 청구는 아직"] --> G2["송장(IV) 시점<br/>GR/IR－(상계) / AP＋(대변)<br/>청구 와서 채무 확정"]
+  G2 --> G3["정상 상태<br/>GR/IR 잔액 = 0<br/>중간 계정 소멸"]
+  </pre>
 
   <div class="callout warn">
     <span class="t">운영 모니터링 포인트</span>

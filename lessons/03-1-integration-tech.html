@@ -6,6 +6,7 @@
 <title>3-1 연계 기술 스택 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -23,14 +24,14 @@
   </header>
 
   <h2>1. 기술 지형 한눈에</h2>
-  <div class="tree">
-    <div class="node lv0"><b>SAP ↔ 외부 연계 기술</b><span class="d">크게 "고전(온프레미스 시대)"과 "현대(클라우드 시대)"로 나뉜다</span></div>
-    <div class="kids">
-      <div class="node"><b>고전 — 지금도 현역</b><span class="d">IDoc/ALE (비동기 문서 교환) · RFC/BAPI (동기 함수 호출) · 파일/EDI</span></div>
-      <div class="node"><b>현대 — S/4·클라우드 표준</b><span class="d">OData API · SOAP/REST · 이벤트(Event Mesh)</span></div>
-      <div class="node side"><b>미들웨어 (중간에서 변환·라우팅)</b><span class="d">SAP PI/PO (레거시) → BTP Integration Suite(CPI) · CIG (Ariba 전용 게이트웨이)</span></div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  ROOT["SAP ↔ 외부 연계 기술<br/>고전(온프레미스) vs 현대(클라우드)"]
+  ROOT --> OLD["고전 — 지금도 현역<br/>IDoc/ALE(비동기) · RFC/BAPI(동기) · 파일/EDI"]
+  ROOT --> NEW["현대 — S/4·클라우드 표준<br/>OData API · SOAP/REST · Event Mesh"]
+  ROOT --> MW["미들웨어 (변환·라우팅)<br/>PI/PO → BTP Integration Suite(CPI) · CIG"]
+  style MW fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  </pre>
 
   <div class="callout point">
     <span class="t">현실 감각</span>
@@ -41,13 +42,17 @@
   <p>IDoc(Intermediate Document)은 "전자 문서 봉투"다. PO·송장 같은 문서를 정해진 구조에 담아 큐로 주고받는다. <b>비동기</b>이므로 상대 시스템이 죽어 있어도 일단 쌓이고, 나중에 재처리할 수 있다.</p>
 
   <h3>구조</h3>
-  <div class="miniflow">
-    <span class="box">제어 레코드<br><span class="chip">발신·수신처, 메시지 타입</span></span>
-    <span class="ar">＋</span>
-    <span class="box">데이터 레코드<br><span class="chip">세그먼트 계층 (헤더→품목)</span></span>
-    <span class="ar">＋</span>
-    <span class="box">상태 레코드<br><span class="chip">처리 이력 (성공 53 / 오류 51)</span></span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  CTRL["제어 레코드<br/>발신·수신처, 메시지 타입"]
+  DATA["데이터 레코드<br/>세그먼트 계층 (헤더→품목)"]
+  STAT["상태 레코드<br/>처리 이력 (성공 53 / 오류 51)"]
+  IDOC["IDoc (전자 문서 봉투)"]
+  CTRL --> IDOC
+  DATA --> IDOC
+  STAT --> IDOC
+  </pre>
+  <div class="mmd-cap">IDoc = 제어 + 데이터 + 상태 레코드의 묶음</div>
 
   <h3>구매 연계 주요 메시지 타입</h3>
   <div class="tablewrap">
@@ -98,22 +103,15 @@
   </div>
 
   <h2>5. 미들웨어 — 직접 붙이지 말고 가운데를 두라</h2>
-  <div class="flow">
-    <div class="step">
-      <b>포털 ↔ SAP 직접 연결의 문제</b>
-      <span class="d">포맷 변환·재처리·모니터링 로직이 양쪽 시스템에 흩어짐. 시스템이 늘수록 스파게티</span>
-    </div>
-    <div class="arrow">↓ 그래서</div>
-    <div class="step hl">
-      <b>미들웨어가 가운데서 변환·라우팅·모니터링</b>
-      <span class="d">SAP PI/PO(온프레미스, 단계적 종료) → <b>BTP Integration Suite(CPI)</b>로 세대 교체 중. 국내는 자체 EAI/ESB(예: 그룹 표준 EAI)도 많다</span>
-    </div>
-    <div class="arrow">↓ 특수 케이스</div>
-    <div class="step">
-      <b>CIG (Ariba Cloud Integration Gateway)</b>
-      <span class="d">Ariba 전용 관리형 게이트웨이. SAP의 IDoc/Proxy ↔ Ariba의 cXML을 표준 매핑으로 변환. Ariba 도입 시 사실상 필수</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  P1["포털 ↔ SAP 직접 연결의 문제<br/>변환·재처리·모니터링 로직 분산 → 스파게티"]
+  P2["미들웨어가 가운데서 변환·라우팅·모니터링<br/>PI/PO → BTP Integration Suite(CPI) · 자체 EAI/ESB"]
+  P3["CIG (Ariba Cloud Integration Gateway)<br/>IDoc/Proxy ↔ cXML 표준 매핑 · Ariba 필수"]
+  P1 -->|"그래서"| P2
+  P2 -->|"특수 케이스"| P3
+  style P2 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <h2>6. 무엇을 언제 쓰나 — 선택 기준</h2>
   <div class="tablewrap">

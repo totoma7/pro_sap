@@ -6,6 +6,7 @@
 <title>2-2 전자구매 시스템 유형 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -23,15 +24,16 @@
   </header>
 
   <h2>1. 시스템 지형도</h2>
-  <div class="tree">
-    <div class="node lv0"><b>전자구매 시스템</b><span class="d">공급사와 만나는 프론트 — SAP 원장과 연계되는 시스템들</span></div>
-    <div class="kids">
-      <div class="node"><b>SAP 계열</b><span class="d">Ariba (현 주력) · SRM (레거시, 단종) · S/4HANA 셀프서비스 구매 (경량)</span></div>
-      <div class="node"><b>비SAP 상용</b><span class="d">Coupa · Jaggaer · Zycus 등 — 간접구매·소싱 특화 SaaS</span></div>
-      <div class="node side"><b>자체 구축 (국내 대기업 주류)</b><span class="d">그룹 구매포털 — 입찰·협력사·계약을 자체 개발, SAP을 백엔드로</span></div>
-      <div class="node side"><b>공공 조달</b><span class="d">나라장터(KONEPS) — 조달청 운영, 공공기관 의무 사용</span></div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  ROOT["전자구매 시스템<br/>공급사 프론트 · SAP 원장 연계"]
+  ROOT --> SAP["SAP 계열<br/>Ariba · SRM(단종) · S/4 셀프서비스"]
+  ROOT --> NS["비SAP 상용<br/>Coupa · Jaggaer · Zycus"]
+  ROOT --> SELF["자체 구축 (국내 대기업 주류)<br/>그룹 구매포털 · SAP 백엔드"]
+  ROOT --> PUB["공공 조달<br/>나라장터(KONEPS) · 의무 사용"]
+  style SELF fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  style PUB fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  </pre>
 
   <h2>2. SAP Ariba — 기능 블록으로 이해하기</h2>
   <p>Ariba는 단일 제품이 아니라 <b>모듈 묶음 + 공급사 네트워크</b>다. 어느 모듈을 쓰느냐에 따라 연계 모양이 완전히 달라진다.</p>
@@ -66,19 +68,13 @@
   </div>
 
   <h3>전형적인 이중 구조</h3>
-  <div class="flow">
-    <div class="step hl">
-      <b>그룹 구매포털 (프론트)</b>
-      <span class="d">협력사 등록·평가 · 입찰/견적 · 전자계약 · PO 열람/회신 · 세금계산서 접수 — 공급사가 로그인하는 곳</span>
-      <div class="meta"><span class="chip purple">자체 개발 (Java/웹)</span></div>
-    </div>
-    <div class="arrow">↕ 인터페이스 (마스터·PR·PO·입고·송장)</div>
-    <div class="step">
-      <b>SAP ERP (백엔드 원장)</b>
-      <span class="d">PO 확정 · 재고/입고 · 송장검증 · 회계/지급 — 재무제표로 이어지는 기록</span>
-      <div class="meta"><span class="chip blue">계열사별 Company Code</span></div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  PORTAL["그룹 구매포털 (프론트)<br/>등록·평가 · 입찰 · 전자계약 · PO 회신 · 세금계산서<br/>자체 개발(Java/웹)"]
+  ERP["SAP ERP (백엔드 원장)<br/>PO 확정 · 입고 · 송장검증 · 회계/지급<br/>계열사별 Company Code"]
+  PORTAL <-->|"인터페이스 (마스터·PR·PO·입고·송장)"| ERP
+  style PORTAL fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <div class="callout warn">
     <span class="t">이 구조의 고질적 문제</span>
@@ -120,7 +116,7 @@
 
   <div class="pager">
     <a href="02-1-direct-indirect.html"><span class="lbl">이전</span><b>← 2-1 직접구매 vs 간접구매</b></a>
-    <a class="next" href="../index.html"><span class="lbl">다음</span><b>목차로 (3차시 준비 중) →</b></a>
+    <a class="next" href="03-1-integration-tech.html"><span class="lbl">다음</span><b>3-1 연계 기술 스택 →</b></a>
   </div>
 
   <footer>SAP × e-Procurement 학습 · 2차시</footer>

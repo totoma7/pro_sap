@@ -6,6 +6,7 @@
 <title>2-1 직접구매 vs 간접구매 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -49,44 +50,24 @@
   <h2>2. 흐름이 어떻게 다른가</h2>
 
   <h3>직접구매 — 시스템이 시스템에게 (사람 개입 최소화)</h3>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>생산계획 → MRP 실행</b>
-      <span class="d">완제품 계획을 BOM으로 전개해 "언제 무엇이 몇 개 부족한지" 자동 계산</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>PR 자동 생성 → 공급원 자동 결정</b>
-      <span class="d">소스리스트·단가계약이 있으면 사람 손 없이 PO까지 자동 전환 가능</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">3</span><b>PO 송신 → 공급사 협업</b>
-      <span class="d">주문확인(ORDRSP)·납품통보(ASN)·사급재 수불 — <b>협력사 포털/EDI</b>가 개입하는 구간</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  A1["① 생산계획 → MRP 실행<br/>BOM 전개로 부족분 자동 계산"] --> A2["② PR 자동 생성 → 공급원 자동 결정<br/>소스리스트·단가계약 시 PO까지 자동"]
+  A2 --> A3["③ PO 송신 → 공급사 협업<br/>ORDRSP·ASN·사급재 — 협력사 포털/EDI"]
+  style A3 fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  </pre>
   <div class="callout point">
     <span class="t">직접구매 전자화의 초점</span>
     "쇼핑 경험"이 아니라 <b>공급사와의 데이터 협업</b>(SCC: Supply Chain Collaboration)이다. 입찰은 신규 소싱·연간 단가계약 때만 발생한다.
   </div>
 
   <h3>간접구매 — 사람이 쇼핑하듯 (사용자 경험이 핵심)</h3>
-  <div class="flow">
-    <div class="step hl">
-      <span class="n">1</span><b>현업 사용자가 요청</b>
-      <span class="d">카탈로그 검색 또는 Punch-out(외부 쇼핑몰 연동)으로 장바구니 구성 — <b>전자구매 포털</b>이 개입하는 구간</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>승인 워크플로우</b>
-      <span class="d">금액·품목·예산에 따른 다단계 승인. 코스트센터/WBS 계정 지정 필수</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>PO 생성 → 납품 → 검수 확인</b>
-      <span class="d">요청자가 직접 "받았다" 확인(Confirmation)하는 경우가 많음. 서비스면 SES 검수</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  B1["① 현업 사용자가 요청<br/>카탈로그·Punch-out 장바구니 — 전자구매 포털"] --> B2["② 승인 워크플로우<br/>다단계 승인 · 코스트센터/WBS 계정 지정"]
+  B2 --> B3["③ PO 생성 → 납품 → 검수 확인<br/>요청자 직접 확인 · 서비스면 SES"]
+  style B1 fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  </pre>
   <div class="callout point">
     <span class="t">간접구매 전자화의 초점</span>
     누구나 교육 없이 쓸 수 있는 <b>쇼핑몰 수준의 UX</b> + 새는 돈을 막는 <b>승인·예산 통제</b>. Ariba Buying, Coupa가 이 영역에서 출발한 제품이다.

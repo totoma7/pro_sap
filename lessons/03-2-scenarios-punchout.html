@@ -6,6 +6,7 @@
 <title>3-2 연계 시나리오 &amp; Punch-out | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -38,32 +39,15 @@
   </div>
 
   <h3>트랜잭션 흐름</h3>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>PR / 구매요청</b> <span class="chip blue">포털 → SAP</span>
-      <span class="d">간접구매 요청·승인 완료 → <span class="chip code">BAPI_PR_CREATE</span> 또는 OData. 직접구매는 반대로 SAP PR을 포털로 보내 입찰에 부친다</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>PO 생성/변경</b> <span class="chip green">양방향</span>
-      <span class="d">포털 발주 → SAP PO 생성(동기 BAPI, PO번호 즉시 회신) / SAP PO → 포털·공급사 통보(<span class="chip code">ORDERS</span>·<span class="chip code">ORDCHG</span>)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>주문확인 · ASN</b> <span class="chip blue">공급사 → SAP</span>
-      <span class="d">포털에서 공급사가 수락/납기 회신(<span class="chip code">ORDRSP</span>), 납품 통보(<span class="chip code">DESADV</span>) → 입고 예정 정보로 활용</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>입고 결과</b> <span class="chip green">SAP → 포털</span>
-      <span class="d">MIGO 입고 결과를 포털에 회신 → 공급사가 "검수 완료" 확인. 서비스면 SES 승인 결과</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">5</span><b>송장 · 지급 상태</b> <span class="chip green">양방향</span>
-      <span class="d">포털 세금계산서 접수 → SAP 송장검증(<span class="chip code">INVOIC</span>/BAPI) → 지급 예정일·완료를 포털로 회신해 공급사에 공개</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  T1["① PR / 구매요청 (포털 → SAP)<br/>요청·승인 → BAPI_PR_CREATE / OData"]
+  T2["② PO 생성/변경 (양방향)<br/>포털 발주 → SAP PO(동기) · SAP → ORDERS/ORDCHG"]
+  T3["③ 주문확인 · ASN (공급사 → SAP)<br/>ORDRSP 수락/납기 · DESADV 납품통보"]
+  T4["④ 입고 결과 (SAP → 포털)<br/>MIGO 입고 회신 · 서비스는 SES 승인"]
+  T5["⑤ 송장 · 지급 상태 (양방향)<br/>세금계산서 → INVOIC 검증 → 지급일 회신"]
+  T1 --> T2 --> T3 --> T4 --> T5
+  </pre>
 
   <div class="callout point">
     <span class="t">패턴 읽기</span>
@@ -73,27 +57,15 @@
   <h2>2. Punch-out — 외부 쇼핑몰을 내 구매 시스템처럼</h2>
   <p>사무용품·MRO처럼 품목이 수십만 개인 영역은 카탈로그를 내부에 복제하지 않는다. 대신 <b>공급사 쇼핑몰로 "뚫고 나가서"(punch out) 장바구니만 들고 돌아온다.</b></p>
 
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>사용자가 구매 시스템에서 공급사 몰 클릭</b>
-      <span class="d">구매 시스템이 로그인 정보를 담아 공급사 몰을 호출 — 사용자는 재로그인 없이 진입(SSO)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>공급사 몰에서 쇼핑</b>
-      <span class="d">검색·비교·장바구니 구성은 전부 공급사 몰의 UX 그대로. 단, 계약 단가가 적용된 전용 화면</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">3</span><b>"이송" 클릭 → 장바구니 반환</b>
-      <span class="d">주문이 아니라 <b>장바구니 데이터만</b> 구매 시스템으로 돌아온다 (품목·수량·단가)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">4</span><b>구매 시스템에서 승인 → PO 발행</b>
-      <span class="d">반환된 장바구니가 PR이 되고, 승인 후 PO가 공급사로 송신된다. 통제는 우리 시스템이 쥔다</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  PO1["① 구매 시스템에서 공급사 몰 클릭<br/>로그인 정보 전달 · 재로그인 없이 진입(SSO)"]
+  PO2["② 공급사 몰에서 쇼핑<br/>몰 UX 그대로 · 계약 단가 적용 전용 화면"]
+  PO3["③ 이송 클릭 → 장바구니 반환<br/>장바구니 데이터만 복귀 (품목·수량·단가)"]
+  PO4["④ 구매 시스템에서 승인 → PO 발행<br/>장바구니가 PR → 승인 후 PO 송신 · 통제는 우리"]
+  PO1 --> PO2 --> PO3 --> PO4
+  style PO3 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <h3>두 가지 표준</h3>
   <div class="duo">
@@ -145,7 +117,7 @@
 
   <div class="pager">
     <a href="03-1-integration-tech.html"><span class="lbl">이전</span><b>← 3-1 연계 기술 스택</b></a>
-    <a class="next" href="../index.html"><span class="lbl">다음</span><b>목차로 (4차시 준비 중) →</b></a>
+    <a class="next" href="04-1-mfg-retail.html"><span class="lbl">다음</span><b>4-1 제조 · 유통/리테일 →</b></a>
   </div>
 
   <footer>SAP × e-Procurement 학습 · 3차시</footer>

@@ -6,6 +6,7 @@
 <title>심화 2 Ariba·CIG 매핑 실무 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -37,27 +38,22 @@
   </div>
 
   <h3>OrderRequest의 뼈대</h3>
-  <div class="tree">
-    <div class="node lv0"><b>cXML 봉투</b><span class="d">From/To/Sender 크리덴셜 — IDoc의 제어 레코드에 해당</span></div>
-    <div class="kids">
-      <div class="node"><b>OrderRequestHeader</b><span class="d">PO 번호·총액·통화·지급조건. IDoc의 E1EDK01+E1EDK14 역할</span></div>
-      <div class="kids">
-        <div class="node"><b>ShipTo / BillTo</b><span class="d">납품처·청구처 — E1EDKA1(파트너)의 역할 구분과 동일한 발상</span></div>
-      </div>
-      <div class="node side"><b>ItemOut (반복)</b><span class="d">품목 — E1EDP01 대응. SupplierPartID(공급사 품번)와 BuyerPartID가 함께 실린다</span></div>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  CX["cXML 봉투<br/>From/To/Sender 크리덴셜 (제어 레코드)"] --> ORH["OrderRequestHeader<br/>PO 번호·총액·통화·지급조건 (E1EDK01+E1EDK14)"]
+  CX --> IO["ItemOut (반복)<br/>품목 (E1EDP01) · SupplierPartID+BuyerPartID"]
+  ORH --> STBT["ShipTo / BillTo<br/>납품처·청구처 (E1EDKA1 역할 구분)"]
+  style IO fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  </pre>
 
   <h2>2. CIG가 가운데서 하는 일</h2>
-  <div class="miniflow">
-    <span class="box">SAP ERP<br><span class="chip">IDoc / Proxy / OData</span></span>
-    <span class="ar">→</span>
-    <span class="box hl">CIG<br><span class="chip">표준 매핑 + 커스텀 매핑</span></span>
-    <span class="ar">→</span>
-    <span class="box">Ariba Network<br><span class="chip">cXML</span></span>
-    <span class="ar">→</span>
-    <span class="box">공급사</span>
-  </div>
+  <pre class="mmd mermaid">
+flowchart LR
+  G1["SAP ERP<br/>IDoc / Proxy / OData"] --> G2["CIG<br/>표준 매핑 + 커스텀 매핑"]
+  G2 --> G3["Ariba Network<br/>cXML"]
+  G3 --> G4["공급사"]
+  style G2 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
   <div class="card">
     <ul style="margin:0;padding-left:18px;">
       <li><b>표준 매핑 제공</b>: ORDERS05 ↔ OrderRequest 같은 흔한 변환은 SAP이 미리 만들어 둠 — 프로젝트는 "차이"만 메운다</li>
@@ -79,32 +75,14 @@
   </div>
 
   <h2>4. CIG 프로젝트 진행 순서</h2>
-  <div class="flow">
-    <div class="step">
-      <span class="n">1</span><b>시나리오 선정</b>
-      <span class="d">어떤 문서를 주고받을지 (PO만? 송장까지? SCC까지?) — 범위가 곧 공수</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">2</span><b>표준 매핑 갭 분석</b>
-      <span class="d">표준 매핑 결과물과 우리 데이터를 비교 — 갭 항목만 커스텀 매핑 목록으로</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">3</span><b>SAP 측 설정</b>
-      <span class="d">파트너 프로파일(WE20)·포트, 또는 S/4 Communication Arrangement 구성</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <span class="n">4</span><b>테스트 — 공급사를 끼워서</b>
-      <span class="d">CIG 테스트 환경 + Ariba 테스트 계정 + <b>파일럿 공급사</b> 실거래 시나리오. 공급사 온보딩이 일정의 복병</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step">
-      <span class="n">5</span><b>공급사 단계적 확대 (Wave)</b>
-      <span class="d">거래량 상위 공급사부터 웨이브로 전환 — 전 공급사 일괄 전환은 거의 불가능</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  CP1["① 시나리오 선정<br/>주고받을 문서 범위 (PO·송장·SCC) = 공수"] --> CP2["② 표준 매핑 갭 분석<br/>표준 매핑 vs 우리 데이터 → 갭만 커스텀 목록"]
+  CP2 --> CP3["③ SAP 측 설정<br/>WE20·포트 또는 S/4 Communication Arrangement"]
+  CP3 --> CP4["④ 테스트 — 공급사를 끼워서<br/>CIG 테스트+Ariba 계정+파일럿 공급사 · 온보딩 복병"]
+  CP4 --> CP5["⑤ 공급사 단계적 확대 (Wave)<br/>거래량 상위부터 웨이브 · 일괄 전환 불가"]
+  style CP4 fill:#e8f0fe,stroke:#1a73e8,color:#1a73e8
+  </pre>
 
   <div class="callout warn">
     <span class="t">일정의 진실</span>

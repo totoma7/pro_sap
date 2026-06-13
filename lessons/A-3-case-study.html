@@ -6,6 +6,7 @@
 <title>심화 3 종합 케이스 스터디 | SAP × 전자구매 학습</title>
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -65,32 +66,16 @@
   </div>
 
   <h2>3단계. 인터페이스 목록 — 3차시 적용 (계열사별로 다르다!)</h2>
-  <div class="flow">
-    <div class="step">
-      <b>공통 (3사 전체)</b>
-      <span class="d">마스터 4종(위 표) + 포털 PR→SAP(<span class="chip code">BAPI_PR_CREATE</span>) + SAP PO→포털(<span class="chip code">ORDERS05</span>) + 입고결과 회신 + 송장(<span class="chip code">INVOIC</span>) + 지급상태 회신</span>
-    </div>
-    <div class="arrow">↓ 업종별 추가</div>
-    <div class="step hl">
-      <b>한울전자 (제조)</b>
-      <span class="d">+ 납품 스케줄 송신(SA 회차) + ASN 수신(<span class="chip code">DESADV</span>→Inbound Delivery) + 사급재 수불 공유 + QM 판정 회신 (4-1)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <b>한울건설</b>
-      <span class="d">+ 기성 신청 수신→SES 생성(<span class="chip code">ML81N</span> 대응 BAPI) + 유보금·선급금 정산 데이터 + 하도급 서면 발급 이력 (4-2)</span>
-    </div>
-    <div class="arrow">↓</div>
-    <div class="step hl">
-      <b>한울서비스 (간접)</b>
-      <span class="d">+ 카탈로그/Punch-out(OCI) + 예산 가용액 실시간 조회(동기 RFC) — 품의 시점 차단용 (2-1, 4-2)</span>
-    </div>
-    <div class="arrow">↓ 한국 공통</div>
-    <div class="step">
-      <b>세금계산서 (5차시)</b>
-      <span class="d">역발행: 입고/SES 실적 → 포털에서 세금계산서 작성 → 공급사 승인 → ASP 국세청 전송 → 승인번호 포함 송장을 SAP IV로</span>
-    </div>
-  </div>
+  <pre class="mmd mermaid">
+flowchart TD
+  C["공통 3사 전체<br/>마스터 4종 · PR→SAP BAPI_PR_CREATE<br/>PO→포털 ORDERS05 · 송장 INVOIC · 지급상태 회신"]
+  C -->|"업종별 추가"| E["한울전자 제조<br/>SA 회차 · ASN DESADV · 사급 수불 · QM 회신"]
+  E --> K["한울건설<br/>기성→SES · 유보·선급 정산 · 하도급 서면"]
+  K --> S["한울서비스 간접<br/>카탈로그·Punch-out OCI · 예산 가용액 동기 RFC"]
+  S -->|"한국 공통"| T["세금계산서<br/>역발행: 실적→작성→공급사 승인→국세청→SAP IV"]
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class E,K,S hl;
+  </pre>
 
   <div class="callout point">
     <span class="t">여기서 보이는 것</span>
