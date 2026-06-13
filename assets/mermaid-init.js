@@ -9,8 +9,8 @@ mermaid.initialize({
   fontFamily: FONT,
   flowchart: { htmlLabels: false, curve: 'basis', padding: 14, nodeSpacing: 45, rankSpacing: 45, useMaxWidth: true },
   themeVariables: {
-    primaryColor: '#e8eefc', primaryBorderColor: '#2b5fd9', primaryTextColor: '#1f2433',
-    lineColor: '#5b6377', fontSize: '13px', fontFamily: FONT
+    primaryColor: '#c5d2ff', primaryBorderColor: '#16161d', primaryTextColor: '#16161d',
+    lineColor: '#16161d', fontSize: '13px', fontFamily: FONT
   }
 });
 

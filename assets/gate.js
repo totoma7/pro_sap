@@ -26,16 +26,16 @@
   function showGate() {
     document.title = '접근 확인';
     document.body.innerHTML =
-      '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:#f6f7fb;">' +
-      '<div style="width:100%;max-width:380px;background:#fff;border:1px solid #e3e6ef;border-radius:14px;padding:28px 24px;text-align:center;">' +
+      '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:#faf4e6;font-family:\'Apple SD Gothic Neo\',\'Noto Sans KR\',sans-serif;">' +
+      '<div style="width:100%;max-width:380px;background:#fff;border:3px solid #16161d;border-radius:6px;padding:28px 24px;text-align:center;box-shadow:6px 6px 0 #16161d;">' +
       '<div style="font-size:34px;margin-bottom:10px;">🔒</div>' +
       '<h1 style="font-size:18px;margin:0 0 6px;color:#1f2433;">SAP × 전자구매 학습</h1>' +
       '<p style="font-size:13.5px;color:#5b6377;margin:0 0 18px;">등록된 ID를 입력하면 이 기기에서 2개월간 열람할 수 있습니다.</p>' +
       '<form id="gateForm">' +
       '<input id="gateId" type="email" placeholder="ID (이메일)" autocomplete="email" required ' +
-      'style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:15px;border:1.5px solid #e3e6ef;border-radius:10px;margin-bottom:10px;outline-color:#2b5fd9;">' +
+      'style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:15px;border:2.5px solid #16161d;border-radius:6px;margin-bottom:12px;outline-color:#2f4cdd;">' +
       '<button type="submit" ' +
-      'style="width:100%;padding:12px;font-size:15px;font-weight:700;color:#fff;background:#2b5fd9;border:0;border-radius:10px;cursor:pointer;">확인</button>' +
+      'style="width:100%;padding:12px;font-size:15px;font-weight:800;color:#fff;background:#2f4cdd;border:3px solid #16161d;border-radius:6px;cursor:pointer;box-shadow:4px 4px 0 #16161d;">확인</button>' +
       '</form>' +
       '<p id="gateErr" style="display:none;color:#c0392b;font-size:13px;margin:12px 0 0;">등록되지 않은 ID입니다.</p>' +
       '</div></div>';
