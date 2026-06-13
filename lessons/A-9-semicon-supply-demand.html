@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 9 반도체 수급 운영 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 9</span>
+    <h1>반도체 수급 운영 — 계획과 현실의 차이를 메우다</h1>
+    <p class="lead">MRP(심화 6)가 "무엇을 얼마나 살지" 계획이라면, 수급 운영은 그 계획과 <b>실제 입고·재고·수요 변동의 차이를 날마다 메우는 업무</b>다. 부족하면 당기고, 넘치면 줄이고, 못 맞추면 나눈다.</p>
+  </header>
+
+  <h2>1. 수급 관리란 — MRP와 무엇이 다른가</h2>
+  <div class="duo">
+    <div class="col a">
+      <h4>MRP (심화 6) — 계획</h4>
+      <ul>
+        <li>투입 계획 × 원단위로 <b>소요량 계산</b></li>
+        <li>주기적(주/월) 배치로 PR·SA 회차 생성</li>
+        <li>"이론적으로 이만큼 필요·발주"</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <h4>수급 운영 — 실행·조정</h4>
+      <ul>
+        <li>실제 입고·재고·수요 변동을 <b>날마다 모니터링</b></li>
+        <li>차이(갭)에 대응 — 당기기·줄이기·나누기</li>
+        <li>"계획대로 안 될 때 무엇을 할까"</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout point">
+    <span class="t">한 줄 정의</span>
+    수급 운영 = <b>수요·공급·재고를 한 화면에서 맞춰 보며(밸런싱), 부족·과잉·변동에 실시간 대응</b>하는 일상 업무. 반도체는 사이클타임이 길고 수요가 출렁여서, 계획만으로는 절대 안 맞는다.
+  </div>
+
+  <h2>2. 수급 밸런싱 — 무엇을 보는가</h2>
+  <pre class="mmd mermaid">
+flowchart LR
+  D["수요<br/>투입계획·수주·예측"] --> B["수급 밸런스<br/>갭 = 공급 − 수요"]
+  S["공급<br/>재고 + 입고예정(PO/SA)"] --> B
+  B --> G{"갭 판정"}
+  G -->|"부족(−)"| SH["부족 대응<br/>당기기·할당·긴급"]
+  G -->|"균형"| OK["유지<br/>커버리지 모니터"]
+  G -->|"과잉(+)"| EX["과잉 대응<br/>발주 축소·전용·매각"]
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class B hl;
+  </pre>
+  <div class="tablewrap">
+  <table>
+    <tr><th>지표</th><th>의미</th><th>왜 보는가</th></tr>
+    <tr><td><b>재고 커버리지</b><br>(Days of Inventory)</td><td>현재 재고로 며칠 버티나 = 재고 ÷ 일평균 소비</td><td>품목별 목표 일수 대비 부족/과잉 조기 포착</td></tr>
+    <tr><td><b>입고 예정</b><br>(On-order)</td><td>발주됐으나 미입고 — PO·SA 회차·VMI 보충 예정</td><td>"곧 들어올 것"까지 합산해야 진짜 공급</td></tr>
+    <tr><td><b>수요 변동</b></td><td>투입계획 변경·긴급 수주·수율 변동</td><td>계획 대비 흔들림이 수급 갭의 주원인</td></tr>
+    <tr><td><b>공급사 Commit</b></td><td>예측 대비 공급 가능 회신(심화 6)</td><td>미달 시 즉시 부족 경보</td></tr>
+  </table>
+  </div>
+
+  <h2>3. 공급 부족(Shortage) 대응 — 당기고, 나눈다</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  SH["공급 부족 감지<br/>커버리지 &lt; 목표 · Commit 미달"] --> A1["① 당기기 (Expedite)<br/>납기 단축 요청·항공 전환"]
+  A1 --> A2["② 대체 발동<br/>듀얼소싱 2nd vendor·대체 소재"]
+  A2 --> A3["③ 할당 (Allocation)<br/>부족분을 우선순위로 배분"]
+  A3 --> A4["④ 에스컬레이션<br/>수급 회의·고객 협의"]
+  classDef hl fill:#fde7f1,stroke:#db2777,color:#9d174d;
+  class A3 hl;
+  </pre>
+  <div class="callout warn">
+    <span class="t">할당(Allocation)이 핵심</span>
+    공급이 수요를 못 따라가면 <b>"누구에게 먼저 줄지"</b>를 정해야 한다 — 제품·고객·라인별 우선순위 룰(매출 기여·전략 고객·계약 SLA)로 부족분을 배분한다. 반도체 호황기엔 이 할당이 영업·생산·구매가 함께 싸우는 최대 격전지다. 시스템은 <b>할당 룰 엔진 + 부분 납품(Partial GR) + 우선순위 재계산</b>을 받쳐줘야 한다.
+  </div>
+
+  <h2>4. 과잉·단종(Excess / EOL) 대응 — 줄이고, 처분한다</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>상황</th><th>원인</th><th>대응</th></tr>
+    <tr><td><b>과잉 재고</b><br>(Excess)</td><td>수요 급감·과다 발주·수율 개선</td><td>발주 축소·취소(SA 회차 조정), 타 라인·계열사 전용, 공급사 반품 협의</td></tr>
+    <tr><td><b>장기 정체</b><br>(Slow-moving)</td><td>공정 전환으로 소비 둔화</td><td>소진 계획, 재고 평가손 검토</td></tr>
+    <tr><td><b>단종</b><br>(EOL / 사양 변경)</td><td>공정·제품 단종으로 못 쓰게 됨</td><td>잔량 소진 → 매각(심화 7) → 폐기. EOL 공지·라스트바이(Last-time Buy)</td></tr>
+  </table>
+  </div>
+  <div class="callout tip">
+    <span class="t">Last-time Buy</span>
+    공급사가 부품 단종을 통보하면, 남은 수명만큼 쓸 물량을 <b>마지막으로 한 번에 사두는</b> 결정. 너무 적게 사면 라인 정지, 너무 많이 사면 악성 재고 — 수급 운영의 대표적 고난도 판단이다.
+  </div>
+
+  <h2>5. 시스템 — 수급을 한 화면에서</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  subgraph SRC["데이터 소스"]
+    direction TB
+    M1["수요: 투입계획·수주·예측"]
+    M2["공급: 재고·입고예정·VMI"]
+    M3["공급사 Commit·리드타임"]
+  end
+  SRC --> DASH["수급 대시보드<br/>품목별 갭·커버리지·경보"]
+  DASH --> ACT["대응 액션<br/>당기기·할당·발주조정"]
+  ACT -. 결과 피드백 .-> DASH
+  classDef hl fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  class DASH hl;
+  </pre>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>수급 대시보드</b>: 수요·공급·재고·커버리지를 품목별로 한눈에 — SAP 재고/입고예정 + 포털 공급사 Commit + MES 소비를 통합</li>
+      <li><b>조기 경보</b>: 커버리지 임계 미만·Commit 미달·납기 지연을 자동 알림 (지나고 나면 못 메운다)</li>
+      <li><b>할당 엔진</b>: 부족분을 우선순위 룰로 배분, 부분 납품·재배분 지원</li>
+      <li><b>S&amp;OP 연계</b>: 월 단위 판매·생산·구매 계획 조정 회의에 수급 현황을 입력으로</li>
+    </ul>
+  </div>
+
+  <h2>6. 정리 — 수급 운영의 한 줄</h2>
+  <div class="callout point">
+    <span class="t">계획은 MRP, 운영은 수급</span>
+    MRP(<a href="A-6-semicon-mrp.html">심화 6</a>)가 만든 계획은 <b>출렁이는 수요·긴 리드타임·수율 변동</b> 앞에서 늘 어긋난다. 수급 운영은 그 갭을 <b>당기기(Expedite)·대체(다변화)·할당(Allocation)·과잉처분(매각)</b>으로 메우는 일상 업무다. 부족은 할당으로, 과잉은 매각(<a href="A-7-semicon-osat-esg.html">심화 7</a>)으로 — 그래서 수급 운영은 계획·소싱·매각을 잇는 <b>허리</b>다.
+  </div>
+
+  <div class="pager">
+    <a href="A-8-semicon-aeo-process-map.html"><span class="lbl">이전</span><b>← 심화 8 AEO</b></a>
+    <a class="next" href="P-1-semicon-process.html"><span class="lbl">다음</span><b>공정 다이어그램 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
