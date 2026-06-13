@@ -371,7 +371,8 @@ details.qa .a { padding: 12px 14px; font-size: 14.5px; color: var(--ink); }
   padding: 14px 10px; margin: 14px 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
   text-align: center;
 }
-.mmd svg { max-width: 100%; height: auto; }
+.mmd svg { max-width: 100%; height: auto; overflow: visible; }
+.mmd svg text, .mmd svg .nodeLabel { white-space: pre; }
 .mmd:not(.done) { /* 렌더 전 코드 텍스트 숨김 깜빡임 방지 */
   color: transparent; min-height: 60px;
 }
