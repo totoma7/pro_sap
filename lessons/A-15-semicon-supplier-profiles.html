@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 15 주요 공급사 프로파일 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 15</span>
+    <h1>주요 공급사 프로파일 — 누가 무엇을 만드나</h1>
+    <p class="lead">심화 14가 "유형별 전략"이었다면, 여기서는 <b>실제 대표 업체</b>가 어느 공정·소재를 쥐고 있는지, 그래서 거래 시 무엇이 핵심인지를 본다. (공개 자료 기반 일반 지식)</p>
+  </header>
+
+  <h2>1. 영역별 대표 공급사 지도</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>영역</th><th>대표 업체(예)</th><th>시장 지위</th><th>구매 관점 핵심</th></tr>
+    <tr><td><b>노광 장비</b></td><td>ASML</td><td>EUV <b>단독</b>, DUV 우위</td><td>슈퍼 을 — 캐파 예약·관계가 곧 공급 (심화 10)</td></tr>
+    <tr><td><b>식각·증착 장비</b></td><td>AMAT·Lam·TEL</td><td>과점, 일부 공정 중복</td><td>공정별 선호 벤더, 멀티벤더 일부 가능</td></tr>
+    <tr><td><b>계측·검사</b></td><td>KLA</td><td>계측 분야 압도적</td><td>수율 직결 — 품질·기술 협업 (심화 11)</td></tr>
+    <tr><td><b>웨이퍼</b></td><td>신에쓰·SUMCO</td><td>일본 과점</td><td>장기계약·듀얼소싱·품질(배치) (심화 6)</td></tr>
+    <tr><td><b>포토레지스트</b></td><td>JSR·도쿄오카·신에쓰</td><td>일본 강세</td><td>핵심 SG성 소재 — 국산화·안전재고</td></tr>
+    <tr><td><b>특수·벌크 가스</b></td><td>린데·에어리퀴드·머크</td><td>글로벌 과점 + 지역 업체</td><td>VMI·파이프라인·실린더 회수 (심화 5)</td></tr>
+    <tr><td><b>파운드리</b></td><td>TSMC·삼성·GF·Intel</td><td>첨단노드 소수 과점</td><td>캐파 예약·NRE·마스크 (심화 12)</td></tr>
+    <tr><td><b>IP·EDA</b></td><td>ARM·Synopsys·Cadence</td><td>소수 벤더 과점</td><td>라이선스·로열티 (심화 12)</td></tr>
+    <tr><td><b>OSAT</b></td><td>ASE·Amkor·JCET</td><td>경쟁 시장</td><td>외주·수율 정산·멀티벤더 (심화 7)</td></tr>
+  </table>
+  </div>
+
+  <h2>2. 장비 5대 — 공정별로 나눠 쥔다</h2>
+  <p>장비사는 "다 만드는" 게 아니라 <b>공정별로 강자가 다르다.</b> P-1 공정 단계에 대입하면 누구를 사야 하는지 보인다.</p>
+  <pre class="mmd mermaid">
+flowchart TD
+  L["노광<br/>Lithography"] --> LV["ASML (EUV 단독)"]
+  E["식각<br/>Etch"] --> EV["Lam · TEL · AMAT"]
+  D["증착<br/>CVD/PVD"] --> DV["AMAT · TEL · Lam"]
+  I["이온주입<br/>Implant"] --> IV["AMAT · Axcelis"]
+  C["CMP<br/>평탄화"] --> CV["AMAT · Ebara"]
+  M["계측·검사<br/>Metrology"] --> MV["KLA"]
+  classDef hl fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class LV hl;
+  </pre>
+  <div class="callout point">
+    <span class="t">EUV가 슈퍼 을인 이유</span>
+    식각·증착은 여러 업체가 경쟁하지만, <b>EUV 노광은 ASML 단독</b>이다. 돈이 있어도 줄을 서야 하고, 연 생산 대수가 제한적이라 <b>장비 확보 자체가 경쟁력</b> — 가격 협상이 아니라 "몇 대를 언제 받느냐"가 핵심이다.
+  </div>
+
+  <h2>3. 소재 — 일본 집중과 국산화</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>웨이퍼·포토레지스트·일부 특수가스·CMP 슬러리에서 <b>일본 업체 비중이 높다</b> — 2019년 수출규제 이후 공급 리스크가 부각</li>
+      <li>대응: <b>국산화(2nd source Qual)·다변화(R-1)·안전재고</b> — 단, 공정 Qual에 수개월~1년(심화 11)이라 단기 전환이 어렵다</li>
+      <li>구매 전략: 핵심 소재는 단가보다 <b>공급 안정·품질·로드맵 협업</b> 우선 (전략 품목, 심화 14 Kraljic)</li>
+    </ul>
+  </div>
+
+  <h2>4. 파운드리 — 누구에게 위탁하나 (팹리스 관점)</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>파운드리</th><th>특징</th><th>위탁 시 고려</th></tr>
+    <tr><td><b>TSMC</b></td><td>첨단노드 선두, 캐파·생태계 강점</td><td>캐파 경쟁 치열 — 조기 예약·관계</td></tr>
+    <tr><td><b>삼성 파운드리</b></td><td>첨단노드 경쟁, 메모리 겸영</td><td>경쟁사 이슈(IDM 겸영) 고려</td></tr>
+    <tr><td><b>GlobalFoundries·UMC</b></td><td>성숙노드 특화</td><td>레거시·특수공정에 적합·안정 공급</td></tr>
+    <tr><td><b>Intel Foundry</b></td><td>후발, 캐파 확대 중</td><td>2nd source·지역 다변화 카드</td></tr>
+  </table>
+  </div>
+
+  <h2>5. 거래 시 핵심 — 한 줄씩</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>상대</th><th>거래의 핵심 한 줄</th></tr>
+    <tr><td>ASML(EUV)</td><td>"가격"이 아니라 "장비 슬롯 확보" — 캐파 예약</td></tr>
+    <tr><td>AMAT/Lam/TEL</td><td>공정별 선호 벤더 + 일부 멀티벤더로 협상력</td></tr>
+    <tr><td>KLA(계측)</td><td>수율 직결 — 기술 협업·신뢰가 단가보다 우선</td></tr>
+    <tr><td>일본 소재사</td><td>공급 안정 + 국산화 병행 — 다변화로 리스크 흡수</td></tr>
+    <tr><td>가스사(린데 등)</td><td>VMI·파이프라인·실린더 회수 — 운영 통합</td></tr>
+    <tr><td>파운드리(TSMC 등)</td><td>캐파·NRE·마스크 — 장기 파트너십</td></tr>
+    <tr><td>OSAT</td><td>수율 정산·멀티벤더 — 경쟁으로 단가·납기</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">주의 — 업체 정보는 변한다</span>
+    위 업체·시장 지위는 <b>공개 자료 기반의 일반적 설명</b>이며 시점에 따라 바뀐다(신규 진입·M&A·국산화 진전). 실제 소싱 의사결정은 최신 시장 조사·자사 Qual 현황으로 갱신해야 한다.
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 15 한 줄</span>
+    공정·소재마다 <b>"누가 쥐고 있느냐"가 다르고</b>, 그게 협상력과 전략을 결정한다. EUV·일본 소재처럼 대체 불가는 확보·관계, 식각·OSAT처럼 경쟁 가능은 멀티벤더·단가 — 심화 14의 Kraljic 프레임을 실제 업체에 대입한 것이 이 페이지다.
+  </div>
+
+  <div class="pager">
+    <a href="A-14-semicon-suppliers.html"><span class="lbl">이전</span><b>← 심화 14 업체 유형·전략</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
