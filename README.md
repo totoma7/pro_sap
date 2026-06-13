@@ -4,7 +4,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 한국 실무 특화 주제, 심화 과정과 인터랙티브 시뮬레이터까지 도식 중심으로 학습하는 자료입니다.
 순수 HTML/CSS/JS(의존성 제로)로 작성되어 웹/모바일 어디서든 열립니다.
 
-**구성: 본 과정 5차시(11편) + 심화 17편 + 인터랙티브 1편 + 공정 다이어그램 1편 + 레퍼런스 1편 — 총 31개 레슨 완성**
+**구성: 본 과정 5차시(11편) + 심화 19편 + 인터랙티브 2편 + 공정 다이어그램 1편 + 레퍼런스 2편 — 총 35개 레슨 완성**
 
 ## 보는 방법
 
@@ -51,12 +51,15 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 심화 15 | [주요 공급사 프로파일](https://totoma7.github.io/pro_sap/lessons/A-15-semicon-supplier-profiles.html) | 대표 업체별(ASML·AMAT·KLA·신에쓰·TSMC·ARM·ASE) 공정·소재 점유와 거래 핵심, 장비 5대·소재 일본 집중 |
 | 심화 16 | [구매 성과관리·경기 사이클](https://totoma7.github.io/pro_sap/lessons/A-16-semicon-kpi-cycle.html) | 구매 KPI, 절감액(Savings) 종류·검증, Spend 분석, 호황·불황 사이클 대응 |
 | 심화 17 | [디지털 전환·지속가능 조달](https://totoma7.github.io/pro_sap/lessons/A-17-semicon-digital-sustainable.html) | 구매 디지털 4단계, AI·자동화, RE100·PPA·탄소발자국 지속가능 조달 |
+| 심화 18 | [협상·계약·컴플라이언스](https://totoma7.github.io/pro_sap/lessons/A-18-semicon-negotiation-legal.html) | BATNA·레버리지 협상, 계약 조항(IP·면책·분쟁), 구매 윤리·컴플라이언스 |
+| 심화 19 | [실전 케이스 의사결정](https://totoma7.github.io/pro_sap/lessons/A-19-semicon-cases.html) | EUV 캐파·소재 위기·호황기 LTA·EOL 4개 케이스 + 다섯 판단 질문 |
 
 ### 인터랙티브
 
 | 레슨 | 핵심 내용 |
 |---|---|
 | [P2P 시뮬레이터](https://totoma7.github.io/pro_sap/lessons/I-1-p2p-simulator.html) | 표준 자재/외주(L)/서비스(D) 시나리오를 단계별 클릭 진행 — 주체·회계 효과·인터페이스 표시 |
+| [10문항 셀프체크 퀴즈](https://totoma7.github.io/pro_sap/lessons/I-2-quiz.html) | 전 과정 핵심 10문항 — 즉시 정답·해설·점수 집계 |
 
 ### 공정 다이어그램
 
@@ -69,6 +72,7 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 | 레슨 | 핵심 내용 |
 |---|---|
 | [구매 카테고리 용어 사전](https://totoma7.github.io/pro_sap/lessons/R-1-category-glossary.html) | 직접/간접·CAPEX/OPEX·MRO·저장품 등 용어를 4가지 축으로 정리, SAP 자재유형·계정지정 결정표, 헷갈리는 용어 Q&A |
+| [통합 치트시트](https://totoma7.github.io/pro_sap/lessons/R-2-cheatsheet.html) | 전 과정 핵심을 한 장으로 압축(SAP·연계·업종·반도체·전략) + 다섯 판단 질문 |
 
 ## 추천 학습 경로
 
@@ -87,10 +91,10 @@ SAP 구매(MM-PUR)의 핵심 구조부터 전자구매 시스템과의 연계 �
 │   └── gate.js           # 접근 게이트 (ID 확인 → 60일 열람 쿠키)
 ├── lessons/              # 레슨 페이지 21편
 │   ├── 01-* ~ 05-*       # 본 과정 (5차시 11편)
-│   ├── A-1 ~ A-17        # 심화 17편 (A-5~A-17은 반도체 시리즈)
-│   ├── I-1               # 인터랙티브 P2P 시뮬레이터
+│   ├── A-1 ~ A-19        # 심화 19편 (A-5~A-19는 반도체 시리즈)
+│   ├── I-1, I-2          # 인터랙티브 — P2P 시뮬레이터·셀프체크 퀴즈
 │   ├── P-1               # 공정 다이어그램 — 반도체 제조 공정
-│   └── R-1               # 레퍼런스 — 구매 카테고리 용어 사전
+│   └── R-1, R-2          # 레퍼런스 — 용어 사전·통합 치트시트
 └── docs/                 # 마크다운 원고 (HTML 페이지의 소스 노트)
 ```
 

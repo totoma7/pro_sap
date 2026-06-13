@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 18 협상·계약·컴플라이언스 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 18</span>
+    <h1>협상 · 계약 · 컴플라이언스</h1>
+    <p class="lead">"무엇을 사느냐" 못지않게 "어떻게 합의하고, 어떤 조항으로 묶고, 어떤 선을 지키느냐"가 구매의 실력이다 — 협상·계약·윤리의 기본기.</p>
+  </header>
+
+  <h2>1. 협상 — 레버리지와 BATNA</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>BATNA</b>(협상 결렬 시 최선의 대안): 대안이 있어야 협상력이 생긴다 — <b>멀티벤더·대체 소재가 곧 BATNA</b>(R-1)</li>
+      <li><b>레버리지</b>: 물량·장기 약정·결제조건·정보 우위. 슈퍼 을(독점, 심화 14)에겐 레버리지가 약하다</li>
+      <li><b>ZOPA</b>(합의 가능 구간): Should-Cost(R-1)로 상대 원가를 추정해 구간을 좁힌다</li>
+      <li><b>관계형 협상</b>: 반도체 핵심 공급사는 1회성 승부가 아니라 <b>장기 파트너십</b> — 이기는 협상이 아니라 지속되는 협상</li>
+    </ul>
+  </div>
+  <div class="callout point">
+    <span class="t">반도체 협상의 특수성</span>
+    범용 품목은 단가 후려치기(레버리지)가 통하지만, 독점 장비·소재는 <b>"가격"이 아니라 "확보·우선순위"가 협상 목표</b>다(심화 16). 협상의 무기도 단가가 아니라 <b>물량 약정·공동 개발·장기 관계</b>로 바뀐다.
+  </div>
+
+  <h2>2. 계약·법무 — 어떤 조항이 위험을 가르나</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>조항</th><th>내용</th><th>왜 중요한가</th></tr>
+    <tr><td><b>물량·가격</b></td><td>Volume Band·가격 조정·Take-or-Pay (심화 10)</td><td>장기계약의 뼈대 — 사이클 리스크 직결</td></tr>
+    <tr><td><b>품질·변경</b></td><td>스펙·PCN 통보 의무·재인증 (심화 11)</td><td>무통보 변경 = 라인 사고 방지</td></tr>
+    <tr><td><b>납기·공급보증</b></td><td>납기·우선공급·공급중단 시 책임</td><td>결품 리스크를 계약으로 분담</td></tr>
+    <tr><td><b>IP·기밀</b></td><td>설계·공정 IP 귀속, NDA, 마스크 소유 (심화 12)</td><td>기술 유출 방지 — 반도체 핵심</td></tr>
+    <tr><td><b>면책·배상</b></td><td>하자·리콜·지재권 침해 책임 한도</td><td>사고 시 손해 분담 — 협상 핵심 쟁점</td></tr>
+    <tr><td><b>분쟁해결</b></td><td>준거법·관할·중재 (국제거래)</td><td>해외 공급사 분쟁 대비</td></tr>
+    <tr><td><b>수출통제·컴플라이언스</b></td><td>ECCN·제재 준수 의무 (심화 8)</td><td>규제 위반 책임 명확화</td></tr>
+  </table>
+  </div>
+
+  <h2>3. 구매 윤리·컴플라이언스 — 지켜야 할 선</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  E1["이해상충 (Conflict of Interest)<br/>친인척·지분·전관 거래"] --> CTRL["통제 장치"]
+  E2["청탁·접대·금품<br/>청탁금지법·접대 한도"] --> CTRL
+  E3["부패방지<br/>FCPA·해외뇌물·리베이트"] --> CTRL
+  E4["공정거래<br/>하도급법·우월적 지위 남용"] --> CTRL
+  CTRL --> R["신고·승인·기록<br/>이해상충 신고·전자결재·감사추적"]
+  classDef hl fill:#ffe08a,stroke:#16161d,color:#16161d;
+  class CTRL hl;
+  </pre>
+  <div class="tablewrap">
+  <table>
+    <tr><th>리스크</th><th>예시</th><th>통제</th></tr>
+    <tr><td><b>이해상충</b></td><td>담당자 친인척 업체·지분 보유</td><td>이해상충 신고·심사, 담당 배제</td></tr>
+    <tr><td><b>금품·접대</b></td><td>공급사 향응·선물</td><td>청탁금지법 한도·신고, 명절 선물 정책</td></tr>
+    <tr><td><b>부패</b></td><td>해외 거래 뇌물·페이백</td><td>FCPA·반부패 정책, 에이전트 실사</td></tr>
+    <tr><td><b>불공정거래</b></td><td>대금 미지급·부당 단가 인하</td><td>하도급법·상생결제(5차시), 서면 발급</td></tr>
+  </table>
+  </div>
+  <div class="callout warn">
+    <span class="t">컴플라이언스는 시스템으로 강제한다</span>
+    윤리는 구호가 아니라 <b>통제 장치</b>로 작동해야 한다 — 이해상충 신고 의무화, 전자결재 승인선, 거래 감사추적(5차시 이중원장), 공급사 등록 시 반부패 서약(심화 7 ESG). 사람의 양심이 아니라 <b>프로세스가 막아야</b> 지속된다.
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 18 한 줄</span>
+    협상은 <b>레버리지와 대안(BATNA)</b>으로, 계약은 <b>위험을 가르는 조항</b>으로, 컴플라이언스는 <b>사람이 아닌 시스템</b>으로 — 이 셋이 "잘 사는 기술"의 보이지 않는 토대다.
+  </div>
+
+  <div class="pager">
+    <a href="A-17-semicon-digital-sustainable.html"><span class="lbl">이전</span><b>← 심화 17 디지털·지속가능</b></a>
+    <a class="next" href="A-19-semicon-cases.html"><span class="lbl">다음</span><b>심화 19 실전 케이스 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>

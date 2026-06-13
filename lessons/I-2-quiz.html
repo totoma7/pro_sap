@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인터랙티브 셀프체크 퀴즈 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<style>
+  .quiz-q { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); padding: 16px; margin: 14px 0; box-shadow: var(--sh); }
+  .quiz-q .qn { font-size: 12px; font-weight: 900; color: var(--ink); background: var(--warn-soft); border: 2px solid var(--ink); border-radius: 4px; padding: 1px 8px; }
+  .quiz-q h3 { margin: 8px 0 12px; font-size: 16px; font-weight: 800; }
+  .quiz-q .opt {
+    display: block; width: 100%; text-align: left; margin: 8px 0; padding: 11px 13px;
+    font-size: 14.5px; font-weight: 600; cursor: pointer;
+    background: #fff; border: 2.5px solid var(--ink); border-radius: var(--radius); box-shadow: 2px 2px 0 var(--ink);
+    color: var(--ink); font-family: inherit;
+  }
+  .quiz-q .opt:hover:not(:disabled) { background: var(--brand-soft); }
+  .quiz-q .opt.correct { background: var(--accent-soft); }
+  .quiz-q .opt.wrong { background: #ffd0d0; }
+  .quiz-q .opt:disabled { cursor: default; }
+  .quiz-q .exp { display: none; margin-top: 10px; font-size: 13.5px; background: var(--brand-soft); border: 2px solid var(--ink); border-radius: 4px; padding: 10px; }
+  .quiz-q .exp.show { display: block; }
+  .quiz-score {
+    position: sticky; top: 8px; z-index: 5; text-align: center;
+    background: var(--pink); border: 3px solid var(--ink); border-radius: var(--radius);
+    padding: 10px; font-weight: 900; box-shadow: var(--sh); margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>인터랙티브 · Interactive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">셀프체크 퀴즈</span>
+    <h1>10문항 셀프체크</h1>
+    <p class="lead">보기를 누르면 정답·해설이 바로 나온다. 전 과정에서 핵심만 뽑은 10문항 — 얼마나 이해했는지 확인해 보자.</p>
+  </header>
+
+  <div class="quiz-score" id="score">진행: 0 / 10</div>
+  <div id="quiz"></div>
+
+  <div class="pager">
+    <a href="R-2-cheatsheet.html"><span class="lbl">복습</span><b>← R-2 치트시트</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 인터랙티브</footer>
+</div>
+
+<script>
+(function () {
+  var QUIZ = [
+    { q: "3-Way Match에서 대조하는 세 문서는?", opts: ["PR · RFQ · PO", "PO · 입고(GR) · 송장", "계약 · 입고 · 지급", "PR · PO · 지급"], a: 1, exp: "PO(주문)·GR(입고)·송장(청구) 3자를 대조해 일치해야 지급. 한국은 세금계산서까지 4-Way. (1-2차시)" },
+    { q: "GR/IR 계정 잔액이 비정상적으로 쌓인다면?", opts: ["정상이다", "입고는 됐는데 송장이 안 들어온 것 — 인터페이스 점검", "재고가 부족한 것", "예산이 초과된 것"], a: 1, exp: "GR/IR은 입고-송장 시차 중간계정. 잔액 누적은 송장 미유입(연계 장애) 신호 → MR11 정리. (1-2)" },
+    { q: "대량 PO·송장을 안정적으로 주고받을 때 적합한 연계는?", opts: ["동기 BAPI", "IDoc(비동기)", "화면 입력", "이메일"], a: 1, exp: "IDoc은 비동기 + 재처리 체계 내장이라 대량·안정에 적합. 즉시 응답이 필요하면 BAPI/OData. (3-1)" },
+    { q: "반도체 자재 소요는 무엇에 비례하나?", opts: ["완제품 BOM 수량", "웨이퍼 투입량 × 레이어(공정 횟수)", "직원 수", "매출액"], a: 1, exp: "전공정 반복 적층 때문에 '투입 웨이퍼 × 레이어당 원단위'에 비례. BOM 전개가 안 통한다. (심화 6)" },
+    { q: "EUV 노광 장비(ASML) 구매의 핵심 협상 목표는?", opts: ["최저 단가", "장비 슬롯(캐파) 확보", "결제 조건", "무상 A/S"], a: 1, exp: "EUV는 ASML 단독 — 슈퍼 을. 가격이 아니라 '몇 대를 언제 받느냐'(캐파 예약)가 승부. (심화 10·14)" },
+    { q: "AEO와 GTS(수출통제)의 차이는?", opts: ["같은 것이다", "AEO=통관 우대 자격(회사), GTS=거래 차단(품목)", "둘 다 관세율이다", "AEO는 품목, GTS는 회사"], a: 1, exp: "GTS는 '수출해도 되나'를 거래마다 차단, AEO는 '믿을 만한 무역업체'라는 회사 자격으로 통관 우대. (심화 8)" },
+    { q: "공급 부족 시 부족분을 우선순위로 배분하는 것은?", opts: ["EOL", "할당(Allocation)", "ERS", "PPV"], a: 1, exp: "수요>공급이면 제품·고객별 우선순위 룰로 배분 = 할당. 호황기 최대 격전지. (심화 9)" },
+    { q: "Kraljic 매트릭스에서 '지출 영향↑·공급 리스크↑' 사분면 전략은?", opts: ["경쟁 입찰로 단가 절감", "장기 파트너십·캐파 예약(전략)", "카탈로그 자동화", "무시"], a: 1, exp: "전략 품목(노광장비·핵심소재·파운드리) — 단가가 아니라 관계·확보로 간다. (심화 14)" },
+    { q: "팹리스가 파운드리에 칩을 위탁할 때 '일회성 고액'으로 드는 것은?", opts: ["월 임대료", "NRE·마스크(레티클) 세트", "전기료", "인건비"], a: 1, exp: "NRE(맞춤 개발비)·마스크 세트는 양산 전 일회성 거액 — 양산 물량에 안분해 단가를 본다. (심화 12)" },
+    { q: "절감액(Savings) 보고에서 'Cost Avoidance'는?", opts: ["실제 단가 인하", "인상 요구를 막거나 줄인 것", "재고 폐기", "환율 이익"], a: 1, exp: "Avoidance는 '안 오른 만큼'(회피). Reduction(실절감)과 구분하고 재무 검증해야 신뢰받는다. (심화 16)" }
+  ];
+
+  var quizEl = document.getElementById('quiz');
+  var scoreEl = document.getElementById('score');
+  var answered = 0, correct = 0;
+
+  QUIZ.forEach(function (item, qi) {
+    var card = document.createElement('div');
+    card.className = 'quiz-q';
+    var html = '<span class="qn">Q' + (qi + 1) + '</span><h3>' + item.q + '</h3>';
+    item.opts.forEach(function (opt, oi) {
+      html += '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + opt + '</button>';
+    });
+    html += '<div class="exp" id="exp' + qi + '">' + item.exp + '</div>';
+    card.innerHTML = html;
+    quizEl.appendChild(card);
+  });
+
+  quizEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('.opt');
+    if (!btn) return;
+    var qi = +btn.dataset.q, oi = +btn.dataset.o;
+    var card = btn.closest('.quiz-q');
+    if (card.dataset.done) return;
+    card.dataset.done = '1';
+    answered++;
+    var ans = QUIZ[qi].a;
+    card.querySelectorAll('.opt').forEach(function (b, bi) {
+      b.disabled = true;
+      if (bi === ans) b.classList.add('correct');
+      if (bi === oi && oi !== ans) b.classList.add('wrong');
+    });
+    if (oi === ans) correct++;
+    document.getElementById('exp' + qi).classList.add('show');
+    scoreEl.textContent = answered === QUIZ.length
+      ? '완료! 정답 ' + correct + ' / ' + QUIZ.length + (correct === QUIZ.length ? ' 🎉 만점!' : '')
+      : '진행: ' + answered + ' / ' + QUIZ.length + ' (정답 ' + correct + ')';
+  });
+})();
+</script>
+</body>
+</html>
