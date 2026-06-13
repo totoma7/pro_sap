@@ -44,36 +44,59 @@
     <span><span class="sw eq"></span> 사용 장비 (CAPEX)</span>
   </div>
 
-  <h2>1. 전체 공정 흐름 (Mermaid 다이어그램)</h2>
+  <h2>1. 전체 공정 6단계 (Mermaid 다이어그램)</h2>
+  <p>설계부터 출하까지 6개 그룹으로 묶고, FAB 전공정은 레이어마다 반복되는 8단계 사이클로, 공통 지원(클린룸·설비·물류·유틸리티)은 전 공정에 점선으로 연결했다.</p>
   <pre class="mmd mermaid">
-flowchart TD
-  W["웨이퍼 제조<br/>잉곳 → 슬라이싱"] --> OX["① 산화"]
-  OX --> PH
-  subgraph CYC["↻ 포토 사이클 · 레이어마다 반복 (수십~100회+)"]
+flowchart TB
+  subgraph G1["1. 설계 · Design"]
     direction TB
-    PH["② 포토 / 노광"] --> ET["③ 식각"] --> DE["④ 증착"] --> IM["⑤ 이온주입"] --> CMP["⑥ CMP"] --> CL["⑦ 세정 · 계측"]
+    A1["회로 설계<br/>Layout"] --> A2["마스크 제작<br/>Reticle"]
   end
-  CL -. 다음 레이어 .-> PH
-  CL --> EDS["⑧ EDS 웨이퍼 테스트"]
-  EDS --> BG
-  subgraph BE["후공정 · OSAT (조립의 세계)"]
+  subgraph G2["2. 웨이퍼 준비 · Wafer"]
     direction TB
-    BG["⑨ 백그라인딩"] --> DI["⑩ 다이싱"] --> BO["⑪ 다이/와이어 본딩"] --> MO["⑫ 몰딩"] --> FT["⑬ 패키지 테스트 · 마킹"]
+    B1["실리콘 잉곳 성장<br/>Ingot Growth"] --> B2["웨이퍼 슬라이싱<br/>Slicing"] --> B3["표면 연마·세정<br/>Polishing"]
   end
-  FT --> CHIP["완제품 칩"]
+  subgraph G3["3. FAB 전공정 · 반복 300~500회"]
+    direction TB
+    C1["산화/증착<br/>Oxidation·CVD·PVD"] --> C2["감광액 도포<br/>PR Coating"] --> C3["노광<br/>Lithography"] --> C4["현상/식각<br/>Develop·Etch"] --> C5["이온주입<br/>Ion Implantation"] --> C6["열처리<br/>Annealing·RTP"] --> C7["CMP 평탄화<br/>Chemical Mechanical"] --> C8["세정/검사<br/>Clean·Metrology"]
+    C8 -. 레이어 반복 .-> C1
+  end
+  subgraph G4["4. 웨이퍼 테스트 · EDS"]
+    direction TB
+    D1["EDS 전기 검사<br/>Probe Test"] --> D2["수율 맵<br/>Wafer Map"]
+  end
+  subgraph G5["5. 후공정 · Package"]
+    direction TB
+    E1["다이싱<br/>Wafer Sawing"] --> E2["다이 본딩<br/>Die Attach"] --> E3["와이어 본딩<br/>Wire Bond"] --> E4["몰딩/패키징<br/>HBM·FC-BGA"] --> E5["최종 테스트<br/>FT·Burn-in"]
+  end
+  subgraph G6["6. 출하 · Ship"]
+    direction TB
+    F1["등급 분류<br/>Binning"] --> F2["포장/출하<br/>Shipping"]
+  end
+  subgraph SUP["공통 지원 · 전 공정 Support"]
+    direction TB
+    S1["클린룸 환경<br/>온도·습도·파티클"]
+    S2["설비 관리<br/>예지보전·OEE"]
+    S3["AMHS<br/>웨이퍼 이송"]
+    S4["유틸리티<br/>가스·약품·초순수"]
+  end
 
-  classDef fe fill:#e3f6ef,stroke:#0ea371,color:#0b6e4f;
-  classDef be fill:#fdf3e3,stroke:#b45309,color:#b45309;
-  classDef ep fill:#e8eefc,stroke:#2b5fd9,color:#1f2433;
-  class OX,PH,ET,DE,IM,CMP,CL,EDS fe;
-  class BG,DI,BO,MO,FT be;
-  class W,CHIP ep;
+  G1 --> G2 --> G3 --> G4 --> G5 --> G6
+  SUP -. 전 공정 지원 .-> G3
+
+  style G1 fill:#f1eafd,stroke:#7c3aed,color:#7c3aed
+  style G2 fill:#e8eefc,stroke:#2b5fd9,color:#2b5fd9
+  style G3 fill:#fdf3e3,stroke:#b45309,color:#b45309
+  style G4 fill:#fde7f1,stroke:#db2777,color:#db2777
+  style G5 fill:#e3f6ef,stroke:#0ea371,color:#0b6e4f
+  style G6 fill:#fdebd3,stroke:#d97706,color:#d97706
+  style SUP fill:#eef7ee,stroke:#0ea371,color:#0b6e4f
   </pre>
-  <div class="mmd-cap">초록 = 전공정(Fab) · 주황 = 후공정(OSAT). 전공정의 ②~⑦은 칩 한 층을 만드는 한 사이클로, 레이어 수만큼 반복된다.</div>
+  <div class="mmd-cap">1 설계 → 2 웨이퍼 준비 → 3 FAB 전공정(반복) → 4 웨이퍼 테스트 → 5 후공정 → 6 출하. 공통 지원은 전 공정을 떠받친다.</div>
 
   <div class="callout point">
-    <span class="t">두 개의 세계</span>
-    <b>전공정</b>은 웨이퍼 한 장 위에 수백 개 칩을 동시에 만드는 "화학·물리의 세계"(반복 적층), <b>후공정</b>은 그 웨이퍼를 잘라 하나씩 포장하는 "조립의 세계"다. 구매 관점에서 전공정은 케미컬·가스 소비, 후공정은 OSAT 외주(심화 7)로 갈린다.
+    <span class="t">두 개의 세계 + 공통 지원</span>
+    <b>전공정(3)</b>은 웨이퍼 위에 회로를 반복 적층하는 "화학·물리의 세계", <b>후공정(5)</b>은 그 웨이퍼를 잘라 포장하는 "조립의 세계"다. 그리고 <b>공통 지원</b>(클린룸·설비·AMHS·유틸리티)이 전 공정을 24시간 떠받친다 — 구매 관점에서 이 셋이 각각 다른 자재·서비스 카테고리(아래 4번 표)를 만든다.
   </div>
 
   <h2>2. 전공정 (Front-End) — 회로를 새긴다</h2>
