@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 4 페이로드로 보는 매핑 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 4</span>
+    <h1>페이로드로 보는 매핑 — 같은 PO, 두 가지 언어</h1>
+    <p class="lead">개념은 끝났다. 이제 실제 데이터를 본다. 동일한 PO 한 건을 IDoc(ORDERS05)과 cXML(OrderRequest)로 나란히 놓고 필드 단위로 대응시킨다.</p>
+  </header>
+
+  <h2>0. 예제 거래</h2>
+  <div class="card">
+    한울전자(구매조직 1100)가 <b>대한정밀(공급사 코드 VND10023)</b>에게 PO <b>4500012345</b>를 발행.
+    품목 1건 — 베어링(자재 <b>M-7733</b>, 공급사 품번 <b>DH-BRG-77</b>) 500 EA, 단가 1,200원, 납기 2026-06-30, 납품처 평택공장(P100).
+  </div>
+
+  <h2>1. IDoc ORDERS05 원문 (발췌)</h2>
+  <span class="payload-label">SAP → 포털 · WE02에서 보는 모습</span>
+  <pre class="payload"><span class="cmt">-- 제어 레코드 (EDI_DC40) --</span>
+<span class="fld">MESTYP</span> = <span class="val">ORDERS</span>      <span class="fld">IDOCTP</span> = <span class="val">ORDERS05</span>
+<span class="fld">SNDPRN</span> = <span class="val">SAPECC</span>      <span class="fld">RCVPRN</span> = <span class="val">PORTAL</span>
+
+<span class="seg">E1EDK01</span>                      <span class="cmt">문서 헤더</span>
+  <span class="fld">CURCY</span>  = <span class="val">KRW</span>
+  <span class="fld">BELNR</span>  = <span class="val">4500012345</span>      <span class="cmt">PO 번호</span>
+
+<span class="seg">E1EDK14</span>  <span class="fld">QUALF</span>=<span class="val">014</span> <span class="fld">ORGID</span>=<span class="val">1100</span>   <span class="cmt">구매조직</span>
+<span class="seg">E1EDK14</span>  <span class="fld">QUALF</span>=<span class="val">012</span> <span class="fld">ORGID</span>=<span class="val">ZNB</span>    <span class="cmt">문서유형(포털 전용)</span>
+
+<span class="seg">E1EDKA1</span>  <span class="fld">PARVW</span>=<span class="val">LF</span>  <span class="fld">PARTN</span>=<span class="val">VND10023</span>  <span class="cmt">공급사</span>
+<span class="seg">E1EDKA1</span>  <span class="fld">PARVW</span>=<span class="val">WE</span>  <span class="fld">PARTN</span>=<span class="val">P100</span>      <span class="cmt">납품처(평택)</span>
+
+<span class="seg">E1EDP01</span>                      <span class="cmt">품목 10</span>
+  <span class="fld">POSEX</span>  = <span class="val">00010</span>
+  <span class="fld">MENGE</span>  = <span class="val">500</span>   <span class="fld">MENEE</span> = <span class="val">EA</span>
+  <span class="fld">WERKS</span>  = <span class="val">P100</span>
+  <span class="seg">E1EDP20</span>  <span class="fld">EDATU</span>=<span class="val">20260630</span> <span class="fld">WMENG</span>=<span class="val">500</span>   <span class="cmt">납기·수량</span>
+  <span class="seg">E1EDP19</span>  <span class="fld">QUALF</span>=<span class="val">001</span> <span class="fld">IDTNR</span>=<span class="val">M-7733</span>     <span class="cmt">우리 자재코드</span>
+  <span class="seg">E1EDP19</span>  <span class="fld">QUALF</span>=<span class="val">002</span> <span class="fld">IDTNR</span>=<span class="val">DH-BRG-77</span>  <span class="cmt">공급사 품번</span>
+  <span class="seg">E1EDP05</span>  <span class="fld">KOTXT</span>=<span class="val">총액</span> <span class="fld">BETRG</span>=<span class="val">600000</span>     <span class="cmt">가격 조건</span>
+
+<span class="seg">E1EDS01</span>  <span class="fld">SUMID</span>=<span class="val">002</span> <span class="fld">SUMME</span>=<span class="val">600000</span>      <span class="cmt">합계 검증</span></pre>
+
+  <h2>2. 같은 PO의 cXML OrderRequest (발췌)</h2>
+  <span class="payload-label">Ariba Network → 공급사 · CIG 변환 후</span>
+  <pre class="payload">&lt;<span class="seg">cXML</span>&gt;
+  &lt;<span class="seg">Header</span>&gt;
+    &lt;From&gt;&lt;Credential domain=<span class="val">"NetworkID"</span>&gt;<span class="val">AN0100012345</span>&lt;/Credential&gt;&lt;/From&gt;
+    &lt;To&gt;  &lt;Credential domain=<span class="val">"NetworkID"</span>&gt;<span class="val">AN0100067890</span>&lt;/Credential&gt;&lt;/To&gt;
+  &lt;/<span class="seg">Header</span>&gt;
+  &lt;Request&gt;
+    &lt;<span class="seg">OrderRequest</span>&gt;
+      &lt;<span class="seg">OrderRequestHeader</span> <span class="fld">orderID</span>=<span class="val">"4500012345"</span> <span class="fld">type</span>=<span class="val">"new"</span>&gt;
+        &lt;Total&gt;&lt;Money <span class="fld">currency</span>=<span class="val">"KRW"</span>&gt;<span class="val">600000</span>&lt;/Money&gt;&lt;/Total&gt;
+        &lt;<span class="seg">ShipTo</span>&gt;&lt;Address&gt;&lt;Name&gt;<span class="val">한울전자 평택공장</span>&lt;/Name&gt;...&lt;/<span class="seg">ShipTo</span>&gt;
+        &lt;Extrinsic <span class="fld">name</span>=<span class="val">"PurchasingOrg"</span>&gt;<span class="val">1100</span>&lt;/Extrinsic&gt;  <span class="cmt">&lt;!-- 커스텀 --&gt;</span>
+      &lt;/<span class="seg">OrderRequestHeader</span>&gt;
+      &lt;<span class="seg">ItemOut</span> <span class="fld">quantity</span>=<span class="val">"500"</span> <span class="fld">lineNumber</span>=<span class="val">"10"</span> <span class="fld">requestedDeliveryDate</span>=<span class="val">"2026-06-30"</span>&gt;
+        &lt;ItemID&gt;
+          &lt;<span class="seg">SupplierPartID</span>&gt;<span class="val">DH-BRG-77</span>&lt;/<span class="seg">SupplierPartID</span>&gt;
+          &lt;<span class="seg">BuyerPartID</span>&gt;<span class="val">M-7733</span>&lt;/<span class="seg">BuyerPartID</span>&gt;
+        &lt;/ItemID&gt;
+        &lt;ItemDetail&gt;
+          &lt;UnitPrice&gt;&lt;Money <span class="fld">currency</span>=<span class="val">"KRW"</span>&gt;<span class="val">1200</span>&lt;/Money&gt;&lt;/UnitPrice&gt;
+          &lt;UnitOfMeasure&gt;<span class="val">EA</span>&lt;/UnitOfMeasure&gt;
+        &lt;/ItemDetail&gt;
+      &lt;/<span class="seg">ItemOut</span>&gt;
+    &lt;/<span class="seg">OrderRequest</span>&gt;
+  &lt;/Request&gt;
+&lt;/<span class="seg">cXML</span>&gt;</pre>
+
+  <h2>3. 필드 매핑 표 — 매핑 정의서의 실제 모습</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>비즈니스 항목</th><th>IDoc (ORDERS05)</th><th>cXML (OrderRequest)</th><th>변환 주의</th></tr>
+    <tr><td>PO 번호</td><td>E1EDK01-BELNR</td><td>OrderRequestHeader@orderID</td><td>—</td></tr>
+    <tr><td>통화</td><td>E1EDK01-CURCY</td><td>Money@currency</td><td>헤더 1곳 ↔ 금액마다 반복</td></tr>
+    <tr><td>공급사</td><td>E1EDKA1[PARVW=LF]-PARTN</td><td>Header/To Credential</td><td><b>SAP 코드 ↔ Ariba Network ID 변환 테이블 필요</b></td></tr>
+    <tr><td>납품처</td><td>E1EDKA1[PARVW=WE]</td><td>ShipTo/Address</td><td>코드 ↔ 주소 전문 — 마스터 참조 변환</td></tr>
+    <tr><td>품목 번호</td><td>E1EDP01-POSEX (00010)</td><td>ItemOut@lineNumber (10)</td><td>선행 0 제거 — 단골 버그</td></tr>
+    <tr><td>수량/단위</td><td>MENGE / MENEE (EA)</td><td>@quantity / UnitOfMeasure</td><td>SAP 내부 단위 ST ↔ ISO 단위 PCE 변환 주의</td></tr>
+    <tr><td>납기</td><td>E1EDP20-EDATU (20260630)</td><td>@requestedDeliveryDate (2026-06-30)</td><td>날짜 포맷 + 타임존</td></tr>
+    <tr><td>자재/품번</td><td>E1EDP19 QUALF 001/002</td><td>BuyerPartID / SupplierPartID</td><td>둘 다 싣는 것이 정석 — 한쪽만 보내면 상대가 매칭 불가</td></tr>
+    <tr><td>단가</td><td>E1EDP05 (조건 단위)</td><td>UnitPrice (품목 속성)</td><td>IDoc은 할인·부대비가 조건별 분리 — 합산 규칙 정의 필요</td></tr>
+    <tr><td>구매조직</td><td>E1EDK14[QUALF=014]</td><td>Extrinsic "PurchasingOrg"</td><td>표준에 없음 → 커스텀(Extrinsic)</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">표에서 배우는 매핑의 3가지 패턴</span>
+    ① <b>구조 차이</b>(헤더 1곳 ↔ 반복) ② <b>코드 체계 차이</b>(변환 테이블) ③ <b>표준에 없는 항목</b>(Extrinsic/Z-필드). 어떤 인터페이스든 매핑 이슈는 결국 이 셋 중 하나다.
+  </div>
+
+  <h2>4. 실전 Q&amp;A — 현장에서 받는 질문들</h2>
+
+  <details class="qa">
+    <summary>Q1. 포털에서 보낸 PO 금액과 SAP PO 금액이 1원 다르다. 왜?</summary>
+    <div class="a">십중팔구 <b>반올림 규칙 차이</b>다. 부가세 계산(품목별 반올림 vs 합계 후 반올림), 단가 소수점 자릿수, 통화 환산 시점이 양쪽에서 다르면 1원 차이가 난다. 해법: 금액 계산의 <b>기준 시스템을 하나로 정하고</b>(보통 SAP), 상대는 계산하지 말고 받은 값을 그대로 쓴다. 세금계산서 역발행(5차시)이 이 문제를 구조적으로 없애는 방법이기도 하다.</div>
+  </details>
+
+  <details class="qa">
+    <summary>Q2. 공급사 코드가 포털과 SAP에서 다른데, 변환 테이블은 누가 관리하나?</summary>
+    <div class="a">변환 테이블의 <b>관리 주체와 위치를 하나로</b> — 보통 미들웨어(CIG/CPI)나 포털 한 곳. 양쪽에 복사해 두면 반드시 어긋난다. 그리고 신규 협력사 등록 흐름(포털 승인 → SAP BP 생성, 1-1차시)에 <b>변환 테이블 자동 등록을 끼워 넣어야</b> 운영 중 누락이 없다. "BP는 생겼는데 매핑이 없어 PO 송신 실패"가 단골 장애다.</div>
+  </details>
+
+  <details class="qa">
+    <summary>Q3. PO를 변경하면 인터페이스는 어떻게 동작해야 하나?</summary>
+    <div class="a">SAP은 변경분 개념(ORDCHG)이고 Ariba cXML은 <b>전체 재전송 + 버전 증가</b>(orderID 동일, type="update")다. 매핑에서 ORDCHG를 받아 전체 문서를 재구성해 보내야 한다. 운영 관점 주의: <b>변경 IDoc이 생성보다 먼저 도착하는 순서 역전</b>(3-2차시)과, 공급사가 이미 ASN을 쏜 품목의 수량을 줄이는 변경 — 이 두 가지는 차단 또는 경고 룰을 시스템에 넣는 게 안전하다.</div>
+  </details>
+
+  <details class="qa">
+    <summary>Q4. 단위(EA/ST/PCE)가 꼬여서 수량 500이 5로 들어왔다. 어디를 봐야 하나?</summary>
+    <div class="a">단위 자체가 아니라 <b>단위 변환 계수</b>가 범인일 가능성이 높다. SAP 자재 마스터에는 "기본 단위 ↔ 구매 단위" 변환(예: 1 BOX = 100 EA)이 있는데, 인터페이스가 구매 단위 수량을 기본 단위로 잘못 해석하면 100배 차이가 난다. 점검 순서: ① 원본 페이로드의 수량·단위 ② 자재 마스터 단위 변환 계수 ③ 매핑 룰의 단위 코드 변환(ST↔PCE) — 이 순서로 어느 구간에서 값이 변했는지 좁힌다(심화 1의 구간 좁히기와 같은 발상).</div>
+  </details>
+
+  <details class="qa">
+    <summary>Q5. 인터페이스 정의서에 꼭 들어가야 하는 항목은?</summary>
+    <div class="a">최소 9가지: ① 송수신 시스템·방향 ② 트리거(이벤트/배치) ③ 기술 방식(IDoc/API)과 메시지 구조 ④ <b>필드 매핑 표</b>(위 3번 표 형식) ⑤ 코드 변환 테이블과 관리 주체 ⑥ <b>오류 처리·재처리 절차</b> ⑦ 멱등 키(중복 방지) ⑧ 처리량·성능 요건 ⑨ 대사 방법. 현장에서 빠져서 사고 나는 건 늘 ⑥⑦⑨ — 정상 흐름만 정의하고 비정상을 안 적은 정의서다.</div>
+  </details>
+
+  <div class="callout tip">
+    <span class="t">학습 팁</span>
+    위 두 페이로드를 종이에 놓고 매핑 표 없이 직접 선을 그어 보라. 10개 항목 중 8개 이상 연결되면 이 과정의 목표는 달성된 것이다.
+  </div>
+
+  <div class="pager">
+    <a href="A-3-case-study.html"><span class="lbl">이전</span><b>← 심화 3 케이스 스터디</b></a>
+    <a class="next" href="I-1-p2p-simulator.html"><span class="lbl">다음</span><b>인터랙티브 P2P 시뮬레이터 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>

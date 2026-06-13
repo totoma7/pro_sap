@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인터랙티브 P2P 시뮬레이터 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>인터랙티브 · Interactive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">인터랙티브</span>
+    <h1>P2P 시뮬레이터</h1>
+    <p class="lead">시나리오를 고르고 한 단계씩 눌러 보자. 각 단계마다 <b>어느 시스템이 움직이고</b>, <b>회계에 무엇이 찍히고</b>, <b>어떤 인터페이스가 오가는지</b> 표시된다.</p>
+  </header>
+
+  <div class="sim-tabs" id="simTabs"></div>
+
+  <div class="sim-lanes">
+    <div class="sim-lane" id="lane-portal">🖥️ 구매포털</div>
+    <div class="sim-lane" id="lane-sap">📒 SAP (원장)</div>
+    <div class="sim-lane" id="lane-supplier">🏭 공급사</div>
+  </div>
+
+  <div class="sim-stage" id="simStage"></div>
+
+  <div class="sim-dots" id="simDots"></div>
+
+  <div class="sim-ctl">
+    <button class="prev" id="btnPrev">← 이전</button>
+    <button class="next" id="btnNext">다음 단계 →</button>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">관전 포인트</span>
+    시나리오를 바꿔 가며 보라. ① 누가 첫 단계를 시작하는가(2-1차시: 직접=시스템, 간접=사람) ② 회계 효과(초록)가 찍히는 단계는 어디인가 — <b>입고와 송장, 단 두 곳</b>이다(1-2차시) ③ 보라색 인터페이스 메시지가 3차시에서 배운 그 이름들이다.
+  </div>
+
+  <h2>시나리오별 비교 요약</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>관점</th><th>표준 자재</th><th>외주 (L)</th><th>서비스 (D)</th></tr>
+    <tr><td>시작점</td><td>현업 요청 (포털)</td><td>MRP (SAP)</td><td>품의 + 예산 체크 (포털)</td></tr>
+    <tr><td>"입고"의 의미</td><td>재고 증가</td><td>완성품 입고 + 사급재 자동 소비</td><td>SES 검수 (재고 없음)</td></tr>
+    <tr><td>매입 대상</td><td>물품 대금</td><td>가공비만</td><td>용역비 (비용 직행)</td></tr>
+    <tr><td>핵심 인터페이스</td><td>ORDERS·INVOIC</td><td>+ 사급재 수불·DESADV</td><td>+ 예산 조회·검수 신청</td></tr>
+  </table>
+  </div>
+
+  <div class="pager">
+    <a href="A-4-payload-mapping.html"><span class="lbl">이전</span><b>← 심화 4 페이로드 매핑</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 인터랙티브</footer>
+</div>
+
+<script>
+(function () {
+  var SCENARIOS = {
+    std: {
+      label: '표준 자재',
+      steps: [
+        { actor: 'portal', title: '구매 요청', desc: '현업 사용자가 포털에서 품목·수량 입력 후 요청. 승인 완료되면 SAP으로 넘어간다.', msg: 'BAPI_PR_CREATE → SAP PR 생성 (동기: PR번호 즉시 회신)' },
+        { actor: 'portal', title: '소싱 — 견적·낙찰', desc: '포털에서 복수 공급사 견적 비교 또는 입찰. 낙찰 결과가 단가의 원천이 된다.', msg: '낙찰 단가 → SAP Info Record / 계약 전송' },
+        { actor: 'sap', title: 'PO 생성', desc: 'SAP이 PR을 PO로 전환(문서유형 ZNB). 여기서부터 SAP이 법적 원장.', msg: 'IDoc ORDERS05 → 포털·공급사에 PO 송신' },
+        { actor: 'supplier', title: '주문 확인', desc: '공급사가 포털에서 PO를 열람하고 수락·납기를 회신한다.', msg: 'IDoc ORDRSP → SAP (확인/납기 반영)' },
+        { actor: 'supplier', title: '출하 — ASN', desc: '공급사가 출하하며 납품 통보(ASN)를 보낸다. 입고 예정 정보가 미리 잡힌다.', msg: 'IDoc DESADV → SAP Inbound Delivery 생성' },
+        { actor: 'sap', title: '입고 (GR)', desc: '물품 도착·검수 후 MIGO 입고. 첫 번째 회계 효과 발생.', fx: '차변: 재고 자산 600,000 / 대변: GR/IR 600,000', msg: '입고 결과 → 포털 회신 (공급사 열람)' },
+        { actor: 'portal', title: '세금계산서 — 역발행', desc: '입고 실적 기준으로 포털이 세금계산서를 작성, 공급사가 승인. 국세청 전송 후 승인번호 확보.', msg: '송장 + 승인번호 → SAP IV (3-Way Match)' },
+        { actor: 'sap', title: '송장검증 → 지급', desc: 'PO·GR·송장 대조 통과 → 채무 확정 → F110 지급. 마지막 회계 효과.', fx: '차변: GR/IR 600,000 / 대변: 외상매입금 → 지급 시 현금', msg: '지급 예정·완료 상태 → 포털 회신' }
+      ]
+    },
+    sub: {
+      label: '외주 (L)',
+      steps: [
+        { actor: 'sap', title: 'MRP — 외주 PR 자동 생성', desc: '생산계획을 BOM으로 전개해 가공품 부족분을 계산. 사람 개입 없이 PR이 생긴다.', msg: '(SAP 내부) MRP → 외주 PR' },
+        { actor: 'sap', title: '외주 PO(L) 생성', desc: '가공품 PO에 사급 자재(Component) 목록이 BOM에서 자동으로 따라붙는다.', msg: 'IDoc ORDERS05 (사급 내역 포함) → 포털·공급사' },
+        { actor: 'sap', title: '사급 자재 출고', desc: '원자재를 외주사로 보낸다(ME2O). 회계상 자산 이동은 없다 — 여전히 우리 재고.', fx: '재고 위치만 이동: 자사 창고 → "공급사 위치 재고" (손익 영향 없음)', msg: '사급재 수불 현황 → 포털 공유 (공급사 열람)' },
+        { actor: 'supplier', title: '가공 · 출하 (ASN)', desc: '공급사가 사급재로 가공 후 완성품을 출하하며 ASN 송신.', msg: 'IDoc DESADV → SAP Inbound Delivery' },
+        { actor: 'sap', title: '가공품 입고 + 백플러시', desc: '완성품 입고와 동시에 사급 자재가 자동 소비된다. 매입은 가공비만.', fx: '차변: 완성품 재고 / 대변: 사급재 소비 + GR/IR(가공비)', msg: '입고·사급재 정산 결과 → 포털 회신' },
+        { actor: 'portal', title: '가공비 세금계산서', desc: '가공비에 대해서만 역발행 세금계산서. 사급재 대금은 애초에 없다.', msg: '가공비 송장 → SAP IV' },
+        { actor: 'sap', title: '송장검증 → 지급', desc: '가공비 3-Way Match 후 지급. 상생결제 대상이면 지급 수단 분기.', fx: '차변: GR/IR(가공비) / 대변: 외상매입금 → 지급', msg: '지급 상태 → 포털 회신' }
+      ]
+    },
+    svc: {
+      label: '서비스 (D)',
+      steps: [
+        { actor: 'portal', title: '품의 + 예산 체크', desc: '용역 품의 작성 시점에 예산 가용액을 실시간 확인. 초과면 여기서 차단.', msg: '예산 가용액 동기 조회 (RFC/OData) — 즉시 응답 필요' },
+        { actor: 'portal', title: '승인 워크플로우', desc: '금액·품목에 따른 다단계 승인. 코스트센터(K) 계정 지정 필수.', msg: '(포털 내부) 승인 완료 → SAP 전송 준비' },
+        { actor: 'sap', title: '서비스 PO(D) 생성', desc: '용역 내역(Service Line)으로 구성된 PO. 재고가 아니라 비용으로 갈 운명.', msg: 'PO 내역 → 포털·공급사 통보' },
+        { actor: 'supplier', title: '용역 수행', desc: '공급사가 용역을 수행한다. 시스템은 조용한 구간 — 그래서 다음 단계(검수)가 중요.', msg: '—' },
+        { actor: 'supplier', title: '완료 보고 / 기성 신청', desc: '공급사가 포털에서 수행 내역·금액을 신청한다. 건설이면 매월 반복되는 기성 신청.', msg: '검수 신청 데이터 → SAP (SES 초안)' },
+        { actor: 'sap', title: 'SES 검수 승인', desc: '담당자가 수행 내역을 검수·승인(ML81N). "입고"에 해당하는 단계 — 회계 효과 발생.', fx: '차변: 비용(코스트센터 K) / 대변: GR/IR — 재고 없이 비용 직행', msg: '검수 결과 → 포털 회신' },
+        { actor: 'sap', title: '송장검증 → 지급', desc: 'SES 승인 금액 기준으로 송장 대조 후 지급. 하도급 대상이면 60일 기일 체크.', fx: '차변: GR/IR / 대변: 외상매입금 → 지급', msg: '지급 상태 → 포털 회신 (유보금 내역 포함)' }
+      ]
+    }
+  };
+
+  var cur = 'std', idx = 0;
+  var tabs = document.getElementById('simTabs');
+  var stage = document.getElementById('simStage');
+  var dots = document.getElementById('simDots');
+  var btnPrev = document.getElementById('btnPrev');
+  var btnNext = document.getElementById('btnNext');
+  var ACTOR_NAME = { portal: '구매포털', sap: 'SAP', supplier: '공급사' };
+
+  Object.keys(SCENARIOS).forEach(function (key) {
+    var b = document.createElement('button');
+    b.textContent = SCENARIOS[key].label;
+    b.id = 'tab-' + key;
+    b.addEventListener('click', function () { cur = key; idx = 0; render(); });
+    tabs.appendChild(b);
+  });
+
+  function render() {
+    var sc = SCENARIOS[cur], st = sc.steps[idx];
+
+    Object.keys(SCENARIOS).forEach(function (key) {
+      document.getElementById('tab-' + key).className = (key === cur) ? 'on' : '';
+    });
+
+    ['portal', 'sap', 'supplier'].forEach(function (a) {
+      document.getElementById('lane-' + a).className = 'sim-lane' + (st.actor === a ? ' active' : '');
+    });
+
+    var html = '<div class="stepno">STEP ' + (idx + 1) + ' / ' + sc.steps.length +
+      ' · 주체: ' + ACTOR_NAME[st.actor] + '</div>' +
+      '<h3>' + st.title + '</h3>' +
+      '<div class="desc">' + st.desc + '</div>';
+    if (st.fx) html += '<div class="fx">💰 회계 효과 — ' + st.fx + '</div>';
+    if (st.msg && st.msg !== '—') html += '<div class="msg">🔄 인터페이스 — ' + st.msg + '</div>';
+    stage.innerHTML = html;
+
+    dots.innerHTML = '';
+    sc.steps.forEach(function (_, i) {
+      var d = document.createElement('span');
+      d.className = i === idx ? 'on' : (i < idx ? 'done' : '');
+      d.addEventListener('click', function () { idx = i; render(); });
+      dots.appendChild(d);
+    });
+
+    btnPrev.disabled = (idx === 0);
+    btnNext.textContent = (idx === sc.steps.length - 1) ? '처음부터 다시' : '다음 단계 →';
+  }
+
+  btnPrev.addEventListener('click', function () { if (idx > 0) { idx--; render(); } });
+  btnNext.addEventListener('click', function () {
+    var last = SCENARIOS[cur].steps.length - 1;
+    idx = (idx === last) ? 0 : idx + 1;
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
