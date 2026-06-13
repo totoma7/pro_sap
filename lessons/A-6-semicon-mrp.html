@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 6 반도체 MRP | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 6</span>
+    <h1>반도체 MRP — 자재 수요는 어디서 오는가</h1>
+    <p class="lead">일반 제조는 "완제품 계획 → BOM 전개"로 끝난다(2-1차시). 반도체에서는 이 공식이 통하지 않는다 — 수요의 원천부터 다시 정의해야 한다.</p>
+  </header>
+
+  <h2>1. 왜 BOM 전개가 안 통하나</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>제품 구조가 BOM이 아니다</b> — 칩은 부품 조립이 아니라 웨이퍼 위에 수백 개 공정을 <b>반복 적층</b>해서 만든다. "완제품 1개 = 부품 몇 개"가 성립하지 않는다</li>
+      <li><b>자재 소비가 공정에 비례</b> — 포토레지스트·가스·슬러리는 "칩당"이 아니라 <b>웨이퍼 투입 × 레이어(공정 횟수)당</b> 소비된다</li>
+      <li><b>사이클 타임 2~3개월</b> — 오늘 투입한 웨이퍼가 두 달 뒤 완성. 완제품 수요로 역산하면 너무 늦다</li>
+      <li><b>수율 변동</b> — 같은 투입에도 산출이 흔들려, 소요량이 확정이 아니라 통계치다</li>
+    </ul>
+  </div>
+  <div class="callout point">
+    <span class="t">발상의 전환</span>
+    반도체 자재 계획의 기준은 완제품 수요가 아니라 <b>웨이퍼 투입 계획(Wafer Start Plan)</b>이다. "이번 달 P3 라인에 웨이퍼 몇 장을 넣는가" × "웨이퍼·레이어당 자재 원단위" = 자재 소요량.
+  </div>
+
+  <h2>2. 수요의 4가지 원천 — 카테고리마다 계획 방식이 다르다</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>카테고리 (4-3)</th><th>수요의 원천</th><th>계획 방식</th></tr>
+    <tr><td><b>웨이퍼 (기판)</b></td><td>투입 계획 그 자체 — 1:1 비례</td><td>소요 기반(PD) — 투입 계획에서 직접 산출</td></tr>
+    <tr><td><b>공정 자재</b><br>(PR·가스·슬러리·타겟)</td><td>투입 계획 × 레이어당 원단위</td><td><b>예측/소비 기반</b> — 원단위 예측 + 실소비 보정 + VMI</td></tr>
+    <tr><td><b>스페어파츠</b></td><td>PM 일정(예방 정비) + 고장률(MTBF)</td><td>재주문점 + PM 오더 예약 (심화 5)</td></tr>
+    <tr><td><b>장비</b></td><td>투자 로드맵</td><td>MRP 밖 — IM/PS 투자 계획 (심화 5)</td></tr>
+  </table>
+  </div>
+
+  <h2>3. SAP MRP 유형 — 무엇을 어디에 쓰나</h2>
+  <p>SAP 자재 마스터의 <b>MRP 유형(MRP Type)</b>이 계획 로직을 결정한다. 반도체는 한 Fab 안에서 네 가지를 섞어 쓴다.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>MRP 유형</th><th>로직</th><th>반도체 적용</th></tr>
+    <tr><td><span class="chip code">PD</span> 소요 기반</td><td>수요(생산계획·수주)를 역산해 부족분 산출 — 교과서 MRP</td><td>웨이퍼, 투입 계획과 1:1로 묶이는 자재</td></tr>
+    <tr><td><span class="chip code">VB</span> 재주문점</td><td>재고가 기준점 아래로 내려가면 발주 — 수요 예측 불필요</td><td>범용 스페어, 안정 소비 소모품</td></tr>
+    <tr><td><span class="chip code">VV</span> 예측 기반</td><td>과거 소비 이력으로 미래 소요 예측</td><td>공정 자재 — 단, <b>원단위×투입계획 예측으로 보강</b>해야 정확</td></tr>
+    <tr><td><span class="chip code">ND</span> 계획 없음</td><td>MRP 제외</td><td>VMI 품목(공급사가 계획 주체), 장비</td></tr>
+  </table>
+  </div>
+  <div class="callout warn">
+    <span class="t">반도체 특유의 함정 — 과거 소비만 믿으면 안 된다</span>
+    VV(과거 소비 예측)는 <b>공정 전환(테크 마이그레이션)을 모른다</b>. 신공정 램프업으로 레이어 수가 바뀌면 원단위가 계단식으로 변한다. 그래서 실무는 "MES 원단위 × 투입 계획"으로 만든 예측을 <b>계획 독립 소요(PIR)로 밀어 넣고</b>, 실소비로 보정하는 하이브리드가 정석이다.
+  </div>
+
+  <h2>4. 계획 → 발주까지의 흐름</h2>
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>웨이퍼 투입 계획 확정</b>
+      <span class="d">생산기획이 라인·월별 투입량 확정 — 모든 자재 계획의 뿌리</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">2</span><b>원단위 전개 → 계획 소요(PIR) 생성</b>
+      <span class="d">투입 계획 × 레이어당 원단위(MES/공정 데이터 기준) = 자재별 월 소요량 → SAP에 계획 독립 소요로 입력</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>MRP 실행 → PR/SA 회차 생성</b>
+      <span class="d">안전재고·리드타임 반영해 부족분 산출. 소스리스트·쿼터(듀얼소싱 비율) 따라 공급원 자동 결정 → 납품일정계약(SA) 회차 또는 PR</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">4</span><b>공급사 협업 — 예측 공유와 확약</b>
+      <span class="d">3~12개월 예측(Forecast)을 공급사에 공유 → 공급사가 공급 가능량 회신(Commit) — SCC의 핵심 시나리오</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">5</span><b>실소비 반영 → 원단위 보정</b>
+      <span class="d">MES 실사용량을 백플러시/정산으로 SAP에 반영 → 원단위 차이 분석 → 다음 달 예측 정확도 개선 (사이클)</span>
+    </div>
+  </div>
+
+  <h2>5. 긴 리드타임과의 싸움</h2>
+  <p>핵심 공정 자재·부품은 리드타임이 <b>6개월~1년</b>이다. "부족하면 발주"가 통하지 않는 세계의 대응책:</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>대응</th><th>내용</th><th>SAP/포털 구현</th></tr>
+    <tr><td><b>예측 선발주</b></td><td>확정 수요 전에 예측만으로 발주 — 취소·이월 조건을 계약에 명시</td><td>PIR 기반 MRP + 프레임 계약 콜오프</td></tr>
+    <tr><td><b>안전재고 차등</b></td><td>공급 리스크 등급별로 재고 일수 차등 (독점 공급 자재 = 두껍게)</td><td>자재별 안전재고·재고 일수 정책, MRP Area(Fab별) 분리</td></tr>
+    <tr><td><b>듀얼소싱 쿼터</b></td><td>2개 공급사에 비율 배분 — 품질 인증(공정 Qual) 완료가 전제</td><td>쿼터 배열(Quota Arrangement) — MRP가 비율대로 자동 배분</td></tr>
+    <tr><td><b>공급사 재고 가시성</b></td><td>공급사 완제품·중간재 재고까지 보는 멀티티어 가시성</td><td>포털 SCC — 공급사 재고·생산 현황 공유 인터페이스</td></tr>
+  </table>
+  </div>
+
+  <h2>6. 전자구매 연계 관점 — MRP가 만드는 인터페이스</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>인터페이스</th><th>방향</th><th>내용</th></tr>
+    <tr><td>예측(Forecast) 공유</td><td>SAP → 포털/공급사</td><td>MRP 계획 오더·SA 회차를 3~12개월 지평으로 공급사에 공개</td></tr>
+    <tr><td>공급 확약(Commit) 수신</td><td>공급사 → SAP</td><td>예측 대비 공급 가능량 회신 — 부족분은 조기 경보</td></tr>
+    <tr><td>SA 회차 송신</td><td>SAP → 공급사</td><td>확정 납품 지시 (DELINS/DELFOR 계열) — 3-1차시 IDoc의 연장</td></tr>
+    <tr><td>MES 사용량 수신</td><td>MES → SAP</td><td>실소비 백플러시 — 원단위 보정과 ERS 정산(심화 5)의 근거</td></tr>
+    <tr><td>원단위 마스터 동기화</td><td>공정 시스템 → SAP</td><td>레이어당 사용량 변경(신공정) 반영 — 누락 시 예측 전체가 틀어진다</td></tr>
+  </table>
+  </div>
+  <div class="callout point">
+    <span class="t">한 줄 정리</span>
+    일반 제조의 MRP 연계가 "PO 주고받기"라면, 반도체 MRP 연계는 <b>예측↔확약의 왕복</b>이 본체다. 발주는 그 결과물일 뿐이다.
+  </div>
+
+  <h2>7. 운영 체크리스트 — 반도체 MRP판</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>항목</th><th>안 하면 생기는 일</th></tr>
+    <tr><td><b>원단위 정기 검증</b> (계획 vs MES 실소비 차이 분석)</td><td>예측이 조용히 틀어져 과잉/결품이 몇 달 뒤 폭발</td></tr>
+    <tr><td><b>MRP 예외 메시지 일일 처리</b> (납기 앞당김/지연 제안)</td><td>리드타임 긴 자재의 경보를 놓치면 회복 불가</td></tr>
+    <tr><td><b>램프업/전환 계획의 선반영</b></td><td>신공정 자재가 양산 시작에 못 맞춰 도착</td></tr>
+    <tr><td><b>공급사 Commit 미달 에스컬레이션</b></td><td>"예측은 보냈는데 회신을 안 본" 상태로 결품 직행</td></tr>
+    <tr><td><b>수율 변동 시나리오 재계산</b></td><td>수율 급변 시 투입 계획이 바뀌어도 자재 계획이 옛 숫자로 발주</td></tr>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="t">심화 6의 핵심 한 줄</span>
+    반도체 MRP는 "BOM 전개"가 아니라 <b>투입 계획 × 원단위 예측 + 실소비 보정의 순환</b>이다. 이 순환의 데이터 품질(원단위·MES 사용량)이 구매의 정확도를 결정하고, 전자구매 연계는 예측↔확약 협업으로 무게중심이 이동한다.
+  </div>
+
+  <div class="pager">
+    <a href="A-5-semicon-sap-eproc.html"><span class="lbl">이전</span><b>← 심화 5 반도체 특화 구현</b></a>
+    <a class="next" href="I-1-p2p-simulator.html"><span class="lbl">다음</span><b>인터랙티브 P2P 시뮬레이터 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
