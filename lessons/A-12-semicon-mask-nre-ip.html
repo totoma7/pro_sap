@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 12 마스크·NRE·IP | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 12</span>
+    <h1>마스크 · NRE · IP — 팹리스와 파운드리의 구매</h1>
+    <p class="lead">반도체는 "물건"만 사는 게 아니다. <b>설계도(IP)·맞춤 제작비(NRE)·회로 원판(마스크)</b>처럼 손에 안 잡히는 것을 사는 구매가 있다 — 특히 팹(공장)이 없는 팹리스가 파운드리에 위탁할 때.</p>
+  </header>
+
+  <h2>1. 비즈니스 모델이 구매를 가른다</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>모델</th><th>설명</th><th>구매의 성격</th></tr>
+    <tr><td><b>IDM</b><br>(종합반도체)</td><td>설계+제조 모두 내재화 (예: 메모리)</td><td>장비·소재 직접구매 중심 (4-3, 심화 5~6)</td></tr>
+    <tr><td><b>팹리스</b><br>(Fabless)</td><td>설계만, 제조는 위탁 (예: AP·GPU 설계사)</td><td><b>파운드리 위탁·IP·마스크·NRE 구매</b>가 본체</td></tr>
+    <tr><td><b>파운드리</b><br>(Foundry)</td><td>위탁 생산 전문</td><td>팹리스에겐 "공급사", 자신은 장비·소재 구매자</td></tr>
+    <tr><td><b>OSAT</b></td><td>후공정(패키징·테스트) 위탁 (심화 7)</td><td>팹리스·IDM 모두의 외주처</td></tr>
+  </table>
+  </div>
+  <div class="callout point">
+    <span class="t">팹리스 구매의 큰 그림</span>
+    팹리스에게 가장 큰 구매는 장비가 아니라 <b>"칩을 만들어 달라"는 위탁</b>이다 — 파운드리 NRE(개발비) + 마스크 + 양산 웨이퍼 + OSAT. 이 사슬을 묶는 게 팹리스 구매의 핵심이다.
+  </div>
+
+  <h2>2. 칩 위탁 개발·양산 흐름</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  IP["① IP 라이선스 확보<br/>CPU코어·인터페이스 등"] --> DES["② 설계 (자사)<br/>IP 통합·검증"]
+  DES --> NRE["③ NRE 발주<br/>파운드리 공정 맞춤 개발비"]
+  NRE --> MASK["④ 마스크(레티클) 제작<br/>회로 원판 — 공정노드별 세트"]
+  MASK --> MPW["⑤ 시제품 (MPW/프로토)<br/>소량 시험 생산·검증"]
+  MPW --> MP["⑥ 양산 (웨이퍼)<br/>파운드리 캐파로 대량 생산"]
+  MP --> OSAT["⑦ OSAT<br/>패키징·테스트 (심화 7)"]
+  classDef hl fill:#c5d2ff,stroke:#16161d,color:#16161d;
+  class NRE,MASK hl;
+  </pre>
+
+  <h2>3. IP 라이선스 — 설계도를 빌린다</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>CPU 코어·메모리 컨트롤러·인터페이스(USB·PCIe) 등 검증된 설계 블록을 <b>라이선스</b>로 사용</li>
+      <li>비용 구조: <b>선급 라이선스비(Upfront)</b> + <b>로열티(칩 출하량 비례)</b> — 일회성 구매가 아니라 출하 연동</li>
+      <li>구매 관점: 무형자산 — 계약·법무 비중 큼. 사용 범위(공정노드·수량·기간) 정의가 핵심</li>
+      <li>시스템: 로열티는 출하 실적과 연동 정산 → ERS(심화 5)·매출 데이터와 연계</li>
+    </ul>
+  </div>
+
+  <h2>4. NRE — 맞춤 개발비</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>NRE 항목</th><th>내용</th><th>구매·회계</th></tr>
+    <tr><td><b>공정 개발</b></td><td>파운드리가 우리 칩에 맞춰 공정·PDK 튜닝</td><td>일회성 개발비 — 무형/선급, 마일스톤 지급</td></tr>
+    <tr><td><b>마스크 세트</b></td><td>공정노드별 포토마스크 한 벌 (수십 장)</td><td>고액 일회성 — 첨단 노드는 수십억 원</td></tr>
+    <tr><td><b>설계 툴·검증</b></td><td>EDA 툴·테스트 프로그램 개발</td><td>일회성 + 라이선스 혼합</td></tr>
+  </table>
+  </div>
+  <div class="callout warn">
+    <span class="t">NRE는 "양산 전 매몰비용"</span>
+    NRE·마스크는 양산 전에 거액이 들어가고, <b>설계를 바꾸면 다시 들어간다</b>(리스핀, Re-spin). 그래서 "한 번에 제대로"가 절대 명제 — 시제품(MPW) 검증을 거쳐 양산 마스크로 넘어간다. 구매·회계는 이 일회성 비용을 <b>제품 수명 물량에 안분</b>해 단가를 본다(NRE 상각).
+  </div>
+
+  <h2>5. 마스크(레티클) — 회로 원판</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>웨이퍼에 회로를 새기는 <b>포토 원판</b>(레티클). 공정노드·레이어마다 한 장씩, 한 칩에 수십 장 = 1 세트</li>
+      <li>첨단 노드(EUV)일수록 <b>마스크 세트 비용이 기하급수</b> — 칩 개발비의 큰 덩어리</li>
+      <li>소유·보관: 보통 파운드리가 보관, 소유·기밀 조항을 계약에 명시 (기술 보안 — 심화 5)</li>
+      <li>MPW(Multi-Project Wafer): 여러 설계를 한 마스크/웨이퍼에 얹어 <b>시제품 비용 분담</b> — 양산 전 검증용</li>
+    </ul>
+  </div>
+
+  <h2>6. 시스템·회계 관점</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>대상</th><th>SAP 처리</th><th>포인트</th></tr>
+    <tr><td>IP 라이선스</td><td>무형자산/선급 + 로열티 비용</td><td>출하 연동 로열티 — 정산 인터페이스 필요</td></tr>
+    <tr><td>NRE·마스크</td><td>일회성 — 무형/선급 또는 개발비, 마일스톤 지급</td><td>양산 물량에 안분(원가 배부) — 단가 왜곡 주의</td></tr>
+    <tr><td>양산 웨이퍼</td><td>표준 구매(파운드리 위탁) — 외주 성격</td><td>캐파 예약(심화 10)·수급(심화 9)과 연계</td></tr>
+    <tr><td>설계 IP·마스크 데이터</td><td>마스터 외 — 기밀 자산 관리</td><td>접근통제·보안등급(심화 5)</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 12 한 줄</span>
+    팹리스 구매는 <b>"무형(IP)·일회성(NRE·마스크)·양산(웨이퍼)"의 3층 구조</b>다. 장비·소재를 사는 IDM과 달리, 설계도를 빌리고(IP) 맞춤 제작비를 치르고(NRE·마스크) 생산능력을 위탁(파운드리)하는 — 손에 안 잡히는 것을 사는 구매가 핵심이다.
+  </div>
+
+  <div class="pager">
+    <a href="A-11-semicon-quality-risk.html"><span class="lbl">이전</span><b>← 심화 11 품질·리스크</b></a>
+    <a class="next" href="A-13-semicon-trade-logistics.html"><span class="lbl">다음</span><b>심화 13 수입·물류·관세 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>

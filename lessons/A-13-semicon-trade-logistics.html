@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 13 수입·물류·관세 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+<script type="module" src="../assets/mermaid-init.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 13</span>
+    <h1>수입 · 물류 · 관세 — 국경을 넘는 실무</h1>
+    <p class="lead">반도체 장비·소재의 상당수가 수입이다. AEO(심화 8)가 "신뢰 자격"이라면, 여기서는 <b>실제로 물건이 국경을 넘고 통관되고 도착하기까지의 실무</b> — HS코드·FTA·위험물·보세를 다룬다.</p>
+  </header>
+
+  <h2>1. 수입 구매가 일반 구매와 다른 점</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>실구매가 = 물품가 + <b>부대비(운임·보험·관세·통관료)</b> — Incoterms가 경계를 정함 (R-1)</li>
+      <li>리드타임에 <b>운송·통관 시간</b>이 더해짐 — 항공/해상 선택이 납기·비용을 가름</li>
+      <li><b>관세·부가세</b>가 원가에 직접 — FTA 원산지로 관세 절감 가능</li>
+      <li>가스·케미컬은 <b>위험물</b> — 운송·보관·통관에 별도 규제</li>
+    </ul>
+  </div>
+
+  <h2>2. 수입 통관 흐름</h2>
+  <pre class="mmd mermaid">
+flowchart TD
+  PO["수입 PO<br/>Incoterms·통화·HS코드"] --> SHIP["선적<br/>해상/항공 · B/L·AWB"]
+  SHIP --> ARR["입항·반입<br/>보세구역 장치"]
+  ARR --> DEC["수입신고<br/>HS코드·과세가격·FTA 원산지"]
+  DEC --> DUTY["관세·부가세 납부<br/>또는 FTA 특혜·보세 유예"]
+  DUTY --> REL["통관·반출<br/>Fab 입고(GR)"]
+  REL --> COST["부대비 정산<br/>운임·관세 → 자재원가 반영"]
+  classDef hl fill:#ffe08a,stroke:#16161d,color:#16161d;
+  class DEC hl;
+  </pre>
+
+  <h2>3. HS코드와 FTA 원산지 — 관세를 가른다</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>요소</th><th>내용</th><th>구매·시스템</th></tr>
+    <tr><td><b>HS코드</b></td><td>품목 분류 국제코드 — 관세율·규제의 기준</td><td>자재 마스터에 유지. 오분류 = 관세 추징 리스크 (AEO, 심화 8)</td></tr>
+    <tr><td><b>과세가격</b></td><td>관세 부과 기준액(통상 CIF) — 물품가+운임+보험</td><td>Incoterms·부대비와 연동</td></tr>
+    <tr><td><b>FTA 원산지</b></td><td>협정 상대국 원산지면 <b>관세 특혜(인하·면제)</b></td><td>원산지증명서(C/O) 수취·검증 — 공급사 협조 필요</td></tr>
+    <tr><td><b>관세 환급</b></td><td>수입 후 가공·재수출 시 납부 관세 환급</td><td>수출 비중 큰 반도체에 유효</td></tr>
+  </table>
+  </div>
+  <div class="callout point">
+    <span class="t">FTA 원산지가 곧 원가 절감</span>
+    같은 물건도 FTA 원산지증명을 갖추면 관세가 0이 될 수 있다 — TCO(R-1)를 직접 낮춘다. 그래서 <b>공급사로부터 원산지증명서(C/O)를 받아 검증·보관</b>하는 프로세스가 수입 구매의 숨은 핵심이며, 사후 검증(원산지 사후심사) 대비 증빙 관리가 필수다.
+  </div>
+
+  <h2>4. 위험물 — 가스·케미컬의 특수 물류</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>항목</th><th>내용</th><th>대응</th></tr>
+    <tr><td><b>위험물 분류</b></td><td>독성·가연성·고압 가스, 유해 케미컬 (UN번호·등급)</td><td>MSDS·운송 자격, 위험물 표기 (SG — 심화 5)</td></tr>
+    <tr><td><b>운송·보관</b></td><td>전용 용기·차량, 온도·충격 관리</td><td>전문 포워더·보세창고 지정</td></tr>
+    <tr><td><b>통관 규제</b></td><td>수입 허가·신고(화학물질·고압가스법)</td><td>사전 인허가 — 리드타임에 반영</td></tr>
+    <tr><td><b>실린더 회수</b></td><td>가스 용기 반납·재사용 (심화 5)</td><td>회수 물류·자산 추적</td></tr>
+  </table>
+  </div>
+
+  <h2>5. 보세와 자유무역지역 — 관세를 미룬다</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>보세구역</b>: 관세 미납 상태로 장치·가공 — 통관 전 보관, 재수출 시 관세 부담 회피</li>
+      <li><b>보세공장</b>: 수입 원자재를 관세 유예 상태로 가공 → 완제품 수출 시 관세 면제. 수출형 Fab에 유효</li>
+      <li><b>자유무역지역(FTZ)</b>: 관세·부가세 유예 구역 — 반도체 클러스터 입지 고려</li>
+      <li>시스템: 보세 재고와 내국 재고의 <b>구분 관리</b>(평가·이동), 반출입 신고 연계</li>
+    </ul>
+  </div>
+
+  <h2>6. 시스템·운영 관점</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>영역</th><th>SAP·시스템</th></tr>
+    <tr><td>부대비(운임·관세)</td><td>구매 부대비(Delivery Cost) 조건으로 자재원가에 가산 (R-1)</td></tr>
+    <tr><td>HS코드·원산지</td><td>자재 마스터 + GTS/관세 시스템 연계 (심화 8)</td></tr>
+    <tr><td>통관 상태</td><td>관세사·포워더 시스템과 신고·통관 상태 인터페이스</td></tr>
+    <tr><td>보세 재고</td><td>특수 재고/평가 유형으로 내국재고와 분리</td></tr>
+    <tr><td>FTA C/O</td><td>원산지증명 수취·유효기간·증빙 보관 — 사후심사 대비</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">심화 13 한 줄</span>
+    수입 구매는 "물품가"가 아니라 <b>"물품가 + 부대비 + 관세 − FTA 특혜"의 실구매가</b>로 본다. AEO(심화 8)가 통관을 빠르게 해주는 자격이라면, HS코드·FTA·위험물·보세는 <b>관세와 리드타임을 실제로 줄이는 실무 레버</b>다.
+  </div>
+
+  <div class="pager">
+    <a href="A-12-semicon-mask-nre-ip.html"><span class="lbl">이전</span><b>← 심화 12 마스크·NRE·IP</b></a>
+    <a class="next" href="../index.html"><span class="lbl">완료</span><b>목차로 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
