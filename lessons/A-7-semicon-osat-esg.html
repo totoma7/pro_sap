@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 7 반도체 외주·매각·ESG·협력사 평가 | SAP × 전자구매 학습</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a href="../index.html">← 목차</a>
+    <span class="sep">|</span>
+    <span>심화 · Deep Dive</span>
+  </nav>
+
+  <header class="hero">
+    <span class="kicker">심화 7</span>
+    <h1>반도체 외주구매 · 매각 · ESG · 협력사 평가</h1>
+    <p class="lead">발주-입고-지급의 본류(4-3, 심화 5~6) 바깥에 있지만 반도체 구매 조직이 반드시 떠안는 네 가지 업무를 반도체 입장에서 정리한다.</p>
+  </header>
+
+  <h2>1. 외주구매 — 반도체의 외주는 OSAT다</h2>
+  <p>1-3차시의 외주(L)가 반도체에서는 <b>후공정 외주(OSAT: 패키징·테스트 전문업체)</b>로 나타난다. 전공정(Fab)은 내재화하고, 후공정은 외주화하는 것이 업계의 기본 분업이다.</p>
+
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>가공 완료 웨이퍼 사급</b>
+      <span class="d">Fab에서 나온 웨이퍼(다이)를 OSAT에 보낸다. <b>사급재가 초고가</b>라는 점이 일반 제조 외주와 결정적으로 다르다 — 웨이퍼 한 장이 수백~수천만 원</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">2</span><b>패키징 · 테스트 수행 (OSAT)</b>
+      <span class="d">조립(어셈블리) → 테스트 → 양품 선별. WIP(공정 중 재고)와 수율 데이터를 우리가 실시간으로 봐야 한다</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>양품 입고 + 수율 정산</b>
+      <span class="d">투입 다이 대비 양품 산출을 대조 — <b>수율 손실의 책임(공정 불량 vs 원판 불량)을 가르는 정산 룰</b>이 계약의 핵심. 가공비만 매입(외주 L 원칙)</span>
+    </div>
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>계약 형태</th><th>구조</th><th>SAP 처리</th></tr>
+    <tr><td><b>사급(임가공)</b></td><td>기판·리드프레임 등 부자재를 우리가 공급</td><td>외주 L + 사급 Component — 수불 대사 부담 큼</td></tr>
+    <tr><td><b>턴키(Turn-key)</b></td><td>OSAT가 부자재를 직접 조달, 우리는 웨이퍼만 사급</td><td>외주 L (Component 최소화) — 가공비에 재료비 포함</td></tr>
+    <tr><td><b>파운드리 위탁</b> (팹리스 관점)</td><td>전공정 자체를 외주 — 웨이퍼 제조 위탁</td><td>사실상 완제품 구매에 가까운 외주 — 마스크(NRE) 비용 별도</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">전자구매 연계 포인트</span>
+    OSAT 포털/EDI의 본체는 PO가 아니라 <b>WIP 현황·수율 리포트·사급 수불의 일 단위 동기화</b>다. 고가 사급재가 외부에 나가 있으므로 "지금 OSAT 창고에 우리 웨이퍼가 몇 장 있는가"를 SAP 재고(공급사 위치 재고)와 일일 대사하는 인터페이스가 필수다.
+  </div>
+
+  <h2>2. 매각 — 사는 것의 반대도 구매 부서의 일</h2>
+  <p>라인 전환이 잦은 반도체에서는 <b>쓰던 것을 파는 업무</b>가 상시 발생한다. 프로세스는 구매의 거울상 — 입찰은 최저가가 아니라 <b>최고가</b> 경쟁이다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>매각 대상</th><th>발생 배경</th><th>처리</th></tr>
+    <tr><td><b>중고 장비</b></td><td>공정 전환·라인 폐쇄로 유휴화</td><td>내부 전용(타 Fab 이설) 검토 → 외부 매각. 자산 처분(AA) — 처분손익 인식</td></tr>
+    <tr><td><b>스크랩·귀금속</b></td><td>스퍼터링 타겟 잔재(금·백금 등), 폐웨이퍼, 폐케미컬</td><td>회수·정련 업체에 매각 — 시세 연동 단가, 회수율 검증이 쟁점</td></tr>
+    <tr><td><b>유휴 자재</b></td><td>공정 단종으로 못 쓰게 된 스페어·부자재</td><td>그룹 내 전용 → 매각 → 폐기 순서로 검토</td></tr>
+  </table>
+  </div>
+
+  <div class="flow">
+    <div class="step">
+      <span class="n">1</span><b>유휴 판정 → 내부 전용 검토</b>
+      <span class="d">타 Fab·계열사에서 쓸 수 있으면 이설이 우선 (장비 이설도 수출통제 검토 대상 — 심화 5)</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step hl">
+      <span class="n">2</span><b>매각 입찰 — 최고가 경쟁</b>
+      <span class="d">포털 매각 모듈에서 복수 매입처 견적 → 최고가 낙찰. <b>매입처도 제재 스크리닝 대상</b>(장비가 어디로 가는가)</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">3</span><b>기술 보호 조치 → 반출</b>
+      <span class="d">장비 내 레시피·로그 데이터 와이프, 개조 이력 문서화. ECCN 해당 장비는 수출 허가 후 반출</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <span class="n">4</span><b>대금 수령 · 회계 처리</b>
+      <span class="d">자산은 처분손익(AA), 스크랩은 잡수익/SD 판매 — 세금계산서는 이번엔 우리가 발행하는 쪽</span>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">반도체 매각의 특수성</span>
+    중고 장비는 <b>팔아도 끝이 아니다</b>. 수출통제(ECCN)·기술 유출·전략적 고려(경쟁사로 흘러가는가)가 걸려, 매각 승인 워크플로우에 보안·법무·수출통제 부서가 반드시 들어간다. "최고가보다 매각처가 중요한" 유일한 입찰이다.
+  </div>
+
+  <h2>3. ESG — 반도체 공급망에서 ESG는 권고가 아니라 규제다</h2>
+  <p>반도체는 글로벌 고객(스마트폰·서버 제조사)의 공급망 한가운데 있다. 고객의 ESG 요구가 그대로 <b>우리 협력사에게 전가해야 하는 요구</b>가 된다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <tr><th>영역</th><th>요구 사항</th><th>구매 시스템 반영</th></tr>
+    <tr><td><b>RBA 행동규범</b></td><td>노동·안전·환경·윤리 업계 표준 — 고객 감사(Audit) 대상</td><td>협력사 등록 시 RBA 서약, 자가진단(SAQ), 고위험 협력사 현장 실사</td></tr>
+    <tr><td><b>분쟁광물 (3TG)</b></td><td>탄탈럼·주석·텅스텐·금 원산지 추적 — CMRT 보고</td><td>협력사별 CMRT 수집·검증 — 포털 정기 캠페인 기능</td></tr>
+    <tr><td><b>탄소 (Scope 3)</b></td><td>공급사 배출량·제품 탄소발자국(PCF) — 고객사 RE100 연쇄 요구</td><td>협력사 배출 데이터 수집 인터페이스, 소싱 평가에 탄소 항목 반영</td></tr>
+    <tr><td><b>공정가스 (F-gas)</b></td><td>지구온난화지수 높은 공정가스 — 감축·대체 압박</td><td>가스 구매량·배출 보고 연계, 대체 가스 소싱 프로젝트</td></tr>
+    <tr><td><b>화학물질 규제</b></td><td>REACH·RoHS, 유해물질 정보(MSDS)</td><td>자재 마스터 유해물질 속성, 신규 케미컬 등록 시 환경안전 승인 게이트</td></tr>
+    <tr><td><b>공급망 실사법</b></td><td>EU CSDDD 등 — 공급망 인권·환경 실사 의무화</td><td>실사 이력·개선 조치 추적 — 포털이 증빙 저장소가 된다</td></tr>
+  </table>
+  </div>
+
+  <div class="callout point">
+    <span class="t">시스템 설계 관점</span>
+    ESG 데이터의 특징은 <b>거래 데이터가 아니라 캠페인 데이터</b>라는 것 — 연 1~2회 수백 개 협력사에게 설문·서류를 뿌리고 회수·검증한다. 포털에 ① 캠페인 발송·회수율 관리 ② 서류 유효기간 알림 ③ 미회신 시 거래 제한 연동, 이 세 가지가 있어야 운영이 돌아간다.
+  </div>
+
+  <h2>4. 협력사(BP) 평가 — 점수가 거래를 결정한다</h2>
+
+  <h3>평가 체계의 전형</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>평가 항목</th><th>데이터 원천</th><th>비중 (예시)</th></tr>
+    <tr><td><b>품질</b> — 입고 불량률, 라인 사고, 공정 Qual 상태</td><td>SAP QM 자동 집계 + 품질 사고 기록</td><td>35%</td></tr>
+    <tr><td><b>납기</b> — 납기 준수율, 리드타임 단축 협력</td><td>SAP 입고 실적 자동 집계</td><td>25%</td></tr>
+    <tr><td><b>가격/원가</b> — 단가 경쟁력, 원가 절감 기여</td><td>입찰·계약 데이터 (포털)</td><td>15%</td></tr>
+    <tr><td><b>기술/협력</b> — 신공정 대응, 기술 로드맵 공유</td><td>구매·개발 부서 정성 평가 (포털 설문)</td><td>15%</td></tr>
+    <tr><td><b>ESG·경영 안정성</b> — RBA·재무 건전성</td><td>ESG 캠페인 결과 + 신용 정보</td><td>10%</td></tr>
+  </table>
+  </div>
+
+  <h3>평가 → 활용의 순환</h3>
+  <div class="miniflow">
+    <span class="box">실적 자동 집계<br><span class="chip">SAP: 품질·납기</span></span>
+    <span class="ar">＋</span>
+    <span class="box">정성·ESG 평가<br><span class="chip">포털: 설문·실사</span></span>
+    <span class="ar">→</span>
+    <span class="box hl">등급 산정<br><span class="chip">S / A / B / C</span></span>
+    <span class="ar">→</span>
+    <span class="box">물량·자격 반영<br><span class="chip">쿼터·입찰 자격·거래 정지</span></span>
+  </div>
+
+  <div class="card">
+    <ul style="margin:0;padding-left:18px;">
+      <li>SAP 표준에도 Vendor Evaluation(<span class="chip code">ME61</span> — 가격·품질·납기 자동 점수)이 있지만, 정성·ESG 항목 때문에 <b>실무는 포털 자체 구축이 일반적</b> — SAP은 실적 데이터 공급자 역할</li>
+      <li>등급의 실효성은 연동에서 나온다: <b>S/A등급 → 쿼터 배분 우대(심화 6), C등급 → 신규 입찰 제한·개선 계획 의무</b></li>
+      <li>평가 결과는 협력사에게 <b>피드백 리포트로 공개</b> — 점수만 통보하면 분쟁, 근거 데이터까지 보여줘야 개선이 된다</li>
+    </ul>
+  </div>
+
+  <div class="callout warn">
+    <span class="t">반도체 평가의 역설</span>
+    핵심 자재·장비는 <b>독점 공급이라 등급이 낮아도 거래를 끊을 수 없다</b>. 그래서 반도체에서 평가의 목적은 "퇴출"이 아니라 <b>개선 협업의 근거</b>다 — 낮은 항목을 함께 개선하는 프로그램(품질 TF, 공동 원가 절감)으로 이어져야 평가가 의미를 갖는다. 거래 정지가 실제로 작동하는 건 경쟁 구도가 있는 범용 자재·공사·용역 영역이다.
+  </div>
+
+  <h2>5. 한눈에 정리</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>업무</th><th>반도체에서의 본질</th><th>시스템의 핵심</th></tr>
+    <tr><td><b>외주(OSAT)</b></td><td>초고가 사급재 + 수율 책임 정산</td><td>WIP·수율·사급 수불의 일일 동기화</td></tr>
+    <tr><td><b>매각</b></td><td>최고가 경쟁 + 수출통제·기술 보호</td><td>매각 입찰 모듈 + 승인 워크플로우(보안·법무)</td></tr>
+    <tr><td><b>ESG</b></td><td>고객 요구의 공급망 전가 — 규제</td><td>캠페인(설문·서류) 관리 + 거래 제한 연동</td></tr>
+    <tr><td><b>BP 평가</b></td><td>퇴출이 아닌 개선 협업의 근거</td><td>SAP 실적 자동 집계 + 포털 정성 평가 + 쿼터 연동</td></tr>
+  </table>
+  </div>
+
+  <div class="pager">
+    <a href="A-6-semicon-mrp.html"><span class="lbl">이전</span><b>← 심화 6 반도체 MRP</b></a>
+    <a class="next" href="I-1-p2p-simulator.html"><span class="lbl">다음</span><b>인터랙티브 P2P 시뮬레이터 →</b></a>
+  </div>
+
+  <footer>SAP × e-Procurement 학습 · 심화</footer>
+</div>
+</body>
+</html>
